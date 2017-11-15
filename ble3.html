@@ -1,0 +1,100 @@
+
+<!doctype html>
+<!--
+
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    
+    <title>Web Bluetooth / Discover Services & Characteristics (Async Await) Sample</title>
+
+  </head>
+
+  <body>
+
+
+
+
+
+<h3>Live Output5</h3>
+
+
+<p onclick="onButtonClick()">Click me</p>
+
+<p id="demo"></p>
+
+      <script>function onButtonClick() {
+
+	document.getElementById("demo").innerHTML = "hh";
+
+  }
+
+ </script>
+    
+<script>
+
+
+let chosenHeartRateService = null;
+
+
+
+navigator.bluetooth.requestDevice({
+  filters: [{
+    services: ["65333333-a115-11e2-9e9a-0800200ca100"],
+  }]
+}).then(device => device.gatt.connect())
+.then(server => server.getPrimaryService("65333333-a115-11e2-9e9a-0800200ca100"))
+.then(service => {
+  chosenHeartRateService = service;
+  return Promise.all([
+    service.getCharacteristic("65333333-a115-11e2-9e9a-0800200ca102")
+      .then(handleBodySensorLocationCharacteristic),
+    service.getCharacteristic("65333333-a115-11e2-9e9a-0800200ca102")
+      .then(handleHeartRateMeasurementCharacteristic),
+  ]);
+});
+
+function handleBodySensorLocationCharacteristic(characteristic) {
+  if (characteristic === null) {
+    console.log("Unknown sensor location.");
+    return Promise.resolve();
+  }
+  return characteristic.readValue()
+  .then(sensorLocationData => {
+    let sensorLocation = sensorLocationData.getUint8(0);
+    switch (sensorLocation) {
+      case 0: return 'Other';
+      case 1: return 'Chest';
+      case 2: return 'Wrist';
+      case 3: return 'Finger';
+      case 4: return 'Hand';
+      case 5: return 'Ear Lobe';
+      case 6: return 'Foot';
+      default: return 'Unknown';
+    }
+  }).then(location => console.log(location));
+}
+
+function handleHeartRateMeasurementCharacteristic(characteristic) {
+  return characteristic.startNotifications()
+  .then(char => {
+    characteristic.addEventListener('characteristicvaluechanged',
+                                    onHeartRateChanged);
+  });
+}
+
+function onHeartRateChanged(event) {
+  let characteristic = event.target;
+  console.log(parseHeartRate(characteristic.value));
+}
+
+  
+ </script>
+ 
+
+
+    
+
+  </body>
+</html>
