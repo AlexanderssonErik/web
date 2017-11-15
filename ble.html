@@ -1,0 +1,113 @@
+
+<!doctype html>
+<!--
+
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    
+    <title>Web Bluetooth / Discover Services & Characteristics (Async Await) Sample</title>
+    <script>
+      // Add a global error event listener early on in the page load, to help ensure that browsers
+      // which don't support specific functionality still end up displaying a meaningful message.
+      window.addEventListener('error', function(error) {
+        if (ChromeSamples && ChromeSamples.setStatus) {
+          console.error(error);
+          ChromeSamples.setStatus(error.message + ' (Your browser may not support this feature.)');
+          error.preventDefault();
+        }
+      });
+    </script>
+    
+    
+    
+
+    
+  </head>
+
+  <body>
+
+
+
+
+
+
+<h3>Live Output</h3>
+<div id="output" class="output">
+  <div id="content"></div>
+  <div id="status"></div>
+  <pre id="log"></pre>
+</div>
+
+
+<script>
+  if (/Chrome\/(\d+\.\d+.\d+.\d+)/.test(navigator.userAgent)){
+    // Let's log a warning if the sample is not supposed to execute on this
+    // version of Chrome.
+    if (55 > parseInt(RegExp.$1)) {
+      ChromeSamples.setStatus('Warning! Keep in mind this sample has been tested with Chrome ' + 55 + '.');
+    }
+  }
+</script>
+
+
+
+
+  
+    
+      <script>async function onButtonClick() {
+  // Validate services UUID entered by user first.
+  let optionalServices = document.querySelector('#optionalServices').value
+    .split(/, ?/).map(s => s.startsWith('0x') ? parseInt(s) : s)
+    .filter(s => s && BluetoothUUID.getService);
+
+  try {
+    log('Requesting any Bluetooth Device...');
+    const device = await navigator.bluetooth.requestDevice({
+     // filters: [...] <- Prefer filters to save energy & show relevant devices.
+        acceptAllDevices: true,
+        optionalServices: '65333333-a115-11e2-9e9a-0800200ca100'});
+
+    log('Connecting to GATT Server...');
+    const server = await device.gatt.connect();
+
+    // Note that we could also get all services that match a specific UUID by
+    // passing it to getPrimaryServices().
+    log('Getting Services...');
+    const services = await server.getPrimaryServices();
+
+    log('Getting Characteristics...');
+    for (const service of services) {
+      log('> Service: ' + service.uuid);
+      const characteristics = await service.getCharacteristics();
+
+      characteristics.forEach(characteristic => {
+        log('>> Characteristic: ' + characteristic.uuid + ' ' +
+            getSupportedProperties(characteristic));
+      });
+    }
+  } catch(error) {
+    log('Argh! ' + error);
+  }
+}
+
+
+
+  
+
+  
+
+  
+    <figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">async</span> <span class="kd">function</span> <span class="nx">onButtonClick</span><span class="p">()</span> <span class="p">{</span>
+ 
+  
+
+
+
+
+
+    
+
+  </body>
+</html>
