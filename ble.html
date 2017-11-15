@@ -33,7 +33,7 @@
 
 
 
-<h3>Live Output2</h3>
+<h3>Live Output3</h3>
 <div id="output" class="output">
   <div id="content"></div>
   <div id="status"></div>
@@ -45,6 +45,7 @@
 
     
       <script>async function onButtonClick() {
+          alert("I am an alert box!");
   // Validate services UUID entered by user first.
   let optionalServices = document.querySelector('#optionalServices').value
     .split(/, ?/).map(s => s.startsWith('0x') ? parseInt(s) : s)
