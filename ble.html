@@ -39,22 +39,10 @@
   <div id="status"></div>
   <pre id="log"></pre>
 </div>
+    
+    <button onclick="onButtonClick()">Click me</button>. 
 
 
-<script>
-  if (/Chrome\/(\d+\.\d+.\d+.\d+)/.test(navigator.userAgent)){
-    // Let's log a warning if the sample is not supposed to execute on this
-    // version of Chrome.
-    if (55 > parseInt(RegExp.$1)) {
-      ChromeSamples.setStatus('Warning! Keep in mind this sample has been tested with Chrome ' + 55 + '.');
-    }
-  }
-</script>
-
-
-
-
-  
     
       <script>async function onButtonClick() {
   // Validate services UUID entered by user first.
@@ -91,19 +79,6 @@
     log('Argh! ' + error);
   }
 }
-
-
-
-  
-
-  
-
-  
-    <figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">async</span> <span class="kd">function</span> <span class="nx">onButtonClick</span><span class="p">()</span> <span class="p">{</span>
- 
-  
-
-
 
 
 
