@@ -217,7 +217,7 @@ Characteristics Sample (Promises)</a> sample.</p>
     const device = await navigator.bluetooth.requestDevice({
      // filters: [...] <- Prefer filters to save energy & show relevant devices.
         acceptAllDevices: true,
-        optionalServices: optionalServices});
+        optionalServices: '65333333-a115-11e2-9e9a-0800200ca100'});//optionalServices});
 
     log('Connecting to GATT Server...');
     const server = await device.gatt.connect();
