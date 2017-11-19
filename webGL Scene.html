@@ -56,11 +56,6 @@
 //xx.position.x = 0;
 
 
-        Scene.activeCamera.attachControl(canvas);
-        
-        engine.runRenderLoop(function () {
-            Scene.render();
-        });
         window.addEventListener("resize", function () {
             engine.resize();
         });
