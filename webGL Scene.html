@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+ <head>
+    <title>Babylon - Tutorials from www.FilmsByKris.com</title>
+    <script src="babylon.js"></script>
+    <style>
+	html,body,canvas{
+		width:100%;
+		height:100%;
+		padding:0;
+		margin:0;
+		overflow:hidden;
+	}
+	
+
+
+    </style>
+
+
+ </head>
+ <body>
+    <canvas id="renderCanvas"></canvas>
+
+    <script>
+
+
+        var canvas = document.getElementById("renderCanvas");
+        var engine = new BABYLON.Engine(canvas, true);
+        //var Scene = new BABYLON.Scene(engine);
+        //cameras
+        //var Camera = new BABYLON.ArcRotateCamera("Camera", 1, 1, 20, new BABYLON.Vector3(0, 0, 0), Scene);
+        //lights
+      //  var light0 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, 0, 10), Scene);
+        //meshes
+        //sphere parameters are: name, number of segments (highly detailed or not), size, scene to attach the mesh.
+        //var ball = BABYLON.Mesh.CreateSphere("Ball", 10, 1.0, Scene);
+       // ball.position.x = -5; //position mesh
+
+
+	
+	BABYLON.SceneLoader.Load("", "test.babylon", engine ,function (newScene) {    
+		var Scene = newScene;
+		Scene.executeWhenReady(function(){
+			engine.runReaderLoop(function(){
+				Scene.render();
+
+			});
+		});
+
+
+	});
+
+//var xx = BABYLON.SceneLoader.ImportMesh("Cube", "", "test.babylon", Scene, function (newMeshes, particleSystems) {
+//});
+
+//xx.position.x = 0;
+
+
+        Scene.activeCamera.attachControl(canvas);
+        
+        engine.runRenderLoop(function () {
+            Scene.render();
+        });
+        window.addEventListener("resize", function () {
+            engine.resize();
+        });
+    </script>
+ </body>
+</html>
