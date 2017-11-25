@@ -1,0 +1,340 @@
+///<reference path="babylon.d.ts" />
+
+
+<!DOCTYPE html>
+<html>
+ <head>
+    <title>Babylon - Tutorials from www.FilmsByKris.com</title>
+    <script src="babylon.js"></script>
+    <style>
+	html,body, can {
+		width:100%;
+		height:100%;
+		padding:0;
+		margin:0;
+		overflow:hidden;
+	}
+	
+	#renderCanvas {
+		width: 100%;
+		height: 100%;
+		touch-action: none;
+	
+	}
+
+    </style>
+
+
+ </head>
+ <body>
+    <canvas id="renderCanvas"></canvas>
+
+    <script>
+        /*
+        Ask for block positions and send LED information
+        Get response from base
+        Populate BlocksX,Y,Z,R
+        Compare with last responce to rearrange LED data 
+        block and blockLast information is the same
+        Render
+        */
+        var blocksX = [5,5,5];
+        var blocksY = [8, 8,8];
+        var blocksZ = [0, 1,2];
+        var blocksRT = [0, 1, 4]; //rotation and type (2x2 / 2x4)
+        var blocksLED = [];
+        var baseLED = [];
+
+        var blocksLastX = [];
+        var blocksLastY = [];
+        var blocksLastZ = [];
+        var blocksLastRT = [];
+        var blocksLastLED = [];
+
+        var renderBlocksPart1 = [];
+        var renderBlocksPart2 = [];
+        var renderBlocksPart3 = [];
+        var renderBlocksPart4 = [];
+
+        var blocksRender = 1; //signal if block data should be rendered
+
+
+        var canvas = document.getElementById("renderCanvas");
+        var engine = new BABYLON.Engine(canvas, true);
+        var scene = new BABYLON.Scene(engine);
+//keep scene.ambientColor = new BABYLON.Color3(1, 1, 1);
+
+//base
+
+var baseTopPlane = BABYLON.MeshBuilder.CreatePlane("plane", {height:10, width: 10, sideOrientation: BABYLON.Mesh.DOUBLESIDE}, scene);
+//baseTop.rotation.z = Math.PI/2;
+baseTopPlane.position.x =4.5; 
+baseTopPlane.position.y =4.5;
+baseTopPlane.position.z =0;
+
+
+var nippleShape = [ new BABYLON.Vector3(-0.21,0, -0.29),		
+new BABYLON.Vector3(0.21,0, -0.29), 
+new BABYLON.Vector3(0.29,0, -0.21),    
+new BABYLON.Vector3(0.29,0, 0.21), 
+new BABYLON.Vector3(0.21,0, 0.29), 
+new BABYLON.Vector3(-0.21,0, 0.29), 
+new BABYLON.Vector3(-0.29,0, 0.21), 
+new BABYLON.Vector3(-0.29, 0, -0.21) 		                    
+              ];
+
+var chamfBlockShape = [ new BABYLON.Vector3(-0.3,0, -0.48),		
+new BABYLON.Vector3(0.5,0, -0.48), 
+new BABYLON.Vector3(0.5,0, 1.48),    
+new BABYLON.Vector3(-0.3,0, 1.48), 
+new BABYLON.Vector3(-0.48,0, 1.3), 
+new BABYLON.Vector3(-0.48,0, -0.3) 
+	                    
+              ];
+
+var noChamfBlockShape = [ new BABYLON.Vector3(-0.5,0, -0.48),		
+new BABYLON.Vector3(0.5,0, -0.48), 
+new BABYLON.Vector3(0.5,0, 1.48), 
+new BABYLON.Vector3(-0.5,0, 1.48) 
+	                    
+              ];
+
+
+
+var baseNipple = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:nippleShape, depth: 0.16, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+baseNipple.rotation.x = -Math.PI/2;
+
+var blockChamfBody = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:chamfBlockShape, depth: 1.19, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+blockChamfBody.rotation.x = -Math.PI/2;
+
+var blockNoChamfBody = BABYLON.MeshBuilder.ExtrudePolygon("polygonx", {shape:noChamfBlockShape, depth: 1.19, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+blockNoChamfBody.rotation.x = -Math.PI/2;
+
+var blockChamfNipple1 = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:nippleShape, depth: 0.16, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+blockChamfNipple1.position.z =1.19;
+blockChamfNipple1.rotation.x = -Math.PI/2;
+
+var blockChamfNipple2 = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:nippleShape, depth: 0.16, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+blockChamfNipple2.position.y =1;
+blockChamfNipple2.position.z =1.19;
+blockChamfNipple2.rotation.x = -Math.PI/2;
+
+var blockNoChamfNipple1 = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:nippleShape, depth: 0.16, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+blockNoChamfNipple1.position.z =1.19;
+blockNoChamfNipple1.rotation.x = -Math.PI/2;
+
+var blockNoChamfNipple2 = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:nippleShape, depth: 0.16, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+blockNoChamfNipple2.position.y =1;
+blockNoChamfNipple2.position.z =1.19;
+blockNoChamfNipple2.rotation.x = -Math.PI/2;
+
+var blockChamfArray = [blockChamfBody, blockChamfNipple1, blockChamfNipple2];
+var blockChamf = BABYLON.Mesh.MergeMeshes(blockChamfArray); 
+scene.meshes.pop();
+
+var blockNoChamfArray = [blockNoChamfBody, blockNoChamfNipple1, blockNoChamfNipple2];
+var blockNoChamf = BABYLON.Mesh.MergeMeshes(blockNoChamfArray); 
+scene.meshes.pop();
+
+
+//var blocks = [];
+/*
+blockChamfNipple2.dispose();
+blockChamfNipple1.dispose();
+blockChamfBody.dispose();
+*/
+blockChamf.position.x = 1;
+
+//var arrayOfMeshes = [];
+
+for (var x= 0; x< 10; ++x) {  
+
+	for(var y=0; y<10; y++){
+
+        if( x == 0 && y ==0){		
+      
+        }else{
+            var baseNipples = baseNipple.createInstance("baseNipple: " +x+y);
+            baseNipples.position.x = x;
+            baseNipples.position.y = y;
+        }
+
+	}
+}
+
+
+var whiteMaterial = new BABYLON.StandardMaterial("whiteMaterial", scene);
+
+
+whiteMaterial.diffuseColor = new BABYLON.Color3(0.9, 0.9, 1);
+//whiteMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+//whiteMaterial.emissiveColor = new BABYLON.Color3(1, 1, 1);
+//keep whiteMaterial.ambientColor = new BABYLON.Color3(0.5, 0.5, 0.5);
+//whiteMaterial.backFaceCulling = false;
+baseNipple.material = whiteMaterial  ;
+baseTopPlane.material =  whiteMaterial  ;
+//baseNipple.dispose();
+
+
+
+//
+
+/*
+var arrayOfMeshes2 = [];
+
+arrayOfMeshes2[0] =  baseNipple;
+arrayOfMeshes2[1] =  baseTopPlane;
+
+var newMeshX = BABYLON.Mesh.MergeMeshes(arrayOfMeshes2);
+*/
+//baseNipple.dispose;
+
+
+
+
+        //cameras
+      //  var camera = new BABYLON.ArcRotateCamera("Camera", 1, 1, 20, new BABYLON.Vector3(0, 0, 0), scene);
+        
+   
+// Parameters: alpha, beta, radius, target position, scene
+    var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 10, new BABYLON.Vector3(0, 0, 0), scene);
+
+// Positions the camera overwriting alpha, beta, radius
+    camera.setPosition(new BABYLON.Vector3(0, 0, 20));
+
+// This attaches the camera to the canvas
+    camera.attachControl(canvas, true);
+
+
+var light0 = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 5, 10), scene);
+    light0.specular = new BABYLON.Color3(0, 0, 0);
+    light0.specularPower = 0;
+    light0.diffuse = new BABYLON.Color3(1, 1, 1);
+    light0.intensity =0.75;
+
+/*
+ var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(1, 0.5, 0), scene);
+ light.intensity = 0.7;
+ light.specular = new BABYLON.Color3(1, 1, 1);
+*/  
+  //light0.specularPower = 0;
+  //  light.diffuse = new BABYLON.Color3(1, 1, 1);
+//light.specular = new BABYLON.Color3(0,0,0);
+        //meshes
+        //sphere parameters are: name, number of segments (highly detailed or not), size, scene to attach the mesh.
+
+var customMesh = [];
+var customMeshIndex = 0;
+ customMesh[0] = new BABYLON.Mesh("custom", scene);
+
+
+//scene.ambientColor = new BABYLON.Color3(1, 1, 1);
+
+var myMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
+
+
+//myMaterial.diffuseColor = new BABYLON.Color3(1, 1, 1);
+//myMaterial.specularColor = new BABYLON.Color3(1, 0, 1);
+myMaterial.emissiveColor = new BABYLON.Color3(1, 0, 1);
+//myMaterial.ambientColor = new BABYLON.Color3(1, 0, 1);
+//myMaterial.backFaceCulling = false;
+
+//var ball = BABYLON.Mesh.CreateSphere("Ball", 10, 1.0, scene);
+
+
+//ball.material = myMaterial;
+
+//customMesh[0].material = myMaterial;
+//customMesh[0].enableEdgesRendering();    
+//customMesh[0].edgesWidth = 20.0;
+//customMesh[0].edgesColor = new BABYLON.Color4(0, 0, 1, 0.5);
+
+//customMesh[0].color = new BABYLON.Color3(1, 0, 0)
+
+        scene.activeCamera.attachControl(canvas);
+        
+        engine.runRenderLoop(function () {
+            if(blocksRender){
+                for(var i = 0; i < blocksX.length; i++){
+                    if(renderBlocksPart1[i] != null){
+                        renderBlocksPart1[i].dispose();
+                    }
+                    if(renderBlocksPart2[i] != null){
+                        renderBlocksPart2[i].dispose();
+                    }
+                    if(renderBlocksPart3[i] != null){
+                        renderBlocksPart3[i].dispose();
+                    }
+                    if(renderBlocksPart4[i] != null){
+                        renderBlocksPart4[i].dispose();
+                    }
+
+                    renderBlocksPart1[i] = blockChamf.clone("blocks1: " + i);
+                    renderBlocksPart1[i].position.x = blocksX[i];
+                    renderBlocksPart1[i].position.y = blocksY[i];
+                    renderBlocksPart1[i].position.z = blocksZ[i];
+                    renderBlocksPart1[i].rotation.z  = (blocksRT[i] & 0x03) *Math.PI/2;
+                    
+                    if((blocksRT[i] & 0x0C) == 0 ){
+                        renderBlocksPart2[i] = blockChamf.clone("blocks2: " + i);
+
+                        if((blocksRT[i] & 0x03) == 0 ){
+                            renderBlocksPart2[i].position.x = blocksX[i]+1;
+                            renderBlocksPart2[i].position.y = blocksY[i]+1;
+                        }
+                        else if((blocksRT[i] & 0x03) == 1 ){
+                            renderBlocksPart2[i].position.x = blocksX[i]-1;
+                            renderBlocksPart2[i].position.y = blocksY[i]+1;
+
+                        } 
+                        
+                        renderBlocksPart2[i].position.z = blocksZ[i];
+                        renderBlocksPart2[i].rotation.z  = (blocksRT[i] & 0x03) *Math.PI/2 -Math.PI;
+
+                    }else if((blocksRT[i] & 0x0C) == 4){
+                        
+                        renderBlocksPart3[i] = blockNoChamf.clone("blocks3: " + i);
+                        renderBlocksPart4[i] = blockNoChamf.clone("blocks4: " + i);
+                        renderBlocksPart2[i] = blockChamf.clone("blocks2: " + i);
+
+                        if((blocksRT[i] & 0x03) == 0 ){
+                            renderBlocksPart3[i].position.x = blocksX[i]+1;
+                            renderBlocksPart3[i].position.y = blocksY[i];
+
+                            renderBlocksPart4[i].position.x = blocksX[i]+2;
+                            renderBlocksPart4[i].position.y = blocksY[i];
+
+                            renderBlocksPart2[i].position.x = blocksX[i]+3;
+                            renderBlocksPart2[i].position.y = blocksY[i]+1;
+
+
+
+                        }
+                        renderBlocksPart3[i].position.z = blocksZ[i];
+                        renderBlocksPart3[i].rotation.z  = (blocksRT[i] & 0x03) *Math.PI/2;
+
+                        renderBlocksPart4[i].position.z = blocksZ[i];
+                        renderBlocksPart4[i].rotation.z  = (blocksRT[i] & 0x03) *Math.PI/2;
+
+                        renderBlocksPart2[i].position.z = blocksZ[i];
+                        renderBlocksPart2[i].rotation.z  = (blocksRT[i] & 0x03) *Math.PI/2 -Math.PI;
+                        
+
+
+                    }
+                   
+
+                }
+
+
+            }
+
+            scene.render();
+        });
+
+        window.addEventListener("resize", function () {
+            engine.resize();
+        });
+    </script>
+ </body>
+</html>
