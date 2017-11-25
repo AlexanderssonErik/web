@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+ <head>
+    <title>Babylon - Tutorials from www.FilmsByKris.com</title>
+    <script src="babylon.js"></script>
+    <style>
+	html,body {
+		width:100%;
+		height:100%;
+		padding:0;
+		margin:0;
+		overflow:hidden;
+	}
+	
+	#renderCanvas {
+		width: 100%
+		height: 100%
+		touch-action: none;
+	
+	}
+
+    </style>
+
+
+ </head>
+ <body>
+    <canvas id="renderCanvas"></canvas>
+
+    <script>
+
+
+
+
+        var canvas = document.getElementById("renderCanvas");
+        var engine = new BABYLON.Engine(canvas, true);
+        var scene = new BABYLON.Scene(engine);
+//keep scene.ambientColor = new BABYLON.Color3(1, 1, 1);
+
+//base
+
+var baseTopPlane = BABYLON.MeshBuilder.CreatePlane("plane", {height:10, width: 10, sideOrientation: BABYLON.Mesh.DOUBLESIDE}, scene);
+//baseTop.rotation.z = Math.PI/2;
+baseTopPlane.position.x =4.5; 
+baseTopPlane.position.y =4.5;
+baseTopPlane.position.z =0;
+
+
+var shape = [ 
+			new BABYLON.Vector3(-0.15,0, -0.2),		
+new BABYLON.Vector3(0.15,0, -0.2), 
+new BABYLON.Vector3(0.2,0, -0.15),    
+new BABYLON.Vector3(0.2,0, 0.15), 
+     new BABYLON.Vector3(0.15,0, 0.2), 
+new BABYLON.Vector3(-0.15,0, 0.2), 
+new BABYLON.Vector3(-0.2,0, 0.15), 
+new BABYLON.Vector3(-0.2, 0, -0.15), 
+		                    
+              ];
+
+var baseNipple = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:shape, depth: 0.2, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+baseNipple.position.x =0; 
+baseNipple.position.y =0;
+baseNipple.position.z =0;
+baseNipple.rotation.x = -Math.PI/2;
+
+var arrayOfMeshes = [];
+
+for (var x= 0; x< 10; ++x) {  
+
+	for(var y=0; y<10; y++){
+
+    		
+arrayOfMeshes[x*10 + y] = baseNipple.createInstance("baseNipple: " +x+y);
+	    	arrayOfMeshes[x*10 + y].position.x = x;
+				arrayOfMeshes[x*10 + y].position.y = y;
+
+/*
+var gg = baseNipple.createInstance("baseNipple: " +x+y);
+	    	gg.position.x = x;
+		gg.position.y = y;
+
+*/
+	}
+}
+
+
+var whiteMaterial = new BABYLON.StandardMaterial("whiteMaterial", scene);
+
+
+whiteMaterial.diffuseColor = new BABYLON.Color3(0.9, 0.9, 1);
+//whiteMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+//whiteMaterial.emissiveColor = new BABYLON.Color3(1, 1, 1);
+//keep whiteMaterial.ambientColor = new BABYLON.Color3(0.5, 0.5, 0.5);
+//whiteMaterial.backFaceCulling = false;
+baseNipple.material = whiteMaterial  ;
+baseTopPlane.material =  whiteMaterial  ;
+//baseNipple.dispose();
+
+
+
+//
+
+/*
+var arrayOfMeshes2 = [];
+
+arrayOfMeshes2[0] =  baseNipple;
+arrayOfMeshes2[1] =  baseTopPlane;
+
+var newMeshX = BABYLON.Mesh.MergeMeshes(arrayOfMeshes2);
+*/
+//baseNipple.dispose;
+
+
+
+
+        //cameras
+      //  var camera = new BABYLON.ArcRotateCamera("Camera", 1, 1, 20, new BABYLON.Vector3(0, 0, 0), scene);
+        
+   
+// Parameters: alpha, beta, radius, target position, scene
+    var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 10, new BABYLON.Vector3(0, 0, 0), scene);
+
+// Positions the camera overwriting alpha, beta, radius
+    camera.setPosition(new BABYLON.Vector3(0, 0, 20));
+
+// This attaches the camera to the canvas
+    camera.attachControl(canvas, true);
+
+
+var light0 = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 5, 10), scene);
+    light0.specular = new BABYLON.Color3(0, 0, 0);
+    light0.specularPower = 0;
+    light0.diffuse = new BABYLON.Color3(1, 1, 1);
+    light0.intensity =0.75;
+
+/*
+ var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(1, 0.5, 0), scene);
+ light.intensity = 0.7;
+ light.specular = new BABYLON.Color3(1, 1, 1);
+*/  
+  //light0.specularPower = 0;
+  //  light.diffuse = new BABYLON.Color3(1, 1, 1);
+//light.specular = new BABYLON.Color3(0,0,0);
+        //meshes
+        //sphere parameters are: name, number of segments (highly detailed or not), size, scene to attach the mesh.
+
+var customMesh = [];
+var customMeshIndex = 0;
+ customMesh[0] = new BABYLON.Mesh("custom", scene);
+
+
+//scene.ambientColor = new BABYLON.Color3(1, 1, 1);
+
+var myMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
+
+
+//myMaterial.diffuseColor = new BABYLON.Color3(1, 1, 1);
+//myMaterial.specularColor = new BABYLON.Color3(1, 0, 1);
+myMaterial.emissiveColor = new BABYLON.Color3(1, 0, 1);
+//myMaterial.ambientColor = new BABYLON.Color3(1, 0, 1);
+//myMaterial.backFaceCulling = false;
+
+//var ball = BABYLON.Mesh.CreateSphere("Ball", 10, 1.0, scene);
+
+
+//ball.material = myMaterial;
+
+//customMesh[0].material = myMaterial;
+//customMesh[0].enableEdgesRendering();    
+//customMesh[0].edgesWidth = 20.0;
+//customMesh[0].edgesColor = new BABYLON.Color4(0, 0, 1, 0.5);
+
+//customMesh[0].color = new BABYLON.Color3(1, 0, 0)
+
+
+var angle = 0.02;
+
+//var orientation = BABYLON.Vector3.RotationFromAxis(0, 1, 0);
+//ground.rotation.z = 2; 
+
+        scene.activeCamera.attachControl(canvas);
+        
+        engine.runRenderLoop(function () {
+		
+
+
+
+//ground.rotate (new BABYLON.Vector3(0, 1, 0), angle, BABYLON.Space.WORLD);
+            scene.render();
+//		var fpsLabel = document.getElementById("fpsLabel");
+//    fpsLabel.innerHTML = engine.getFps().toFixed() + " fps";
+
+        });
+        window.addEventListener("resize", function () {
+
+	
+            engine.resize();
+        });
+    </script>
+ </body>
+</html>
