@@ -1,0 +1,586 @@
+
+<!DOCTYPE html>
+<html>
+ <head>
+    <title>bilo</title>
+    <script src="babylon.js"></script>
+    <script src="babylon.gui.js"></script>
+    <style>
+	html,body, can {
+		width:100%;
+		height:100%;
+		padding:0;
+		margin:0;
+		overflow:hidden;
+	}
+	
+	#renderCanvas {
+		width: 100%;
+		height: 100%;
+		touch-action: none;
+	
+	}
+
+    </style>
+
+
+ </head>
+ <body>
+    <canvas id="renderCanvas"></canvas>
+
+    <script>
+        /*
+        Ask for block positions and send LED information
+        Get response from base
+        Populate BlocksX,Y,Z,R
+        Compare with last responce to rearrange LED data 
+        block and blockLast information is the same
+        Render
+        */
+        var pitchZ = 1.19;
+
+        var blocksX = [5,5,5];
+        var blocksY = [8, 8,8];
+        var blocksZ = [0, 1,2];
+        var blocksRT = [4, 4, 4]; //rotation and type (2x2 / 2x4)
+        var blocksLEDs2x2 = [1];
+        var blocksLEDs2x4 = [];
+        var baseLED = [];
+
+        var blocksLastX = [];
+        var blocksLastY = [];
+        var blocksLastZ = [];
+        var blocksLastRT = [];
+        var blocksLEDs2x2 = [];
+        var blocksLEDs2x4 = [];
+
+        var renderBlocksPart1 = [];
+        var renderBlocksPart2 = [];
+        var renderBlocksPart3 = [];
+        var renderBlocksPart4 = [];
+
+        var blocksRender = 1; //signal if block data should be rendered
+
+       
+        var canvas = document.getElementById("renderCanvas");
+        var engine = new BABYLON.Engine(canvas, true);
+        var scene = new BABYLON.Scene(engine);
+
+
+        //BLE
+        var gattServer;
+        var gattService;
+        var gattCharacteristic;
+	    var busy = false;
+        var BLEdebug = 0;
+//keep scene.ambientColor = new BABYLON.Color3(1, 1, 1);
+
+//base
+
+var baseTopPlane = BABYLON.MeshBuilder.CreatePlane("plane", {height:10, width: 10, sideOrientation: BABYLON.Mesh.DOUBLESIDE}, scene);
+//baseTop.rotation.z = Math.PI/2;
+baseTopPlane.position.x =4.5; 
+baseTopPlane.position.y =4.5;
+baseTopPlane.position.z =0;
+
+
+var nippleShape = [ new BABYLON.Vector3(-0.21,0, -0.29),		
+new BABYLON.Vector3(0.21,0, -0.29), 
+new BABYLON.Vector3(0.29,0, -0.21),    
+new BABYLON.Vector3(0.29,0, 0.21), 
+new BABYLON.Vector3(0.21,0, 0.29), 
+new BABYLON.Vector3(-0.21,0, 0.29), 
+new BABYLON.Vector3(-0.29,0, 0.21), 
+new BABYLON.Vector3(-0.29, 0, -0.21) 		                    
+              ];
+
+
+/*
+var chamfBlockShape = [ new BABYLON.Vector3(-0.3,0, -0.48),		
+new BABYLON.Vector3(0.5,0, -0.48), 
+new BABYLON.Vector3(0.5,0, 1.48),    
+new BABYLON.Vector3(-0.3,0, 1.48), 
+new BABYLON.Vector3(-0.48,0, 1.3), 
+new BABYLON.Vector3(-0.48,0, -0.3) 
+	                    
+              ];
+
+var noChamfBlockShape = [ new BABYLON.Vector3(-0.5,0, -0.48),		
+new BABYLON.Vector3(0.5,0, -0.48), 
+new BABYLON.Vector3(0.5,0, 1.48), 
+new BABYLON.Vector3(-0.5,0, 1.48) 
+	                    
+              ];
+              */
+
+              var chamfBlockShape = [ new BABYLON.Vector3( -0.48,0,-0.3),		
+new BABYLON.Vector3( -0.48,0,0.5), 
+new BABYLON.Vector3( 1.48,0,0.5),    
+new BABYLON.Vector3( 1.48,0, -0.3), 
+new BABYLON.Vector3( 1.3,0,-0.48), 
+new BABYLON.Vector3(-0.3,0,-0.48 ) 
+	                    
+              ];
+
+var noChamfBlockShape = [ new BABYLON.Vector3( -0.48,0,-0.5),		
+new BABYLON.Vector3(-0.48,0,0.5 ), 
+new BABYLON.Vector3( 1.48,0,0.5), 
+new BABYLON.Vector3( 1.48,0,-0.5) 
+	                    
+              ];
+
+var baseNipple = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:nippleShape, depth: 0.16, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+baseNipple.rotation.x = -Math.PI/2;
+
+var blockChamfBody = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:chamfBlockShape, depth: 1.18, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+blockChamfBody.rotation.x = -Math.PI/2;
+
+var blockNoChamfBody = BABYLON.MeshBuilder.ExtrudePolygon("polygonx", {shape:noChamfBlockShape, depth: 1.18, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+blockNoChamfBody.rotation.x = -Math.PI/2;
+
+var blockChamfNipple1 = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:nippleShape, depth: 0.16, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+blockChamfNipple1.position.z =1.19;
+blockChamfNipple1.rotation.x = -Math.PI/2;
+
+var blockChamfNipple2 = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:nippleShape, depth: 0.16, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+blockChamfNipple2.position.x =1;//!
+blockChamfNipple2.position.z =1.19;
+blockChamfNipple2.rotation.x = -Math.PI/2;
+
+var blockNoChamfNipple1 = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:nippleShape, depth: 0.16, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+blockNoChamfNipple1.position.z =1.19;
+blockNoChamfNipple1.rotation.x = -Math.PI/2;
+
+var blockNoChamfNipple2 = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:nippleShape, depth: 0.16, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+blockNoChamfNipple2.position.x =1;//!
+blockNoChamfNipple2.position.z =1.19;
+blockNoChamfNipple2.rotation.x = -Math.PI/2;
+
+var blockChamfArray = [blockChamfBody, blockChamfNipple1, blockChamfNipple2];
+var blockChamf = BABYLON.Mesh.MergeMeshes(blockChamfArray); 
+scene.meshes.pop();
+
+var blockNoChamfArray = [blockNoChamfBody, blockNoChamfNipple1, blockNoChamfNipple2];
+var blockNoChamf = BABYLON.Mesh.MergeMeshes(blockNoChamfArray); 
+scene.meshes.pop();
+
+
+//var blocks = [];
+/*
+blockChamfNipple2.dispose();
+blockChamfNipple1.dispose();
+blockChamfBody.dispose();
+*/
+blockChamf.position.x = 1;
+
+//var arrayOfMeshes = [];
+
+for (var x= 0; x< 10; ++x) {  
+
+	for(var y=0; y<10; y++){
+
+        if( x == 0 && y ==0){		
+      
+        }else{
+            var baseNipples = baseNipple.createInstance("baseNipple: " +x+y);
+            baseNipples.position.x = x;
+            baseNipples.position.y = y;
+        }
+
+	}
+}
+
+
+var whiteMaterial = new BABYLON.StandardMaterial("whiteMaterial", scene);
+
+
+var materials = []
+
+
+materials[0] = new BABYLON.StandardMaterial("NA", scene);
+materials[1] = new BABYLON.StandardMaterial("RED", scene);
+
+materials[0].diffuseColor = new BABYLON.Color3(0.9, 0.9, 1);
+materials[1].diffuseColor = new BABYLON.Color3(1, 0, 0);
+
+
+
+
+whiteMaterial.diffuseColor = new BABYLON.Color3(0.9, 0.9, 1);
+//whiteMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+//whiteMaterial.emissiveColor = new BABYLON.Color3(1, 1, 1);
+//keep whiteMaterial.ambientColor = new BABYLON.Color3(0.5, 0.5, 0.5);
+//whiteMaterial.backFaceCulling = false;
+baseNipple.material = whiteMaterial  ;
+baseTopPlane.material =  whiteMaterial  ;
+//baseNipple.dispose();
+
+
+
+//
+
+/*
+var arrayOfMeshes2 = [];
+
+arrayOfMeshes2[0] =  baseNipple;
+arrayOfMeshes2[1] =  baseTopPlane;
+
+var newMeshX = BABYLON.Mesh.MergeMeshes(arrayOfMeshes2);
+*/
+//baseNipple.dispose;
+
+
+
+
+        //cameras
+      //  var camera = new BABYLON.ArcRotateCamera("Camera", 1, 1, 20, new BABYLON.Vector3(0, 0, 0), scene);
+        
+   
+// Parameters: alpha, beta, radius, target position, scene
+    var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 10, new BABYLON.Vector3(0, 0, 0), scene);
+
+// Positions the camera overwriting alpha, beta, radius
+    camera.setPosition(new BABYLON.Vector3(0, 0, 20));
+
+// This attaches the camera to the canvas
+    camera.attachControl(canvas, true);
+
+
+var light0 = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 5, 10), scene);
+    light0.specular = new BABYLON.Color3(0, 0, 0);
+    light0.specularPower = 0;
+    light0.diffuse = new BABYLON.Color3(1, 1, 1);
+    light0.intensity =0.75;
+
+
+	function handleError(error) {
+          console.log('EAEA error=' + error);
+
+        }
+        function sendCommand(cmd) {
+
+            if (busy) {
+                // Return if another operation pending
+                return Promise.resolve();
+             }
+
+            busy = true;
+
+            return gattCharacteristic.writeValue(cmd).then(() => {
+                     busy = false;
+            });
+    }
+
+
+
+
+        // GUI
+        var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+
+        var guiPanelRight = new BABYLON.GUI.StackPanel();
+        guiPanelRight.width = "220px";
+        guiPanelRight.fontSize = "14px";
+        guiPanelRight.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+        guiPanelRight.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+        advancedTexture.addControl(guiPanelRight);
+
+        var buttonConBLE = BABYLON.GUI.Button.CreateSimpleButton("butBLE", "Connect");
+        buttonConBLE.width = "150px"
+        buttonConBLE.height = "40px";
+        buttonConBLE.paddingTop = "10px";
+        buttonConBLE.paddingRight = "10px";
+        buttonConBLE.color = "white";
+        buttonConBLE.cornerRadius = 20;
+        buttonConBLE.background = "green";
+        buttonConBLE.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+       // buttonConBLE.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;   
+        buttonConBLE.onPointerUpObservable.add(function() {
+
+
+
+
+            console.log('EAEA Connecting...');
+
+	navigator.bluetooth.requestDevice({
+                filters: [{
+                  services: ['4880c12c-fdcb-4077-8920-a450d7f9b907']
+			      
+                }]
+	})
+	.then(device => {
+                console.log('EAEA Connecting to GATT Server...');
+                return device.gatt.connect();
+	})
+	.then(server => {
+                console.log('EAEA Found GATT server');
+                gattServer = server;
+                //Get service
+                return gattServer.getPrimaryService('4880c12c-fdcb-4077-8920-a450d7f9b907');
+	})
+	.then(service => {
+                console.log('EAEA Found GATT service');
+                gattService = service;
+                // Get characteristic
+                return gattService.getCharacteristic('fec26ec4-6d71-4442-9f81-55bc21d658d6');
+	})
+  	.then(characteristic => {
+                console.log('EAEA Found characteristic');
+                gattCharacteristic = characteristic;
+
+  		// Listen to device notifications
+		return gattCharacteristic.startNotifications().then(() => {
+			gattCharacteristic.addEventListener('characteristicvaluechanged', event => {
+
+                
+                if (event.target.value.getUint8(0) == 0x80 && event.target.value.byteLength > 9){
+                    blocksX[0] = event.target.value.getInt8(2);
+                    blocksY[0] = event.target.value.getInt8(1);
+                    blocksZ[0] = event.target.value.getInt8(3);
+                    blocksRT[0] = event.target.value.getInt8(4);
+                }
+
+				console.log('EAEA characteristicvaluechanged = ' + event.target.value + ' [' + event.target.value.byteLength +']');
+                console.log('EAEA X = ' + event.target.value.getInt8(2) );
+                console.log('EAEA Y = ' + event.target.value.getInt8(1) );
+                console.log('EAEA Z = ' + event.target.value.getInt8(3) );
+                console.log('EAEA RT = ' + event.target.value.getInt8(4) );
+                 /*
+                let cmd = new Uint8Array([0x80, 0x11, 0x11, 0x81]);
+
+                
+               sendCommand(cmd).then(() => {
+                   // console.log('EA EA gattWrite sent ');
+           
+                } )
+                .catch(handleError);
+                */
+
+			});
+
+		});
+	})
+	.catch(handleError);
+
+
+        //alert("Connect");
+        });
+    guiPanelRight.addControl(buttonConBLE); 
+
+
+
+
+    var buttonUpdate = BABYLON.GUI.Button.CreateSimpleButton("butUpdate", "Update");
+    buttonUpdate.width = "150px"
+    buttonUpdate.height = "40px";
+    buttonUpdate.paddingTop = "10px";
+    buttonUpdate.paddingRight = "10px";
+    buttonUpdate.color = "white";
+    buttonUpdate.cornerRadius = 20;
+    buttonUpdate.background = "green";
+    buttonUpdate.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+    buttonUpdate.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;   
+    buttonUpdate.onPointerUpObservable.add(function() {
+
+ console.log('gattWrite');
+ let cmd = new Uint8Array([0x80, 0x11, 0x11, 0x81]);
+
+  sendCommand(cmd).then(() => {
+            console.log('gattWrite sent');
+           
+ })
+ .catch(handleError);
+
+        //alert("Update");
+    });
+
+    guiPanelRight.addControl(buttonUpdate); 
+
+ 
+
+
+
+/*
+ var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(1, 0.5, 0), scene);
+ light.intensity = 0.7;
+ light.specular = new BABYLON.Color3(1, 1, 1);
+*/  
+  //light0.specularPower = 0;
+  //  light.diffuse = new BABYLON.Color3(1, 1, 1);
+//light.specular = new BABYLON.Color3(0,0,0);
+        //meshes
+        //sphere parameters are: name, number of segments (highly detailed or not), size, scene to attach the mesh.
+
+var customMesh = [];
+var customMeshIndex = 0;
+ customMesh[0] = new BABYLON.Mesh("custom", scene);
+
+
+//scene.ambientColor = new BABYLON.Color3(1, 1, 1);
+
+var myMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
+
+
+//myMaterial.diffuseColor = new BABYLON.Color3(1, 1, 1);
+//myMaterial.specularColor = new BABYLON.Color3(1, 0, 1);
+myMaterial.emissiveColor = new BABYLON.Color3(1, 0, 1);
+//myMaterial.ambientColor = new BABYLON.Color3(1, 0, 1);
+//myMaterial.backFaceCulling = false;
+
+//var ball = BABYLON.Mesh.CreateSphere("Ball", 10, 1.0, scene);
+
+
+//ball.material = myMaterial;
+
+//customMesh[0].material = myMaterial;
+//customMesh[0].enableEdgesRendering();    
+//customMesh[0].edgesWidth = 20.0;
+//customMesh[0].edgesColor = new BABYLON.Color4(0, 0, 1, 0.5);
+
+//customMesh[0].color = new BABYLON.Color3(1, 0, 0)
+
+/*var slider = new BABYLON.GUI.Slider();
+    slider.minimum = 0.1;
+    slider.maximum = 20;
+    slider.value = 5;
+    slider.height = "20px";
+    slider.width = "150px";
+    slider.color = "#003399";
+    slider.background = "grey";
+    slider.left = "120px";
+    slider.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+    slider.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+    slider.onValueChangedObservable.add(function (value) {
+       // sphere.scaling = unitVec.scale(value);
+    });
+*/
+
+        scene.activeCamera.attachControl(canvas);
+
+        //GUI
+    // GUI
+//    var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("ui1");
+/*
+    var panel = new BABYLON.GUI.StackPanel();  
+    panel.width = 0.25;
+    panel.rotation = 0.2;
+    panel.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+    advancedTexture.addControl(panel);
+
+    var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Click Me");
+    button1.width = 0.2;
+    button1.height = "40px";
+    button1.color = "white";
+    button1.cornerRadius = 20;
+    button1.background = "green";
+    button1.onPointerUpObservable.add(function() {
+        circle.scaleX += 0.1;
+    });
+    panel.addControl(button1);*/
+        
+        engine.runRenderLoop(function () {
+            if(blocksRender){
+                for(var i = 0; i < blocksX.length; i++){
+                    if(renderBlocksPart1[i] != null){
+                        renderBlocksPart1[i].dispose();
+                    }
+                    if(renderBlocksPart2[i] != null){
+                        renderBlocksPart2[i].dispose();
+                    }
+                    if(renderBlocksPart3[i] != null){
+                        renderBlocksPart3[i].dispose();
+                    }
+                    if(renderBlocksPart4[i] != null){
+                        renderBlocksPart4[i].dispose();
+                    }
+
+                    renderBlocksPart1[i] = blockChamf.clone("blocks1: " + i);
+                    renderBlocksPart1[i].position.x = blocksX[i];
+                    renderBlocksPart1[i].position.y = blocksY[i];
+                    renderBlocksPart1[i].position.z = blocksZ[i] * pitchZ;
+                    renderBlocksPart1[i].rotation.z = (blocksRT[i] & 0x03) *Math.PI/2;
+                   /* console.log('EA EA rotation 1:' + (blocksRT[i] ));
+                    console.log('EA EA rotation 2:' + (blocksRT[i] & 0x03));
+                    console.log('EA EA rotation z:' + ((blocksRT[i] & 0x03) *Math.PI/2));*/
+                    
+                   // renderBlocksPart1[i].rotation.x  = (blocksRT[i] & 0x03) *Math.PI/2;
+                    //4 = 2x2
+                    if((blocksRT[i] & 0x0C) == 4 ){
+                        renderBlocksPart2[i] = blockChamf.clone("blocks2: " + i);
+
+                        if((blocksRT[i] & 0x03) == 0 ){
+                            renderBlocksPart2[i].position.x = blocksX[i]+1;
+                            renderBlocksPart2[i].position.y = blocksY[i]+1;
+                        }
+                        else if((blocksRT[i] & 0x03) == 1 ){
+                            renderBlocksPart2[i].position.x = blocksX[i]-1;
+                            renderBlocksPart2[i].position.y = blocksY[i]+1;
+
+                        }else if((blocksRT[i] & 0x03) == 2 ){
+                            renderBlocksPart2[i].position.x = blocksX[i]-1;
+                            renderBlocksPart2[i].position.y = blocksY[i]-1;
+
+                        } else if((blocksRT[i] & 0x03) == 3 ){
+                            renderBlocksPart2[i].position.x = blocksX[i]+1;
+                            renderBlocksPart2[i].position.y = blocksY[i]-1;
+
+                        }  
+                        
+                        renderBlocksPart2[i].position.z = blocksZ[i] * pitchZ;
+                        renderBlocksPart2[i].rotation.z  = (blocksRT[i] & 0x03) *Math.PI/2 -Math.PI;
+
+                        if(blocksLEDs2x2[i] != null){
+                            renderBlocksPart1[i].material = materials[blocksLEDs2x2[i] & 0x07];
+                            renderBlocksPart2[i].material = materials[(blocksLEDs2x2[i] & 0x38) >> 3];
+
+                        }
+                    
+                    //0 = 2x4
+                    
+                    }
+                    /*else if((blocksRT[i] & 0x0C) == 0){
+                        
+                        renderBlocksPart3[i] = blockNoChamf.clone("blocks3: " + i);
+                        renderBlocksPart4[i] = blockNoChamf.clone("blocks4: " + i);
+                        renderBlocksPart2[i] = blockChamf.clone("blocks2: " + i);
+
+                        if((blocksRT[i] & 0x03) == 0 ){
+                            renderBlocksPart3[i].position.x = blocksX[i]+1;
+                            renderBlocksPart3[i].position.y = blocksY[i];
+
+                            renderBlocksPart4[i].position.x = blocksX[i]+2;
+                            renderBlocksPart4[i].position.y = blocksY[i];
+
+                            renderBlocksPart2[i].position.x = blocksX[i]+3;
+                            renderBlocksPart2[i].position.y = blocksY[i]+1;
+
+
+
+                        }
+                        renderBlocksPart3[i].position.z = blocksZ[i] * pitchZ;
+                        renderBlocksPart3[i].rotation.z  = (blocksRT[i] & 0x03) *Math.PI/2;
+
+                        renderBlocksPart4[i].position.z = blocksZ[i] * pitchZ;
+                        renderBlocksPart4[i].rotation.z  = (blocksRT[i] & 0x03) *Math.PI/2;
+
+                        renderBlocksPart2[i].position.z = blocksZ[i] * pitchZ;
+                        renderBlocksPart2[i].rotation.z  = (blocksRT[i] & 0x03) *Math.PI/2 -Math.PI;
+                        
+
+
+                    }*/
+                   
+
+                }
+
+
+            }
+
+            scene.render();
+        });
+
+        window.addEventListener("resize", function () {
+            engine.resize();
+        });
+    </script>
+ </body>
+</html>
