@@ -47,15 +47,15 @@
         var blocksX = [0];
         var blocksY = [0];
         var blocksZ = [0];
-        var blocksRT = [3]; //rotation and type (2x2 / 2x4)
-        var blocksLEDs2x2 = [1, 1, 1] 
+        var blocksRT = [0]; //rotation and type (2x2 / 2x4)
+        var blocksLEDs2x2 = [0] 
 
       /*  var blocksX = [5,5,5];
         var blocksY = [8, 8,8];
         var blocksZ = [0, 1,2];
         var blocksRT = [4, 4, 4]; //rotation and type (2x2 / 2x4)
         var blocksLEDs2x2 = [1, 1, 1] ;*/
-        var blocksLEDs2x4 = [];
+        var blocksLEDs2x4 = [0];
         var baseLED = [];
 
         var blocksLastX = [];
@@ -76,7 +76,13 @@
         var canvas = document.getElementById("renderCanvas");
         var engine = new BABYLON.Engine(canvas, true);
         var scene = new BABYLON.Scene(engine);
+        scene.clearColor  = new BABYLON.Color3(1, 1, 1);
+        scene.clearColor  = new BABYLON.Color3(0.7, 0.8, 0.9);
 
+        //Color Wheel
+        var colorWheelActive = 0;
+        var colorWheelMeshI;
+        var colorWheelMeshType;
         
         //BLE
         var gattServer;
@@ -113,34 +119,102 @@ initShapes(scene);
             });
     }
 
-    var advancedTextureColorSelect = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("ColorSelect");
+   //  Color Wheel
 
-    var image = new BABYLON.GUI.Image("Color Select", "test.png");
-    image.width = 0.2;
-    image.height = "40px";
-    advancedTextureColorSelect.addControl(image);    
+   var advancedTextureColorSelect; //= BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("ColorSelect");
+    var buttonColorWheel = [];
+    
 
-/*var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+var buttonColorWheelSize = "1px";
 
-    var panel = new BABYLON.GUI.StackPanel();
-    panel.width = "200px";
-    panel.isVertical = true;
-    panel.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
-    panel.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
-    advancedTexture.addControl(panel);
+  
 
-var picker = new BABYLON.GUI.ColorPicker();
-    //picker.value = skullMaterial.diffuseColor;
-    picker.height = "150px";
-    picker.width = "150px";
-    picker.
-    picker.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
-    picker.onValueChangedObservable.add(function(value) { // value is a color3
-        //skullMaterial.diffuseColor.copyFrom(value);
-    });
+    var bCWPSize = 120;
+    var bCWPMax = 100;
+    var bCWPMin = 60;
+    var bCWPOT = 40;
+    var bCWPOR = 40;
 
-    panel.addControl(picker);     
-*/
+
+    var buttonColorWheelPaddingT = [ bCWPMax +bCWPOT, bCWPMin +bCWPOT,  bCWPOT-(bCWPSize/2) , bCWPOT-(bCWPMin +bCWPSize), bCWPOT-(bCWPMax + bCWPSize), bCWPOT-(bCWPMin + bCWPSize), bCWPOT-(bCWPSize/2) , bCWPMin+bCWPOT];
+    var buttonColorWheelPaddingB = [-(bCWPMax+bCWPSize+bCWPOT),-(bCWPMin + bCWPSize +bCWPOT), -(bCWPSize/2 + bCWPOT) , bCWPMin-bCWPOT, bCWPMax-bCWPOT, bCWPMin-bCWPOT, -(bCWPSize/2 +bCWPOT) , -(bCWPMin + bCWPSize+bCWPOT)];
+    var buttonColorWheelPaddingL = [bCWPOR-(bCWPSize/2), bCWPMin +bCWPOR, bCWPMax+bCWPOR, bCWPMin+bCWPOR, bCWPOR-(bCWPSize/2), bCWPOR-(bCWPMin +bCWPSize), bCWPOR-(bCWPMax +bCWPSize), bCWPOR-(bCWPMin + bCWPSize)];
+    var buttonColorWheelPaddingR = [-(bCWPSize/2 +bCWPOR), -(bCWPMin+bCWPSize +bCWPOR), -(bCWPMax +bCWPSize+bCWPOR), -(bCWPMin + bCWPSize+bCWPOR), -(bCWPSize/2 +bCWPOR), bCWPMin-bCWPOR, bCWPMax-bCWPOR, bCWPMin-bCWPOR];
+
+
+    for(var b = 0; b < 2; b++ ){
+
+        for(var g = 0; g < 2; g++ ){
+            for(var r = 0; r < 2; r++ ){
+                
+                let tmpI = (4*b)+ (2*g) + r;
+                buttonColorWheel[tmpI] = new BABYLON.GUI.Ellipse();
+
+                buttonColorWheel[tmpI].color =  "#101050";
+
+                buttonColorWheel[tmpI].width = buttonColorWheelSize;//"160px"
+                buttonColorWheel[tmpI].height = buttonColorWheelSize;//"160px";
+                
+                buttonColorWheel[tmpI].paddingTop = buttonColorWheelPaddingT[tmpI];
+                buttonColorWheel[tmpI].paddingBottom = buttonColorWheelPaddingB[tmpI];
+                buttonColorWheel[tmpI].paddingLeft = buttonColorWheelPaddingL[tmpI];
+                buttonColorWheel[tmpI].paddingRight = buttonColorWheelPaddingR[tmpI];
+
+                //buttonColorWheel[tmpI].left -= 200;
+                //buttonColorWheel[tmpI].shadowBlur = 1;
+                //buttonColorWheel[tmpI].shadowOffsetX = 1;
+                //buttonColorWheel[tmpI].shadowOffsetY = 1;
+                //buttonColorWheel[tmpI].shadowColor = "#111";
+                //buttonColorWheel[tmpI].margin = "40px";
+                buttonColorWheel[tmpI].thickness = 3;
+                let colorString = "#"
+
+                if(r){
+                    colorString += "FF"
+                }else{                    
+                    colorString += "00"
+                }
+                if(g){
+                    colorString += "FF"
+                }else{
+                    colorString += "00"
+                }
+                if(b){
+                    colorString += "FF"
+                }else{
+                    colorString += "00"
+                }
+
+                if(r||g||b){
+                buttonColorWheel[tmpI].background =    colorString;
+                }
+                //buttonColorWheel[tmpI].onPointerEnterObservable.add(function() {
+
+                buttonColorWheel[tmpI].onPointerMoveObservable.add(function() {
+                    console.log('buttoncolorwheel R: ' + tmpI);
+                    //blocksLEDs2x2[colorWheelMeshI] = tmpI;
+                    if( colorWheelMeshType == 'A'){
+                        //console.log(' ( tmpI | (0xF1 & blocksLEDs2x2[colorWheelMeshI] )): ' +  ( tmpI | (0xF8 & blocksLEDs2x2[colorWheelMeshI] )));
+                        blocksLEDs2x2[colorWheelMeshI] = ( tmpI | (0xF8 & blocksLEDs2x2[colorWheelMeshI] )); 
+                    }else if (colorWheelMeshType == 'B'){
+
+                        //console.log(' ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI]))' + ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI])));
+                     
+                        blocksLEDs2x2[colorWheelMeshI] = ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI])); 
+                    }else if (colorWheelMeshType == 'C'){
+                        blocksLEDs2x4[colorWheelMeshI] = ( tmpI | (0xF8 & blocksLEDs2x4[colorWheelMeshI] )); 
+                    }else if (colorWheelMeshType == 'D'){
+                        blocksLEDs2x4[colorWheelMeshI] = ( (tmpI << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI])); 
+                    }
+                        
+
+                    
+                });
+
+            }
+        }
+    }
+
 
 
         // GUI
@@ -148,7 +222,7 @@ var picker = new BABYLON.GUI.ColorPicker();
 
         var guiPanelStart = new BABYLON.GUI.StackPanel();
         guiPanelStart.width = "400px";
-        guiPanelStart.height = "400px";
+        guiPanelStart.height = "100px";
         guiPanelStart.fontSize = "14px";
         guiPanelStart.isVertical = false;
         guiPanelStart.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
@@ -166,6 +240,8 @@ var picker = new BABYLON.GUI.ColorPicker();
         buttonSnap.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
         buttonSnap.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
         buttonSnap.isVisible = false;
+
+        
 
         buttonSnap.onPointerEnterObservable.add(function() {
             console.log('Snap ');
@@ -194,11 +270,40 @@ var picker = new BABYLON.GUI.ColorPicker();
         guiPanelStart.addControl(buttonStart); 
 
        
+        var buttonCompass = BABYLON.GUI.Button.CreateSimpleButton("buttonCompass", "Compass");
+        buttonCompass.width = "150px"
+        buttonCompass.height = "40px";
+        buttonCompass.paddingTop = "10px";
+        buttonCompass.paddingRight = "10px";
+        buttonCompass.color = "white";
+        buttonCompass.cornerRadius = 20;
+        buttonCompass.background = "green";
+        buttonCompass.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+        buttonCompass.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+
+        buttonCompass.onPointerDownObservable.add(function() {
+            buttonSnap.isVisible = true;
+            console.log('Start ');
+        });
+
+        guiPanelStart.addControl(buttonCompass); 
         
             //When pointer down event is raised
     scene.onPointerUp = function (evt, pickResult) {
 
         console.log('Pointer up ');
+       // buttonR.dispose();
+        if(colorWheelActive){
+            
+
+            
+                advancedTextureColorSelect.dispose();
+            
+
+            //advancedTextureColorSelect.dispose();
+            scene.activeCamera.attachControl(canvas);
+           // buttonR.isVisible = false;
+        }
         // if the click hits the ground object, we change the impact position
         /*
 
@@ -212,11 +317,55 @@ var picker = new BABYLON.GUI.ColorPicker();
             //When pointer down event is raised
     scene.onPointerDown = function (evt, pickResult) {
 
-        console.log('Pointer down ');
+        
 
         if (pickResult.hit) {
 
-            var plane = BABYLON.Mesh.CreatePlane("plane", 2);
+            colorWheelActive = 1;
+            console.log('Pointer down x:' + pickResult.pickedPoint.x);
+
+
+
+            advancedTextureColorSelect = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("ColorSelect");
+        
+            colorWheelMeshI = pickResult.pickedMesh.name.match(/\d+$/)[0];
+            colorWheelMeshType = pickResult.pickedMesh.name.slice(0, 1);
+
+
+            console.log('colorWheelMeshI: X ' + colorWheelMeshI + " X ");
+            console.log('colorWheelMeshType: X ' + colorWheelMeshType+ " X ");
+            
+             for(let i = 0; i < 8; i++){
+                advancedTextureColorSelect.addControl(buttonColorWheel[i]);
+                
+
+                buttonColorWheel[i].linkWithMesh(pickResult.pickedMesh);
+               // scene.pick(scene.pointerX, scene.pointerY)
+                //buttonColorWheel[i].linkWithMesh(renderBlocksPart1[0]);
+              
+            }
+
+              //advancedTextureColorSelect.addControl(buttonR); 
+              //advancedTextureColorSelect.addControl(buttonRG); 
+
+              //buttonR.linkWithMesh(renderBlocksPart1[0]);
+              //buttonRG.linkWithMesh(renderBlocksPart1[0]);
+
+              scene.activeCamera.detachControl(canvas);
+             
+     //   advancedTextureColorSelect.dispose();
+
+            /*buttonR.isVisible = true;
+            buttonR.top = "100px";
+            buttonR.y = pickResult.pickedPoint.y;
+
+            buttonR.linkWithMesh(sphere1);
+*/
+           // buttonColorSelect.isVisible = true;
+
+
+
+         /*   var plane = BABYLON.Mesh.CreatePlane("plane", 2);
             //plane.parent = sphere;
         plane.position.y = pickResult.pickedPoint.y;
 plane.position.x = pickResult.pickedPoint.x;
@@ -234,7 +383,7 @@ button1.background = "green";
 button1.onPointerUpObservable.add(function() {
     alert("you did it!");
 });
-advancedTexture.addControl(button1);
+advancedTexture.addControl(button1);*/
 
         }
         // if the click hits the ground object, we change the impact position
@@ -392,7 +541,7 @@ advancedTexture.addControl(button1);
                         renderBlocksPart4[i].dispose();
                     }
 
-                    renderBlocksPart1[i] = blockChamf.clone("blocks1: " + i);
+                    renderBlocksPart1[i] = blockChamf.clone("A" + i);
                     renderBlocksPart1[i].position.x = blocksX[i];
                     renderBlocksPart1[i].position.z = blocksZ[i];
                     renderBlocksPart1[i].position.y = blocksY[i] * pitchY;
@@ -407,10 +556,10 @@ advancedTexture.addControl(button1);
 
 
                     if((blocksRT[i] & 0x0C) == 4 ){
-                        renderBlocksPart2[i] = blockChamf.clone("blocks2: " + i);
+                        renderBlocksPart2[i] = blockChamf.clone("B" + i);
 
                     }else{
-                        renderBlocksPart2[i] = blockNoChamf.clone("blocks2: " + i);
+                        renderBlocksPart2[i] = blockNoChamf.clone("B" + i);
                     }
 
                     if((blocksRT[i] & 0x03) == 0 ){
@@ -444,8 +593,8 @@ advancedTexture.addControl(button1);
                     
                     if((blocksRT[i] & 0x0C) == 0){
                         
-                        renderBlocksPart3[i] = blockNoChamf.clone("blocks3: " + i);
-                        renderBlocksPart4[i] = blockChamf.clone("blocks2: " + i);
+                        renderBlocksPart3[i] = blockNoChamf.clone("C" + i);
+                        renderBlocksPart4[i] = blockChamf.clone("D" + i);
                       
 
                         if((blocksRT[i] & 0x03) == 0 ){
@@ -486,6 +635,12 @@ advancedTexture.addControl(button1);
                         renderBlocksPart4[i].position.y = blocksY[i] * pitchY;
                         renderBlocksPart4[i].rotation.y  = (blocksRT[i] & 0x03) *Math.PI/2 -Math.PI;
                         
+
+                        if(blocksLEDs2x4[i] != null){
+                            renderBlocksPart3[i].material = materials[blocksLEDs2x4[i] & 0x07];
+                            renderBlocksPart4[i].material = materials[(blocksLEDs2x4[i] & 0x38) >> 3];
+
+                        }
 
                     }
                    

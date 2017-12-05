@@ -19,15 +19,106 @@ let materials = [];
 let camera;
 
 function initShapes(scene){
+ //   https://doc.babylonjs.com/how_to/parametric_shapes#extruded-shapes
+
+ //   https://www.babylonjs-playground.com/#165IV6#71
+
+   /* let baseTopShape = [ new BABYLON.Vector3( -5,-5,0),		
+        new BABYLON.Vector3( -5,5,0), 
+        new BABYLON.Vector3( 5,5,0),    
+        new BABYLON.Vector3( 5,-5, 0)                            
+        ];
+*/
+        let baseSideShape = [ new BABYLON.Vector3( -4.8,-5,0),		
+            new BABYLON.Vector3( -5,-4.8,0),	
+            new BABYLON.Vector3( -5,4.8,0), 
+            new BABYLON.Vector3( -4.8,5,0),    
+            new BABYLON.Vector3( 4.8,5,0),        
+            new BABYLON.Vector3( 5,4.8,0),   
+            new BABYLON.Vector3( 5,-4.8,0),    
+            new BABYLON.Vector3( 4.8,-5,0)                            
+            ];
+
+            let baseTopShape = [ new BABYLON.Vector3( -4.8,0,-5),		
+                new BABYLON.Vector3( -5,0,-4.8),	
+                new BABYLON.Vector3( -5,0,4.8), 
+                new BABYLON.Vector3( -4.8,0,5),    
+                new BABYLON.Vector3( 4.8,0,5),        
+                new BABYLON.Vector3( 5,0,4.8),   
+                new BABYLON.Vector3( 5,0,-4.8),    
+                new BABYLON.Vector3( 4.8,0,-5)                        
+                ];
+
+        
+/*
+        let baseTopShape = [ new BABYLON.Vector3( 0, 0, 0),		
+            new BABYLON.Vector3( 0,10,0), 
+            new BABYLON.Vector3( 10,10,0),    
+            new BABYLON.Vector3( 10,0,0)                            
+            ];
+*/
+baseSideShape.push(baseSideShape[0]);
+
+      /*  var myPath = [
+            new BABYLON.Vector3(0, 0, 0),
+            new BABYLON.Vector3(0, 2, 0),
+            new BABYLON.Vector3(0, 6, 0),
+            new BABYLON.Vector3(0, 8, 0),
+            new BABYLON.Vector3(0, 10, 0)
+            
+    ];*/
+
+	var myPath = [
+        new BABYLON.Vector3(0, 0, 0),
+        new BABYLON.Vector3(0, 0, 0.2),
+        new BABYLON.Vector3(0, 0, 1.19)
+      
+];
+
+
+var scaling = function(i, distance) {
+    if(i == 0){
+        return 1;
+    }else if(i == 1){
+        return 0.95;
+    }else if(i == 2){
+        return 0.9;
+    }
+    return 0.1;
+   // return 1/(i+1);
+};
+
+//Create custom extrusion with updatable parameter set to true for later changes
+let baseSidePlane = BABYLON.MeshBuilder.ExtrudeShapeCustom("baseSidePlane", {shape: baseSideShape, path: myPath, scaleFunction: scaling, sideOrientation: BABYLON.Mesh.DOUBLESIDE, updatable: false}, scene);
+
+baseSidePlane.rotation.x = Math.PI/2;
+baseSidePlane.position.x =4.5; 
+
+baseSidePlane.position.z =4.5;
+
+baseSidePlane.isPickable = false;
+//--
 
 
 
-    baseTopPlane = BABYLON.MeshBuilder.CreatePlane("plane", {height:10, width: 10, sideOrientation: BABYLON.Mesh.DOUBLESIDE}, scene);
-    baseTopPlane.rotation.x = -Math.PI/2;
+
+
+
+
+
+//--
+    //baseTopPlane = BABYLON.MeshBuilder.CreatePlane("plane", {height:10, width: 10, sideOrientation: BABYLON.Mesh.DOUBLESIDE}, scene);
+
+    baseTopPlane = BABYLON.MeshBuilder.CreatePolygon("polygon", {shape:baseTopShape, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+
+    //baseTopPlane.rotation.x = -Math.PI/2;
     baseTopPlane.position.x =4.5; 
     baseTopPlane.position.y =0;
     baseTopPlane.position.z =4.5;
 
+    baseTopPlane.isPickable = false;
+
+  
 
     let chamfBlockShape = [ new BABYLON.Vector3( -0.48,0,-0.3),		
         new BABYLON.Vector3( -0.48,0,0.5), 
@@ -100,6 +191,7 @@ function initShapes(scene){
                     let baseNipples = baseNipple.createInstance("baseNipple: " +x+y);
                     baseNipples.position.x = x;
                     baseNipples.position.z = y;
+                    baseNipples.isPickable = false;
                 }
         
             }
@@ -109,24 +201,47 @@ function initShapes(scene){
         
         
         
-        
+        let emissiveColor = 0.2;
         
         materials[0] = new BABYLON.StandardMaterial("NA", scene);
         materials[1] = new BABYLON.StandardMaterial("RED", scene);
+        materials[2] = new BABYLON.StandardMaterial("GREEN", scene);
+        materials[3] = new BABYLON.StandardMaterial("YELLOW", scene);
+        materials[4] = new BABYLON.StandardMaterial("BLUE", scene);
+        materials[5] = new BABYLON.StandardMaterial("PURPLE", scene);
+        materials[6] = new BABYLON.StandardMaterial("CYAN", scene);
+        materials[7] = new BABYLON.StandardMaterial("WHITE", scene);
         
-        materials[0].diffuseColor = new BABYLON.Color3(0.9, 0.9, 1);
-        materials[1].diffuseColor = new BABYLON.Color3(0, 0, 1);
+        materials[0].diffuseColor = new BABYLON.Color3(1, 1, 1);
+        materials[0].emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+        materials[1].diffuseColor = new BABYLON.Color3(1, 0, 0);
+        materials[1].emissiveColor = new BABYLON.Color3(emissiveColor, 0, 0);
+        materials[2].diffuseColor = new BABYLON.Color3(0, 1, 0);
+        materials[2].emissiveColor = new BABYLON.Color3(0, emissiveColor, 0);
+        materials[3].diffuseColor = new BABYLON.Color3(1, 1, 0);
+        materials[3].emissiveColor = new BABYLON.Color3(emissiveColor, emissiveColor, 0);
+        materials[4].diffuseColor = new BABYLON.Color3(0, 0, 1);
+        materials[4].emissiveColor = new BABYLON.Color3(0, 0, emissiveColor);
+        materials[5].diffuseColor = new BABYLON.Color3(1, 0, 1);
+        materials[5].emissiveColor = new BABYLON.Color3(emissiveColor, 0, emissiveColor);
+        materials[6].diffuseColor = new BABYLON.Color3(0, 1, 1);
+        materials[6].emissiveColor = new BABYLON.Color3(0, emissiveColor, emissiveColor);
+        materials[7].diffuseColor = new BABYLON.Color3(1, 1, 1);
+        materials[7].emissiveColor = new BABYLON.Color3(0.3, 0.3, 0.3);
         
         
+
+        whiteMaterial.diffuseColor = new BABYLON.Color3(1, 1, 1);
+        whiteMaterial.emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
         
-        
-        whiteMaterial.diffuseColor = new BABYLON.Color3(0.9, 0.9, 1);
+        //!whiteMaterial.diffuseColor = new BABYLON.Color3(0.9, 0.9, 1);
         //whiteMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
         //whiteMaterial.emissiveColor = new BABYLON.Color3(1, 1, 1);
         //whiteMaterial.ambientColor = new BABYLON.Color3(0.5, 0.5, 0.5);
         //whiteMaterial.backFaceCulling = false;
         baseNipple.material = whiteMaterial  ;
         baseTopPlane.material =  whiteMaterial  ;
+        baseSidePlane.material  =  whiteMaterial  ;
 
         //customMesh[0].material = myMaterial;
 //customMesh[0].enableEdgesRendering();    
@@ -160,6 +275,12 @@ function initShapes(scene){
    // camera.upVector =  new BABYLON.Vector3(0,0, 0);
    // camera.setPosition(new BABYLON.Vector3(15, 15,15));
 
+ //  camera.lowerAlphaLimit =1;
+   //camera.upperAlphaLimit =2;
+
+   //camera.lowerBetaLimit =Math.PI/8;
+   camera.upperBetaLimit  = Math.PI - Math.PI/2;
+
         camera.lowerRadiusLimit = 10;
         camera.upperRadiusLimit = 30;
     // This attaches the camera to the canvas
@@ -169,5 +290,6 @@ function initShapes(scene){
     camera.angularSensibilityY = 5000;
     camera.angularSensibilityZ = 5000;
     camera.wheelPrecision = 50;
+    //camera.useBouncingBehavior = true;
 
 }
