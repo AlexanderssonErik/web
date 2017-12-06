@@ -243,6 +243,9 @@ baseSidePlane.isPickable = false;
         baseTopPlane.material =  whiteMaterial  ;
         baseSidePlane.material  =  whiteMaterial  ;
 
+        blockChamf.material =  whiteMaterial ;
+        blockNoChamf.material =  whiteMaterial ;
+
         //customMesh[0].material = myMaterial;
 //customMesh[0].enableEdgesRendering();    
 //customMesh[0].edgesWidth = 20.0;
