@@ -42,28 +42,53 @@
         block and blockLast information is the same
         Render
         */
+
+
         var pitchY = 1.19;
 
-        var blocksX = [0];
+       
+        var blocksUpdated = 0;
+        var blocksReceiving = 0;
+        var blocksCount = 0;
+        var blocksOngoingCount = 0;
+        var blocksOngoingOffset = 100;// (0/100)
+        var blocksOffset = 0;// (0/100)
+        var blocksX = new Array(200);
+        var blocksY = new Array(200);
+        var blocksZ = new Array(200);
+        var blocksRT = new Array(200); //rotation and type (2x2 / 2x4)
+        var blocksLEDs2x2 = new Array(200);
+        var blocksLEDs2x4 =new Array(200);
+        var baseLED = [0,1];
+        var baseCompass = [0,0,0,0,0,0];
+
+        blocksCount = 1;
+         blocksX = [0];
+         blocksY = [0];
+         blocksZ = [0];
+         blocksRT = [0]; //rotation and type (2x2 / 2x4)
+         blocksLEDs2x2 = [0] 
+
+        /*var blocksX = [0];
         var blocksY = [0];
         var blocksZ = [0];
         var blocksRT = [0]; //rotation and type (2x2 / 2x4)
         var blocksLEDs2x2 = [0] 
-
+*/
       /*  var blocksX = [5,5,5];
         var blocksY = [8, 8,8];
         var blocksZ = [0, 1,2];
         var blocksRT = [4, 4, 4]; //rotation and type (2x2 / 2x4)
         var blocksLEDs2x2 = [1, 1, 1] ;*/
-        var blocksLEDs2x4 = [0];
+        /*var blocksLEDs2x4 = [0];
         var baseLED = [];
-
-        var blocksLastX = [];
+*/
+   /*     var blocksLastX = [];
         var blocksLastY = [];
         var blocksLastZ = [];
         var blocksLastRT = [];
         var blocksLastLEDs2x2 = [];
-        var blocksLastLEDs2x4 = [];
+        var blocksLastLEDs2x4 = [];*/
 
         var renderBlocksPart1 = [];
         var renderBlocksPart2 = [];
@@ -270,7 +295,7 @@ var buttonColorWheelSize = "1px";
         guiPanelStart.addControl(buttonStart); 
 
        
-        var buttonCompass = BABYLON.GUI.Button.CreateSimpleButton("buttonCompass", "Compass");
+        var buttonCompass = BABYLON.GUI.Button.CreateSimpleButton("buttonCompass", "Full Screen");
         buttonCompass.width = "150px"
         buttonCompass.height = "40px";
         buttonCompass.paddingTop = "10px";
@@ -283,7 +308,25 @@ var buttonColorWheelSize = "1px";
 
         buttonCompass.onPointerDownObservable.add(function() {
             buttonSnap.isVisible = true;
-            console.log('Start ');
+            if ((document.fullScreenElement && document.fullScreenElement !== null) ||    
+                (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+                if (document.documentElement.requestFullScreen) {  
+                    document.documentElement.requestFullScreen();  
+                 } else if (document.documentElement.mozRequestFullScreen) {  
+                    document.documentElement.mozRequestFullScreen();  
+                } else if (document.documentElement.webkitRequestFullScreen) {  
+                    document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);  
+                }  
+            } else {  
+                if (document.cancelFullScreen) {  
+                    document.cancelFullScreen();  
+                } else if (document.mozCancelFullScreen) {  
+                    document.mozCancelFullScreen();  
+                } else if (document.webkitCancelFullScreen) {  
+                    document.webkitCancelFullScreen();  
+                }  
+            }  
+           // console.log('Compass ');
         });
 
         guiPanelStart.addControl(buttonCompass); 
@@ -423,37 +466,92 @@ advancedTexture.addControl(button1);*/
 
             console.log('EAEA Connecting...');
 
-	navigator.bluetooth.requestDevice({
+	        navigator.bluetooth.requestDevice({
                 filters: [{
                   services: ['4880c12c-fdcb-4077-8920-a450d7f9b907']
 			      
                 }]
-	})
-	.then(device => {
+	        })
+	        .then(device => {
                 console.log('EAEA Connecting to GATT Server...');
                 return device.gatt.connect();
-	})
-	.then(server => {
+	        })
+	        .then(server => {
                 console.log('EAEA Found GATT server');
                 gattServer = server;
                 //Get service
                 return gattServer.getPrimaryService('4880c12c-fdcb-4077-8920-a450d7f9b907');
-	})
-	.then(service => {
+	        })
+	        .then(service => {
                 console.log('EAEA Found GATT service');
                 gattService = service;
                 // Get characteristic
                 return gattService.getCharacteristic('fec26ec4-6d71-4442-9f81-55bc21d658d6');
-	})
-  	.then(characteristic => {
+	        })
+  	        .then(characteristic => {
                 console.log('EAEA Found characteristic');
                 gattCharacteristic = characteristic;
 
-  		// Listen to device notifications
-		return gattCharacteristic.startNotifications().then(() => {
+  		    // Listen to device notifications
+		    return gattCharacteristic.startNotifications().then(() => {
 			gattCharacteristic.addEventListener('characteristicvaluechanged', event => {
 
+
+                console.log('EAEA characteristicvaluechanged = ' + event.target.value + ' [' + event.target.value.byteLength +']');
+                console.log('EAEA 0 = ' + event.target.value.getUint8(0).toString(16) );
+                console.log('EAEA 1 = ' + event.target.value.getUint8(1).toString(16) );
+                console.log('EAEA 2 = ' + event.target.value.getUint8(2).toString(16) );
+                console.log('EAEA 3 = ' + event.target.value.getUint8(3).toString(16) );
+
+                //blocksReceiving
+                let i = 0;
+
+                if(blocksReceiving == 0){
+                    for(; i < event.target.value.byteLength; i++){
+                        if(event.target.value.getUint8(i) == 0x80){
+                            console.log('EAEA X ');
+                            i++;
+                            blocksOngoingCount = 0;
+                            blocksReceiving = 1;
+                            break;
+                        }
+                    }
+                }
+
+                if(blocksReceiving == 1){
+                    for(; i+3 < event.target.value.byteLength; i +=4){
+
+                    console.log('EAEA A ');
+                    console.log('EAEA 4 = ' + event.target.value.getUint8(i).toString(16) );
+                    console.log('EAEA 5 = ' + i );
+
+                    if(event.target.value.getUint8(i) == 0x82){
+                        console.log('EAEA B ');
+                        blocksCount = blocksOngoingCount;
+                        let tmp = blocksOffset;
+                        blocksOffset = blocksOngoingOffset;
+                        blocksOngoingOffset = tmp;
+                        blocksReceiving = 0;
+                        blocksUpdated = 1;
+                        return;
+                    }
+
+                    blocksZ[blocksOngoingCount + blocksOngoingOffset] = event.target.value.getInt8(i+1);
+                    blocksX[blocksOngoingCount + blocksOngoingOffset] = event.target.value.getInt8(i);
+                    blocksY[blocksOngoingCount + blocksOngoingOffset] = event.target.value.getInt8(i+2);
+                    blocksRT[blocksOngoingCount + blocksOngoingOffset] = event.target.value.getInt8(i+3);
+                    blocksOngoingCount++;
+
+                    }
+
+                }
+
+/*
+
                 
+                
+
+
                 if (event.target.value.getUint8(0) == 0x80 && event.target.value.byteLength > 9){
                     blocksX[0] = event.target.value.getInt8(2);
                     blocksY[0] = event.target.value.getInt8(1);
@@ -466,7 +564,11 @@ advancedTexture.addControl(button1);*/
                 console.log('EAEA Y = ' + event.target.value.getInt8(1) );
                 console.log('EAEA Z = ' + event.target.value.getInt8(3) );
                 console.log('EAEA RT = ' + event.target.value.getInt8(4) );
-                 /*
+                */
+                
+
+
+                /*
                 let cmd = new Uint8Array([0x80, 0x11, 0x11, 0x81]);
 
                 
@@ -504,6 +606,10 @@ advancedTexture.addControl(button1);*/
     buttonUpdate.onPointerUpObservable.add(function() {
 
  console.log('gattWrite');
+
+ blocksOngoingCount = 0;
+blocksReceiving = 0;
+
  let cmd = new Uint8Array([0x80, 0x11, 0x11, 0x81]);
 
   sendCommand(cmd).then(() => {
@@ -527,7 +633,8 @@ advancedTexture.addControl(button1);*/
 
         engine.runRenderLoop(function () {
             if(blocksRender){
-                for(var i = 0; i < blocksX.length; i++){
+                
+                for(var i = 0; i <200; i++){
                     if(renderBlocksPart1[i] != null){
                         renderBlocksPart1[i].dispose();
                     }
@@ -540,12 +647,29 @@ advancedTexture.addControl(button1);*/
                     if(renderBlocksPart4[i] != null){
                         renderBlocksPart4[i].dispose();
                     }
+                }
 
+
+
+                for(var i = 0; i < blocksCount; i++){
+                 /*   if(renderBlocksPart1[i] != null){
+                        renderBlocksPart1[i].dispose();
+                    }
+                    if(renderBlocksPart2[i] != null){
+                        renderBlocksPart2[i].dispose();
+                    }
+                    if(renderBlocksPart3[i] != null){
+                        renderBlocksPart3[i].dispose();
+                    }
+                    if(renderBlocksPart4[i] != null){
+                        renderBlocksPart4[i].dispose();
+                    }
+*/
                     renderBlocksPart1[i] = blockChamf.clone("A" + i);
-                    renderBlocksPart1[i].position.x = blocksX[i];
-                    renderBlocksPart1[i].position.z = blocksZ[i];
-                    renderBlocksPart1[i].position.y = blocksY[i] * pitchY;
-                    renderBlocksPart1[i].rotation.y = (blocksRT[i] & 0x03) *Math.PI/2;
+                    renderBlocksPart1[i].position.x = blocksX[i+blocksOffset];
+                    renderBlocksPart1[i].position.z = blocksZ[i+blocksOffset];
+                    renderBlocksPart1[i].position.y = blocksY[i+blocksOffset] * pitchY;
+                    renderBlocksPart1[i].rotation.y = (blocksRT[i+blocksOffset] & 0x03) *Math.PI/2;
                    /* console.log('EA EA rotation 1:' + (blocksRT[i] ));
                     console.log('EA EA rotation 2:' + (blocksRT[i] & 0x03));
                     console.log('EA EA rotation z:' + ((blocksRT[i] & 0x03) *Math.PI/2));*/
@@ -563,28 +687,28 @@ advancedTexture.addControl(button1);*/
                     }
 
                     if((blocksRT[i] & 0x03) == 0 ){
-                        renderBlocksPart2[i].position.x = blocksX[i]+1;
-                        renderBlocksPart2[i].position.z = blocksZ[i]+1;
+                        renderBlocksPart2[i].position.x = blocksX[i+blocksOffset]+1;
+                        renderBlocksPart2[i].position.z = blocksZ[i+blocksOffset]+1;
                     }
                     else if((blocksRT[i] & 0x03) == 1 ){
-                        renderBlocksPart2[i].position.x = blocksX[i]+1;
-                        renderBlocksPart2[i].position.z = blocksZ[i]-1;
+                        renderBlocksPart2[i].position.x = blocksX[i+blocksOffset]+1;
+                        renderBlocksPart2[i].position.z = blocksZ[i+blocksOffset]-1;
 
                     }else if((blocksRT[i] & 0x03) == 2 ){
-                        renderBlocksPart2[i].position.x = blocksX[i]-1;
-                        renderBlocksPart2[i].position.z = blocksZ[i]-1;
+                        renderBlocksPart2[i].position.x = blocksX[i+blocksOffset]-1;
+                        renderBlocksPart2[i].position.z = blocksZ[i+blocksOffset]-1;
 
                     } else if((blocksRT[i] & 0x03) == 3 ){
-                        renderBlocksPart2[i].position.x = blocksX[i]-1;
-                        renderBlocksPart2[i].position.z = blocksZ[i]+1;
+                        renderBlocksPart2[i].position.x = blocksX[i+blocksOffset]-1;
+                        renderBlocksPart2[i].position.z = blocksZ[i+blocksOffset]+1;
                     }  
                         
-                    renderBlocksPart2[i].position.y = blocksY[i] * pitchY;
-                    renderBlocksPart2[i].rotation.y  = (blocksRT[i] & 0x03) *Math.PI/2 -Math.PI;
+                    renderBlocksPart2[i].position.y = blocksY[i+blocksOffset] * pitchY;
+                    renderBlocksPart2[i].rotation.y  = (blocksRT[i+blocksOffset] & 0x03) *Math.PI/2 -Math.PI;
 
                     if(blocksLEDs2x2[i] != null){
-                        renderBlocksPart1[i].material = materials[blocksLEDs2x2[i] & 0x07];
-                        renderBlocksPart2[i].material = materials[(blocksLEDs2x2[i] & 0x38) >> 3];
+                        renderBlocksPart1[i].material = materials[blocksLEDs2x2[i+blocksOffset] & 0x07];
+                        renderBlocksPart2[i].material = materials[(blocksLEDs2x2[i+blocksOffset] & 0x38) >> 3];
 
                     }
                     
@@ -598,47 +722,47 @@ advancedTexture.addControl(button1);*/
                       
 
                         if((blocksRT[i] & 0x03) == 0 ){
-                            renderBlocksPart3[i].position.x = blocksX[i]+2;
-                            renderBlocksPart3[i].position.z = blocksZ[i];
+                            renderBlocksPart3[i].position.x = blocksX[i+blocksOffset]+2;
+                            renderBlocksPart3[i].position.z = blocksZ[i+blocksOffset];
 
-                            renderBlocksPart4[i].position.x = blocksX[i]+3;
-                            renderBlocksPart4[i].position.z = blocksZ[i]+1;
+                            renderBlocksPart4[i].position.x = blocksX[i+blocksOffset]+3;
+                            renderBlocksPart4[i].position.z = blocksZ[i+blocksOffset]+1;
                          }
                         else if((blocksRT[i] & 0x03) == 1 ){
-                            renderBlocksPart3[i].position.x = blocksX[i]; 
-                            renderBlocksPart3[i].position.z = blocksZ[i]-2;                          
+                            renderBlocksPart3[i].position.x = blocksX[i+blocksOffset]; 
+                            renderBlocksPart3[i].position.z = blocksZ[i+blocksOffset]-2;                          
 
-                            renderBlocksPart4[i].position.x = blocksX[i]+1;
-                            renderBlocksPart4[i].position.z = blocksZ[i]-3;
+                            renderBlocksPart4[i].position.x = blocksX[i+blocksOffset]+1;
+                            renderBlocksPart4[i].position.z = blocksZ[i+blocksOffset]-3;
 
                         }else if((blocksRT[i] & 0x03) == 2 ){
                             
-                            renderBlocksPart3[i].position.x = blocksX[i]-2;
-                            renderBlocksPart3[i].position.z = blocksZ[i];
+                            renderBlocksPart3[i].position.x = blocksX[i+blocksOffset]-2;
+                            renderBlocksPart3[i].position.z = blocksZ[i+blocksOffset];
                             
-                            renderBlocksPart4[i].position.x = blocksX[i]-3;
-                            renderBlocksPart4[i].position.z = blocksZ[i]-1;
+                            renderBlocksPart4[i].position.x = blocksX[i+blocksOffset]-3;
+                            renderBlocksPart4[i].position.z = blocksZ[i+blocksOffset]-1;
 
                         } else if((blocksRT[i] & 0x03) == 3 ){
-                            renderBlocksPart3[i].position.x = blocksX[i];
-                            renderBlocksPart3[i].position.z = blocksZ[i]+2;
+                            renderBlocksPart3[i].position.x = blocksX[i+blocksOffset];
+                            renderBlocksPart3[i].position.z = blocksZ[i+blocksOffset]+2;
                             
-                            renderBlocksPart4[i].position.x = blocksX[i]-1;
-                            renderBlocksPart4[i].position.z = blocksZ[i]+3;
+                            renderBlocksPart4[i].position.x = blocksX[i+blocksOffset]-1;
+                            renderBlocksPart4[i].position.z = blocksZ[i+blocksOffset]+3;
                         }  
                 
-                        renderBlocksPart3[i].position.y = blocksY[i] * pitchY;
-                        renderBlocksPart3[i].rotation.y  = (blocksRT[i] & 0x03) *Math.PI/2;
+                        renderBlocksPart3[i].position.y = blocksY[i+blocksOffset] * pitchY;
+                        renderBlocksPart3[i].rotation.y  = (blocksRT[i+blocksOffset] & 0x03) *Math.PI/2;
 
                         //renderBlocksPart1[i].rotation.y = (blocksRT[i] & 0x03) *Math.PI/2;
 
-                        renderBlocksPart4[i].position.y = blocksY[i] * pitchY;
-                        renderBlocksPart4[i].rotation.y  = (blocksRT[i] & 0x03) *Math.PI/2 -Math.PI;
+                        renderBlocksPart4[i].position.y = blocksY[i+blocksOffset] * pitchY;
+                        renderBlocksPart4[i].rotation.y  = (blocksRT[i+blocksOffset] & 0x03) *Math.PI/2 -Math.PI;
                         
 
                         if(blocksLEDs2x4[i] != null){
-                            renderBlocksPart3[i].material = materials[blocksLEDs2x4[i] & 0x07];
-                            renderBlocksPart4[i].material = materials[(blocksLEDs2x4[i] & 0x38) >> 3];
+                            renderBlocksPart3[i].material = materials[blocksLEDs2x4[i+blocksOffset] & 0x07];
+                            renderBlocksPart4[i].material = materials[(blocksLEDs2x4[i+blocksOffset] & 0x38) >> 3];
 
                         }
 
