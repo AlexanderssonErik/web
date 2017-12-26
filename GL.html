@@ -59,9 +59,9 @@
         var blocksLEDs2x2 = new Array(100);
         var blocksLEDs2x4 =new Array(100);
         var baseLED = [0x00,0x11];
-        var baseCompass = [0,0,0,0,0,0];
+        var baseCompass = [-90,0,0];
 
-        blocksCount = 1;
+        blocksCount = 0;
         blocksX[0] = 0;
         blocksY[0] = 0;
         blocksZ[0] = 0;
@@ -101,7 +101,7 @@
         var blocksLastLEDs2x4 = [];*/
 
         
-
+        var compassRender = 1;
         var blocksRender = 1; //signal if block data should be rendered
 
        
@@ -203,7 +203,7 @@ console.log('EAEA outData = ' + outData);
 for(let i = 0; i < cmd_pos; i++ ){
                 //console.log('EAEA cmd_tmp ' + i + 'val: ' + cmd_tmp[i].toString(16) );
                 cmd[i] = cmd_tmp[i];
-                console.log('EAEA cmd ' + i + 'val: ' + cmd[i] );
+                //console.log('EAEA cmd ' + i + 'val: ' + cmd[i] );
             }
 
      //   }
@@ -283,7 +283,8 @@ var buttonColorWheelSize = "1px";
         for(var g = 0; g < 2; g++ ){
             for(var r = 0; r < 2; r++ ){
                 
-                let tmpI = (4*b)+ (2*g) + r;
+                //let tmpI = (4*b)+ (2*g) + r;
+                let tmpI = (4*r)+ (2*g) + b;
                 buttonColorWheel[tmpI] = new BABYLON.GUI.Ellipse();
 
                 buttonColorWheel[tmpI].color =  "#101050";
@@ -327,32 +328,49 @@ var buttonColorWheelSize = "1px";
                 //buttonColorWheel[tmpI].onPointerEnterObservable.add(function() {
 
                 buttonColorWheel[tmpI].onPointerMoveObservable.add(function() {
-                    console.log('buttoncolorwheel R: ' + tmpI);
+                   // console.log('buttoncolorwheel R: ' + tmpI);
                     //blocksLEDs2x2[colorWheelMeshI] = tmpI;
                     if( colorWheelMeshType == 'A'){
-                        console.log('A colorWheelMeshI: ' + colorWheelMeshI);
-                        console.log(' ( tmpI | (0xF1 & blocksLEDs2x2[colorWheelMeshI] )): ' +  ( tmpI | (0xF8 & blocksLEDs2x2[colorWheelMeshI] )));
-                        blocksLEDs2x2[colorWheelMeshI] = ( tmpI | (0xF8 & blocksLEDs2x2[colorWheelMeshI] )); 
-                        blocksRender = 1;
+                       // console.log('A colorWheelMeshI: ' + colorWheelMeshI);
+                      //  console.log(' ( tmpI | (0xF1 & blocksLEDs2x2[colorWheelMeshI] )): ' +  ( tmpI | (0xF8 & blocksLEDs2x2[colorWheelMeshI] )));
+                        if(blocksLEDs2x2[colorWheelMeshI] != ( tmpI | (0xF8 & blocksLEDs2x2[colorWheelMeshI] ))){
+                            blocksLEDs2x2[colorWheelMeshI] = ( tmpI | (0xF8 & blocksLEDs2x2[colorWheelMeshI] )); 
+                            blocksRender = 1;
+                        }
                     }else if (colorWheelMeshType == 'B'){
-                        console.log('B colorWheelMeshI: ' + colorWheelMeshI);
-                        console.log(' ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI]))' + ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI])));
-                     
-                        blocksLEDs2x2[colorWheelMeshI] = ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI])); 
-                        blocksRender = 1;
+                       // console.log('B colorWheelMeshI: ' + colorWheelMeshI);
+                       // console.log(' ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI]))' + ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI])));
+                        if(blocksLEDs2x2[colorWheelMeshI] != ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI]))){
+                            blocksLEDs2x2[colorWheelMeshI] = ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI])); 
+                            blocksRender = 1;
+                        }
                     }else if (colorWheelMeshType == 'C'){
-                        blocksLEDs2x4[colorWheelMeshI] = ( tmpI | (0xF8 & blocksLEDs2x4[colorWheelMeshI] )); 
+                        if(blocksLEDs2x4[colorWheelMeshI] != ( tmpI | (0xF8 & blocksLEDs2x4[colorWheelMeshI] ))){
+                            blocksLEDs2x4[colorWheelMeshI] = ( tmpI | (0xF8 & blocksLEDs2x4[colorWheelMeshI] )); 
+                            blocksRender = 1;
+                        }
+                        
                     }else if (colorWheelMeshType == 'D'){
-                        blocksLEDs2x4[colorWheelMeshI] = ( (tmpI << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI])); 
+                        if(blocksLEDs2x4[colorWheelMeshI] != ( (tmpI << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI])) ){
+                            blocksLEDs2x4[colorWheelMeshI] = ( (tmpI << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI])); 
+                            blocksRender = 1;
+                        }
+                        
                     }else if (colorWheelMeshType == 'E'){
-                        baseLED[colorWheelMeshI] = ( tmpI | (0xF8 & baseLED[colorWheelMeshI]));            
-                        console.log('E colorWheelMeshI: ' + colorWheelMeshI);
-                        console.log(' ( tmpI | (0xF8 & blocksLEDs2x4[colorWheelMeshI]))' + ( tmpI | (0xF8 & blocksLEDs2x4[colorWheelMeshI])));
+                        if(baseLED[colorWheelMeshI] != ( tmpI | (0xF8 & baseLED[colorWheelMeshI]))){
+                            baseLED[colorWheelMeshI] = ( tmpI | (0xF8 & baseLED[colorWheelMeshI]));            
+                      //  console.log('E colorWheelMeshI: ' + colorWheelMeshI);
+                        //console.log(' ( tmpI | (0xF8 & blocksLEDs2x4[colorWheelMeshI]))' + ( tmpI | (0xF8 & blocksLEDs2x4[colorWheelMeshI])));
+                        blocksRender = 1;
+                        }
                               
                     }else if (colorWheelMeshType == 'F'){
-                        baseLED[colorWheelMeshI] = ( (tmpI << 3) | (0xC7 & baseLED[colorWheelMeshI])); 
-                        console.log('F colorWheelMeshI: ' + colorWheelMeshI);
-                        console.log('( (tmpI << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI]))' + ( (tmpI << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI])));
+                        if(baseLED[colorWheelMeshI] != ( (tmpI << 3) | (0xC7 & baseLED[colorWheelMeshI]))){
+                            baseLED[colorWheelMeshI] = ( (tmpI << 3) | (0xC7 & baseLED[colorWheelMeshI])); 
+                      //  console.log('F colorWheelMeshI: ' + colorWheelMeshI);
+                      //  console.log('( (tmpI << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI]))' + ( (tmpI << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI])));
+                        blocksRender = 1;
+                        }
                     }
                         
 
@@ -663,18 +681,13 @@ advancedTexture.addControl(button1);*/
                     for(; i+3 < event.target.value.byteLength; i +=4){
 
                     //console.log('EAEA A ');
-                    console.log('EAEA 4 = ' + event.target.value.getUint8(i).toString(16) );
+                    //console.log('EAEA 4 = ' + event.target.value.getUint8(i).toString(16) );
                     //console.log('EAEA 5 = ' + i );
 
                     if(event.target.value.getUint8(i) == 0x82){
-                        //console.log('EAEA B ');
-                        blocksCount = blocksOngoingCount;
-                        let tmp = blocksOffset;
-                        blocksOffset = blocksOngoingOffset;
-                        blocksOngoingOffset = tmp;
-                        blocksReceiving = 0;
-                        blocksUpdated = 1;
-                        return;
+                        blocksReceiving = 2;
+                        i++;
+                        break;
                     }
 
                     blocksZ[blocksOngoingCount + blocksOngoingOffset] = event.target.value.getInt8(i+1);
@@ -686,6 +699,38 @@ advancedTexture.addControl(button1);*/
                     }
 
                 }
+                
+
+                if(blocksReceiving == 2 && i+5 < event.target.value.byteLength ){
+
+                   
+
+                    //console.log('EAEA A ');
+                    //console.log('EAEA 4 = ' + event.target.value.getUint8(i).toString(16) );
+                    //console.log('EAEA 5 = ' + i );
+
+                        baseCompass[0] = ((event.target.value.getUint8(i) << 8) + event.target.value.getUint8(i +1))<< 24 >> 24;;
+                        baseCompass[1] = ((event.target.value.getUint8(i+2) << 8) + event.target.value.getUint8(i +3))<< 24 >> 24;;
+                        baseCompass[2] = ((event.target.value.getUint8(i+4) << 8) + event.target.value.getUint8(i +5))<< 24 >> 24;;
+
+                        compassRender = 1;
+                        //console.log('EAEA B ');
+                        blocksCount = blocksOngoingCount;
+                        let tmp = blocksOffset;
+                        blocksOffset = blocksOngoingOffset;
+                        blocksOngoingOffset = tmp;
+                        blocksReceiving = 0;
+                        blocksUpdated += 1;
+                        return;
+                    
+
+
+                    
+
+
+                }
+
+
 
 /*
 
@@ -783,10 +828,36 @@ blocksReceiving = 0;
             //light0.setPosition( new BABYLON.Vector3(15,15,15));
 
             //light0.position.x  = 0.5;// new BABYLON.Vector3(15,-15,15);
+            if(compassRender){
+
+                tmpDegree = Math.atan (baseCompass[1]/baseCompass[0]);
+
+                if(baseCompass[0] >= 0 && baseCompass[1] >= 0){
+
+                    camera.alpha =  tmpDegree;
+                }else if (baseCompass[0] < 0 && baseCompass[1] >= 0){
+                    camera.alpha =  Math.PI + tmpDegree;
+                }
+
+                else if (baseCompass[0] < 0 && baseCompass[1] < 0){
+                    camera.alpha =  Math.PI + tmpDegree;
+                }
+                else if (baseCompass[0] >= 0 && baseCompass[1] < 0){
+                    camera.alpha =   tmpDegree;
+                }
+              //  compassRender = 0;
+                //camera.alpha = Math.PI/2;
+                //camera.alpha = camera.alpha + 0.5;
+
+            }
+
+
             if(blocksRender){
 
                
-                //blocksRender = 0;
+                blocksRender = 0;
+
+
                 /*
                 for(var i = 0; i <200; i++){
                     if(renderBlocksPart1[i] != null){
@@ -809,23 +880,22 @@ blocksReceiving = 0;
 
               //  renderBlocksLine1[0].setEnabled(1);
                // renderBlocksLine1[0].position.x = 5; 
-                
+               allocateBlocks(blocksCount);
                 for(var i = 0; i <100; i++){
                     if(renderBlocksPart1[i] != null){
                         renderBlocksPart1[i].setEnabled(0); 
-                    }
-                    if(renderBlocksPart2[i] != null){
+                   
                         renderBlocksPart2[i].setEnabled(0); 
-                    }
-                    if(renderBlocksPart3[i] != null){
+                    
+                   
                         renderBlocksPart3[i].setEnabled(0); 
-                    }
-                    if(renderBlocksPart4[i] != null){
+                    
+                   
                         renderBlocksPart4[i].setEnabled(0); 
-                    }
+                    
 
                     renderBlocksLine1A[i].setEnabled(0); 
-        renderBlocksLine2A[i].setEnabled(0); 
+            renderBlocksLine2A[i].setEnabled(0); 
         renderBlocksLine3A[i].setEnabled(0); 
         renderBlocksLine4A[i].setEnabled(0); 
 
@@ -836,6 +906,11 @@ blocksReceiving = 0;
 
         renderBlocksBigLine[i].setEnabled(0); 
         renderBlocksSmallLine[i].setEnabled(0); 
+                }
+
+                }
+
+               
 /*
                     if(renderBlocksLine1[i] != null){
                         renderBlocksLine1[i].setEnabled(0); 
@@ -849,7 +924,7 @@ blocksReceiving = 0;
                     if(renderBlocksLine4[i] != null){
                         renderBlocksLine4[i].setEnabled(0); 
                     }*/
-                }
+                
                 
                 baseLEDUp[3].material = materials[(baseLED[0] & 0x38) >> 3];              
                 baseLEDUp[0].material = materials[baseLED[0] & 0x07];
@@ -1210,6 +1285,7 @@ blocksReceiving = 0;
                 }
 
             }
+        
 
             //console.log('renderBlocksPart1[0].material.diffuseColor = ' +renderBlocksPart1[0].material.diffuseColor);
             //console.log('renderBlocksPart2[0].material.diffuseColor = ' +renderBlocksPart2[0].material.diffuseColor);

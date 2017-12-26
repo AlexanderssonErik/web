@@ -31,11 +31,66 @@ let renderBlocksLine4B = [];
 let renderBlocksBigLine = [];
 let renderBlocksSmallLine = [];
 
+
+let blockSmallLine;
+let blockBigLine;
+
+let blockChamfNippleLineA; 
+let blockChamfNippleLineB;
+
+
+let blockChamfArray;
+let blockNoChamfArray; 
+
+
 let baseLEDUp = [];
 let baseLEDSide = [];
 
-
 let camera;
+
+let blocksAllocated = 0;
+
+function allocateBlocks(currentCount){
+
+    for(let i = blocksAllocated; i <currentCount; i++){
+        
+                renderBlocksPart1[i] = blockChamf.clone("A" + i);
+                renderBlocksPart2[i] = blockChamf.clone("X" + i);
+                renderBlocksPart3[i] = blockNoChamf.clone("B" + i);
+                renderBlocksPart4[i] = blockNoChamf.clone("C" + i);
+        
+                renderBlocksLine1A[i] = blockChamfNippleLineA.clone("A" + i);
+                renderBlocksLine2A[i] = blockChamfNippleLineA.clone("X" + i); 
+                renderBlocksLine3A[i] = blockChamfNippleLineA.clone("B" + i); 
+                renderBlocksLine4A[i] = blockChamfNippleLineA.clone("C" + i); 
+        
+                renderBlocksLine1B[i] = blockChamfNippleLineB.clone("A" + i);
+                renderBlocksLine2B[i] = blockChamfNippleLineB.clone("X" + i);
+                renderBlocksLine3B[i] = blockChamfNippleLineB.clone("B" + i);
+                renderBlocksLine4B[i] = blockChamfNippleLineB.clone("C" + i);
+        
+                
+                renderBlocksLine1A[i].isPickable = false;
+                renderBlocksLine2A[i].isPickable = false;
+                renderBlocksLine3A[i].isPickable = false; 
+                renderBlocksLine4A[i].isPickable = false;
+        
+                renderBlocksLine1B[i].isPickable = false;
+                renderBlocksLine2B[i].isPickable = false;
+                renderBlocksLine3B[i].isPickable = false;
+                renderBlocksLine4B[i].isPickable = false;
+        
+                
+                renderBlocksBigLine[i] = blockBigLine.clone("Y" + i);
+                renderBlocksSmallLine[i] = blockSmallLine.clone("Y" + i);
+        
+                renderBlocksBigLine[i].isPickable = false;
+                renderBlocksSmallLine[i].isPickable = false;
+        
+                    
+            }
+
+}
 
 function initShapes(scene){
  //   https://doc.babylonjs.com/how_to/parametric_shapes#extruded-shapes
@@ -364,13 +419,13 @@ function initShapes(scene){
     blockNoChamfBody.rotation.z = Math.PI;
     blockNoChamfBody.rotation.y = Math.PI/2;;
 
-    let blockSmallLine = BABYLON.MeshBuilder.CreateLines("lines", {points: blockSmallLineShape}, scene); 
+    blockSmallLine = BABYLON.MeshBuilder.CreateLines("lines", {points: blockSmallLineShape}, scene); 
     blockSmallLine.color = new BABYLON.Color3(0.6, 0.6, 0.6);
     blockSmallLine.isPickable = false;
    // blockChamfNippleLineA.position.y = 1.35;
     blockSmallLine.setEnabled(0); 
 
-   let blockBigLine = BABYLON.MeshBuilder.CreateLines("lines", {points: blockBigLineShape}, scene); 
+    blockBigLine = BABYLON.MeshBuilder.CreateLines("lines", {points: blockBigLineShape}, scene); 
    blockBigLine.color = new BABYLON.Color3(0.6, 0.6, 0.6);
    blockBigLine.isPickable = false;
    blockBigLine.setEnabled(0); 
@@ -379,7 +434,7 @@ function initShapes(scene){
     blockChamfNipple1.position.y =1.19;
     blockChamfNipple1.rotation.z = Math.PI;
 
-    let blockChamfNippleLineA = BABYLON.MeshBuilder.CreateLines("lines", {points: nippleLineShapeA}, scene); 
+     blockChamfNippleLineA = BABYLON.MeshBuilder.CreateLines("lines", {points: nippleLineShapeA}, scene); 
     blockChamfNippleLineA.color = new BABYLON.Color3(0.6, 0.6, 0.6);
     blockChamfNippleLineA.isPickable = false;
    // blockChamfNippleLineA.position.y = 1.35;
@@ -390,7 +445,7 @@ function initShapes(scene){
     blockChamfNipple2.position.y =1.19;
     blockChamfNipple2.rotation.z = Math.PI;
 
-    let blockChamfNippleLineB = BABYLON.MeshBuilder.CreateLines("lines", {points: nippleLineShapeB}, scene); 
+     blockChamfNippleLineB = BABYLON.MeshBuilder.CreateLines("lines", {points: nippleLineShapeB}, scene); 
     blockChamfNippleLineB.color = new BABYLON.Color3(0.6, 0.6, 0.6);
     //blockChamfNippleLineB.useVertexColor = true;
     //blockChamfNippleLineB.color = new BABYLON.Color4(1, 1, 1, 1);
@@ -419,11 +474,11 @@ function initShapes(scene){
     blockNoChamfNippleLine2.position.y = 1.35;
     blockNoChamfNippleLine2.position.z = 1;
   */ 
-    let blockChamfArray = [blockChamfBody, blockChamfNipple1, blockChamfNipple2];
+     blockChamfArray = [blockChamfBody, blockChamfNipple1, blockChamfNipple2];
     blockChamf = BABYLON.Mesh.MergeMeshes(blockChamfArray); 
     scene.meshes.pop();
     
-    let blockNoChamfArray = [blockNoChamfBody, blockNoChamfNipple1, blockNoChamfNipple2];
+     blockNoChamfArray = [blockNoChamfBody, blockNoChamfNipple1, blockNoChamfNipple2];
     blockNoChamf = BABYLON.Mesh.MergeMeshes(blockNoChamfArray); 
     scene.meshes.pop();
 
@@ -488,18 +543,18 @@ function initShapes(scene){
         
     materials[0].diffuseColor = new BABYLON.Color3(1, 1, 1);
     materials[0].emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
-    materials[1].diffuseColor = new BABYLON.Color3(1, 0, 0);
-    materials[1].emissiveColor = new BABYLON.Color3(emissiveColor, 0, 0);
+    materials[1].diffuseColor = new BABYLON.Color3(0, 0, 1);
+    materials[1].emissiveColor = new BABYLON.Color3(0, 0, emissiveColor);
     materials[2].diffuseColor = new BABYLON.Color3(0, 1, 0);
     materials[2].emissiveColor = new BABYLON.Color3(0, emissiveColor, 0);
-    materials[3].diffuseColor = new BABYLON.Color3(1, 1, 0);
-    materials[3].emissiveColor = new BABYLON.Color3(emissiveColor, emissiveColor, 0);
-    materials[4].diffuseColor = new BABYLON.Color3(0, 0, 1);
-    materials[4].emissiveColor = new BABYLON.Color3(0, 0, emissiveColor);
+    materials[3].diffuseColor = new BABYLON.Color3(0, 1, 1);
+    materials[3].emissiveColor = new BABYLON.Color3(0, emissiveColor, emissiveColor);
+    materials[4].diffuseColor = new BABYLON.Color3(1, 0, 0);
+    materials[4].emissiveColor = new BABYLON.Color3(emissiveColor, 0,0 );
     materials[5].diffuseColor = new BABYLON.Color3(1, 0, 1);
     materials[5].emissiveColor = new BABYLON.Color3(emissiveColor, 0, emissiveColor);
-    materials[6].diffuseColor = new BABYLON.Color3(0, 1, 1);
-    materials[6].emissiveColor = new BABYLON.Color3(0, emissiveColor, emissiveColor);
+    materials[6].diffuseColor = new BABYLON.Color3(1, 1, 0);
+    materials[6].emissiveColor = new BABYLON.Color3(emissiveColor, emissiveColor, 0);
     materials[7].diffuseColor = new BABYLON.Color3(1, 1, 1);
     materials[7].emissiveColor = new BABYLON.Color3(0.3, 0.3, 0.3);
 
@@ -547,12 +602,12 @@ light1.specular = new BABYLON.Color3(0, 0, 0);
 light1.specularPower = 0;
 light1.diffuse = new BABYLON.Color3(1, 1, 1);
 light1.intensity =0.15;
-
+/*
 var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 2, scene);
 sphere.position.x = 4.5;
 sphere.position.y = -5;
 sphere.position.z = 4.5;
-
+*/
     //.excludeMeshes  = [environtmentPlane];
     //.includedOnlyMeshes = [baseTopPlane];
     //.range = 0.5;
@@ -601,7 +656,7 @@ sphere.position.z = 4.5;
 
     for(let i = 0; i <100; i++){
 
-        renderBlocksPart1[i] = blockChamf.clone("A" + i);
+       /* renderBlocksPart1[i] = blockChamf.clone("A" + i);
         renderBlocksPart2[i] = blockChamf.clone("X" + i);
         renderBlocksPart3[i] = blockNoChamf.clone("B" + i);
         renderBlocksPart4[i] = blockNoChamf.clone("C" + i);
@@ -632,7 +687,7 @@ sphere.position.z = 4.5;
         renderBlocksSmallLine[i] = blockSmallLine.clone("Y" + i);
 
         renderBlocksBigLine[i].isPickable = false;
-        renderBlocksSmallLine[i].isPickable = false;
+        renderBlocksSmallLine[i].isPickable = false;*/
 
       /*  renderBlocksLine1[i] = blockChamfLine.clone("A" + i);
         renderBlocksLine1[i].color = new BABYLON.Color3(0.6, 0.6, 0.6);
