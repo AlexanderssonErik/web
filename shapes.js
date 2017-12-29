@@ -142,14 +142,14 @@ function initShapes(scene){
         baseLEDUp[i].position.y =0.001;
         baseLEDUp[i].position.z =-0.5;
         baseLEDUp[i].rotation.y = -Math.PI/2;
-        baseLEDUp[i].name = "E0";
+        baseLEDUp[i].name = "E1";
 
         baseLEDSide[i].position.x  =1 + i%3 * 3.5;
         baseLEDSide[i].position.y =-0.5;
         baseLEDSide[i].position.z =-0.1;
         baseLEDSide[i].rotation.y = -Math.PI/2;
         baseLEDSide[i].rotation.z = -Math.PI/2 + Math.PI/12;
-        baseLEDSide[i].name = "E0";
+        baseLEDSide[i].name = "E1";
 
 
 
@@ -191,7 +191,7 @@ function initShapes(scene){
         baseLEDUp[i].position.y =0.001;
         baseLEDUp[i].position.z =  9.5;
         baseLEDUp[i].rotation.y = Math.PI/2;       
-        baseLEDUp[i].name = "E1";
+        baseLEDUp[i].name = "E0";
 
         baseLEDSide[i].position.x  = 1 + i%3 * 3.5;
         baseLEDSide[i].position.y =-0.5;
@@ -200,7 +200,7 @@ function initShapes(scene){
         //baseLEDSide[i].rotation.z = -Math.PI/2 + Math.PI/12;
         baseLEDSide[i].rotation.z = -Math.PI/2 - Math.PI/12;
 
-        baseLEDSide[i].name = "E1";
+        baseLEDSide[i].name = "E0";
     
 
                 

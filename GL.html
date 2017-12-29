@@ -41,11 +41,18 @@
         block and blockLast information is the same
         Render
         */
+ 
+
+        let bleTimeOut;
+        let fpsTimeOut;
+        let fpsCounter = 0;
+
+
 
 
         var pitchY = 1.19;
 
-       
+       let receivedData = [];
         var blocksUpdated = 0;
         var blocksReceiving = 0;
         var blocksCount = 0;
@@ -101,7 +108,10 @@
         var blocksLastLEDs2x4 = [];*/
 
         
+
+
         var compassRender = 1;
+        let compassCameraAlpha = 0;
         var blocksRender = 1; //signal if block data should be rendered
 
        
@@ -131,6 +141,35 @@
 initShapes(scene);
 
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+           
+function fpsFunction() {
+
+    //textFps.text = fpsCounter;
+    textFps.text = "FPS: " + fpsCounter;
+    clearTimeout(fpsFunction);
+    
+    fpsCounter = 0;
+    fpsTimeOut = setTimeout(fpsFunction, 1000);
+}
+            
+            fpsTimeOut = setTimeout(fpsFunction, 1000);
+
+
+var advancedTextureFPS = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+
+    var textFps = new BABYLON.GUI.TextBlock();
+    textFps.text = "FPS: ";
+    textFps.color = "white";
+    textFps.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+    textFps.textVerticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+
+    textFps.fontSize = 24;
+    advancedTextureFPS.addControl(textFps);    
+
 
 
 
@@ -139,6 +178,13 @@ initShapes(scene);
 
         }
         function sendCommand() {
+
+            clearTimeout(bleTimeOut);
+           
+
+            
+            bleTimeOut = setTimeout(sendCommand, 6000);
+
 
 
             console.log('EAEA sendCommand() ');
@@ -243,14 +289,20 @@ let cmd = new Uint8Array(cmd_pos);*/
 
 
 //--
-            if (busy) {
-                // Return if another operation pending
-                return Promise.resolve();
+            //busy can't keep up
+         /*   if (busy) {
+                sleep(100); //some times need a little bit of extra time
+                if(busy){
+                    // Return if another operation pending
+                    return Promise.resolve();
+
+                }                
              }
-
+*/
             busy = true;
-
+            console.log('EAEA send outData ');
             return gattCharacteristic.writeValue(cmd).then(() => {
+                console.log('EAEA busy = false ');
                      busy = false;
             });
     }
@@ -651,6 +703,7 @@ advancedTexture.addControl(button1);*/
 
                 console.log('EAEA characteristicvaluechanged = ' + event.target.value + ' [' + event.target.value.byteLength +']');
 
+                //need to keep old in data
                 let inData = [];
                 for(let z = 0; z <event.target.value.byteLength; z++ ){
                     inData[z] = event.target.value.getUint8(z).toString(16);
@@ -665,6 +718,33 @@ advancedTexture.addControl(button1);*/
                 
                 let i = 0;
 
+              //  receivedData   
+
+              let recivedDataLength =  receivedData.length;
+              for(; i < event.target.value.byteLength; i++){
+
+                receivedData[i + recivedDataLength]  = event.target.value.getUint8(i);
+     
+                }
+
+                i =0;
+                if(blocksReceiving == 0){
+                    while(i < receivedData.length){
+                        if(receivedData[i] == 0x80){
+                            receivedData.splice(0, i +1);                           
+                            blocksOngoingCount = 0;
+                            blocksReceiving = 1;
+                            break;
+
+                        }else{
+                            i++;
+                        }
+                       
+
+                    }
+                }
+                         
+/*
                 if(blocksReceiving == 0){
                     for(; i < event.target.value.byteLength; i++){
                         if(event.target.value.getUint8(i) == 0x80){
@@ -677,6 +757,50 @@ advancedTexture.addControl(button1);*/
                     }
                 }
 
+                
+*/
+              /*  let r = 0;
+                while(r < receivedData.length){
+                    console.log('EAEA receivedData[] = ' + receivedData[r] );
+                    r++;
+                }
+*/
+                if(blocksReceiving == 1){
+                    while( 3 < receivedData.length){
+                        if(receivedData[0] == 0x82){
+                            blocksReceiving = 2;
+                            receivedData.splice(0, 1);   
+                           // console.log('EAEA break ');                     
+                            break;
+                         }
+
+                   // console.log('EAEA receivedData[0] = ' + receivedData[0] );
+
+                    blocksZ[blocksOngoingCount + blocksOngoingOffset] = receivedData[1]; 
+                    blocksX[blocksOngoingCount + blocksOngoingOffset] = receivedData[0]; 
+                    blocksY[blocksOngoingCount + blocksOngoingOffset] = receivedData[2]; 
+                    blocksRT[blocksOngoingCount + blocksOngoingOffset] = receivedData[3]; 
+
+                    if ( blocksZ[blocksOngoingCount + blocksOngoingOffset] > 127){
+                        blocksZ[blocksOngoingCount + blocksOngoingOffset] -= 256;                             
+                    }
+                    if ( blocksX[blocksOngoingCount + blocksOngoingOffset] > 127){
+                        blocksX[blocksOngoingCount + blocksOngoingOffset] -= 256;                             
+                    }
+                    if ( blocksY[blocksOngoingCount + blocksOngoingOffset] > 127){
+                        blocksY[blocksOngoingCount + blocksOngoingOffset] -= 256;                             
+                    }
+
+                    blocksOngoingCount++;
+
+                    receivedData.splice(0, 4);  
+
+
+                    }
+
+                }
+
+/*
                 if(blocksReceiving == 1){
                     for(; i+3 < event.target.value.byteLength; i +=4){
 
@@ -694,24 +818,135 @@ advancedTexture.addControl(button1);*/
                     blocksX[blocksOngoingCount + blocksOngoingOffset] = event.target.value.getInt8(i);
                     blocksY[blocksOngoingCount + blocksOngoingOffset] = event.target.value.getInt8(i+2);
                     blocksRT[blocksOngoingCount + blocksOngoingOffset] = event.target.value.getInt8(i+3);
+
+                    
+
+
+
                     blocksOngoingCount++;
 
                     }
 
                 }
+              */  
+              if(blocksReceiving == 2 && receivedData.length >5){
+                baseCompass[0] = (receivedData[0] << 8) + receivedData[1];
+                baseCompass[1] = (receivedData[2] << 8) + receivedData[3];
+                baseCompass[2] = (receivedData[4] << 8) + receivedData[5];
+
+                if ( baseCompass[0] > 32767){
+                    baseCompass[0] -= 65536;                             
+                }
+
+                
+                if ( baseCompass[1] > 32767){
+                    baseCompass[1] -= 65536;                             
+                }
+
+                
+                if ( baseCompass[2] > 32767){
+                    baseCompass[2] -= 65536;                             
+                }
+
+                console.log('EAEA A' + baseCompass[0] );
+                console.log('EAEA A' + baseCompass[1] );
+                console.log('EAEA A' + baseCompass[2] );
                 
 
+
+                tmpDegree = Math.atan (baseCompass[1]/baseCompass[0]);
+
+                if(baseCompass[0] >= 0 && baseCompass[1] >= 0){
+
+                    if(tmpDegree > compassCameraAlpha + Math.PI/20  || tmpDegree < compassCameraAlpha - Math.PI/20 ){
+
+                        compassCameraAlpha = tmpDegree;
+                        compassRender = 1;
+                    }
+                   // camera.alpha =  tmpDegree;
+                }else if (baseCompass[0] < 0 && baseCompass[1] >= 0){
+                    if(tmpDegree + Math.PI  > compassCameraAlpha + Math.PI/20  || tmpDegree + Math.PI  < compassCameraAlpha - Math.PI/20 ){
+
+                        compassCameraAlpha = Math.PI + tmpDegree;
+                        compassRender = 1;
+                    }
+
+                   // camera.alpha =  Math.PI + tmpDegree;
+                }
+
+                else if (baseCompass[0] < 0 && baseCompass[1] < 0){
+
+                    if(tmpDegree + Math.PI  > compassCameraAlpha + Math.PI/20  || tmpDegree + Math.PI  < compassCameraAlpha - Math.PI/20 ){
+
+                        compassCameraAlpha = Math.PI + tmpDegree;
+                        compassRender = 1;
+                    }
+
+                   // camera.alpha =  Math.PI + tmpDegree;
+                }
+                else if (baseCompass[0] >= 0 && baseCompass[1] < 0){
+                    if(tmpDegree > compassCameraAlpha + Math.PI/20  || tmpDegree < compassCameraAlpha - Math.PI/20 ){
+
+                        compassCameraAlpha = tmpDegree;
+                        compassRender = 1;
+                    }
+
+                   // camera.alpha =   tmpDegree;
+                }
+              //  compassRender = 0;
+
+
+              //  compassRender = 1;
+                //console.log('EAEA B ');
+                blocksCount = blocksOngoingCount;
+                let tmp = blocksOffset;
+                blocksOffset = blocksOngoingOffset;
+                blocksOngoingOffset = tmp;
+                blocksReceiving = 0;
+                blocksUpdated += 1;
+
+                receivedData.splice(0, receivedData.length);  
+
+               
+
+                sendCommand().then(() => {
+                    console.log('EAEA gattWrite sent');
+           
+                 })
+                .catch(handleError);
+
+                return;
+              }
+
+/*
                 if(blocksReceiving == 2 && i+5 < event.target.value.byteLength ){
 
                    
 
-                    //console.log('EAEA A ');
-                    //console.log('EAEA 4 = ' + event.target.value.getUint8(i).toString(16) );
-                    //console.log('EAEA 5 = ' + i );
+                      
 
-                        baseCompass[0] = ((event.target.value.getUint8(i) << 8) + event.target.value.getUint8(i +1))<< 24 >> 24;;
-                        baseCompass[1] = ((event.target.value.getUint8(i+2) << 8) + event.target.value.getUint8(i +3))<< 24 >> 24;;
-                        baseCompass[2] = ((event.target.value.getUint8(i+4) << 8) + event.target.value.getUint8(i +5))<< 24 >> 24;;
+                        baseCompass[0] = (event.target.value.getUint8(i) << 8) + event.target.value.getUint8(i +1);
+                        baseCompass[1] = (event.target.value.getUint8(i+2) << 8) + event.target.value.getUint8(i +3);
+                        baseCompass[2] = (event.target.value.getUint8(i+4) << 8) + event.target.value.getUint8(i +5);
+
+                        if ( baseCompass[0] > 32767){
+                            baseCompass[0] -= 65536;                             
+                        }
+
+                        
+                        if ( baseCompass[1] > 32767){
+                            baseCompass[1] -= 65536;                             
+                        }
+
+                        
+                        if ( baseCompass[2] > 32767){
+                            baseCompass[2] -= 65536;                             
+                        }
+
+                        console.log('EAEA A' + baseCompass[0] );
+                        console.log('EAEA A' + baseCompass[1] );
+                        console.log('EAEA A' + baseCompass[2] );
+
 
                         compassRender = 1;
                         //console.log('EAEA B ');
@@ -721,6 +956,13 @@ advancedTexture.addControl(button1);*/
                         blocksOngoingOffset = tmp;
                         blocksReceiving = 0;
                         blocksUpdated += 1;
+
+                        sendCommand();
+
+
+                        
+  
+
                         return;
                     
 
@@ -728,7 +970,7 @@ advancedTexture.addControl(button1);*/
                     
 
 
-                }
+                }*/
 
 
 
@@ -820,7 +1062,8 @@ blocksReceiving = 0;
 
         engine.runRenderLoop(function () {
 
-
+            fpsCounter++;
+         
         //    light0Pos.position.x = camera.position.x;
 //light0Pos.position.z = camera.position.z;
             //camera.setPosition(new BABYLON.Vector3(15,15,15));
@@ -830,22 +1073,29 @@ blocksReceiving = 0;
             //light0.position.x  = 0.5;// new BABYLON.Vector3(15,-15,15);
             if(compassRender){
 
-                tmpDegree = Math.atan (baseCompass[1]/baseCompass[0]);
+                //tmpDegree = Math.atan (baseCompass[1]/baseCompass[0]);
 
+/*
                 if(baseCompass[0] >= 0 && baseCompass[1] >= 0){
 
+                    compassCameraAlpha = tmpDegree;
                     camera.alpha =  tmpDegree;
+                    
                 }else if (baseCompass[0] < 0 && baseCompass[1] >= 0){
+                    compassCameraAlpha = Math.PI + tmpDegree;
                     camera.alpha =  Math.PI + tmpDegree;
                 }
 
                 else if (baseCompass[0] < 0 && baseCompass[1] < 0){
+                    compassCameraAlpha = Math.PI + tmpDegree;
                     camera.alpha =  Math.PI + tmpDegree;
                 }
                 else if (baseCompass[0] >= 0 && baseCompass[1] < 0){
+                    compassCameraAlpha = tmpDegree;
                     camera.alpha =   tmpDegree;
-                }
-              //  compassRender = 0;
+                }*/
+                camera.alpha =  compassCameraAlpha;
+                compassRender = 0;
                 //camera.alpha = Math.PI/2;
                 //camera.alpha = camera.alpha + 0.5;
 
