@@ -132,8 +132,8 @@ function initShapes(scene){
 
     for(let i = 0; i < 3; i++){
         if(i==0){
-            baseLEDUp[i] = BABYLON.MeshBuilder.CreatePolygon("baseLEDUp", {shape:baseLEDUpShape, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
-            baseLEDSide[i] = BABYLON.MeshBuilder.ExtrudePolygon("baseLEDSide", {shape:baseLEDSideShape, depth: 0.08, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+            baseLEDUp[i] = BABYLON.MeshBuilder.CreatePolygon("baseLEDUp", {shape:baseLEDUpShape, sideOrientation: BABYLON.Mesh.FRONTSIDE }, scene);
+            baseLEDSide[i] = BABYLON.MeshBuilder.ExtrudePolygon("baseLEDSide", {shape:baseLEDSideShape, depth: 0.08, sideOrientation: BABYLON.Mesh.FRONTSIDE }, scene);
         }else{
             baseLEDUp[i] =  baseLEDUp[0].createInstance("baseLEDUp");
             baseLEDSide[i] = baseLEDSide[0].createInstance("baseLEDSide");
@@ -157,8 +157,8 @@ function initShapes(scene){
 
     for(let i = 3; i < 6; i++){
         if(i == 3){
-            baseLEDUp[i] = BABYLON.MeshBuilder.CreatePolygon("baseLEDUp", {shape:baseLEDUpShape, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
-            baseLEDSide[i] = BABYLON.MeshBuilder.ExtrudePolygon("baseLEDSide", {shape:baseLEDSideShape, depth: 0.08, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+            baseLEDUp[i] = BABYLON.MeshBuilder.CreatePolygon("baseLEDUp", {shape:baseLEDUpShape, sideOrientation: BABYLON.Mesh.FRONTSIDE }, scene);
+            baseLEDSide[i] = BABYLON.MeshBuilder.ExtrudePolygon("baseLEDSide", {shape:baseLEDSideShape, depth: 0.08, sideOrientation: BABYLON.Mesh.FRONTSIDE }, scene);
         }else{
              baseLEDUp[i] =  baseLEDUp[3].createInstance("baseLEDUp");
              baseLEDSide[i] = baseLEDSide[3].createInstance("baseLEDSide");
@@ -181,8 +181,8 @@ function initShapes(scene){
     for(let i = 6; i < 9; i++){
                 
         if(i == 6){
-            baseLEDUp[i] = BABYLON.MeshBuilder.CreatePolygon("baseLEDUp", {shape:baseLEDUpShape, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);       
-            baseLEDSide[i] = BABYLON.MeshBuilder.ExtrudePolygon("baseLEDSide", {shape:baseLEDSideShape, depth: 0.08, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+            baseLEDUp[i] = BABYLON.MeshBuilder.CreatePolygon("baseLEDUp", {shape:baseLEDUpShape, sideOrientation: BABYLON.Mesh.FRONTSIDE }, scene);       
+            baseLEDSide[i] = BABYLON.MeshBuilder.ExtrudePolygon("baseLEDSide", {shape:baseLEDSideShape, depth: 0.08, sideOrientation: BABYLON.Mesh.FRONTSIDE }, scene);
         }else{
             baseLEDUp[i] =  baseLEDUp[6].createInstance("baseLEDUp");
             baseLEDSide[i] = baseLEDSide[6].createInstance("baseLEDSide");
@@ -208,8 +208,8 @@ function initShapes(scene){
 
      for(let i = 9; i < 12; i++){        
         if(i == 9){
-            baseLEDUp[i] = BABYLON.MeshBuilder.CreatePolygon("baseLEDUp", {shape:baseLEDUpShape, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);     
-            baseLEDSide[i] = BABYLON.MeshBuilder.ExtrudePolygon("baseLEDSide", {shape:baseLEDSideShape, depth: 0.08, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);    
+            baseLEDUp[i] = BABYLON.MeshBuilder.CreatePolygon("baseLEDUp", {shape:baseLEDUpShape, sideOrientation: BABYLON.Mesh.FRONTSIDE }, scene);     
+            baseLEDSide[i] = BABYLON.MeshBuilder.ExtrudePolygon("baseLEDSide", {shape:baseLEDSideShape, depth: 0.08, sideOrientation: BABYLON.Mesh.FRONTSIDE }, scene);    
         }else{
              baseLEDUp[i] =  baseLEDUp[9].createInstance("baseLEDUp");
              baseLEDSide[i] = baseLEDSide[9].createInstance("baseLEDSide");
@@ -345,7 +345,7 @@ function initShapes(scene){
         // return 1/(i+1);
     };
 
-    let baseSidePlane = BABYLON.MeshBuilder.ExtrudeShapeCustom("baseSidePlane", {shape: baseSideShape, path: myPath, scaleFunction: scaling, sideOrientation: BABYLON.Mesh.DOUBLESIDE, updatable: false}, scene);
+    let baseSidePlane = BABYLON.MeshBuilder.ExtrudeShapeCustom("baseSidePlane", {shape: baseSideShape, path: myPath, scaleFunction: scaling, sideOrientation: BABYLON.Mesh.BACKSIDE, updatable: false}, scene);
     baseSidePlane.rotation.x = Math.PI/2;
     baseSidePlane.position.x =4.5; 
     baseSidePlane.position.z =4.5;
@@ -363,7 +363,7 @@ function initShapes(scene){
         new BABYLON.Vector3( 4.8,0,-5)                        
         ];
 
-    baseTopPlane = BABYLON.MeshBuilder.CreatePolygon("polygon", {shape:baseTopShape, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+    baseTopPlane = BABYLON.MeshBuilder.CreatePolygon("polygon", {shape:baseTopShape, sideOrientation: BABYLON.Mesh.FRONTSIDE }, scene);
     baseTopPlane.position.x =4.5; 
     baseTopPlane.position.y =0;
     baseTopPlane.position.z =4.5;
@@ -375,19 +375,55 @@ function initShapes(scene){
 */
     // block -------------------------------------------------------
 
-    let chamfBlockShape = [ new BABYLON.Vector3( -0.48,0,-0.3),		
+    /*let chamfBlockShape = [ new BABYLON.Vector3( -0.48,0,-0.3),		
         new BABYLON.Vector3( -0.48,0,0.5), 
         new BABYLON.Vector3( 1.48,0,0.5),    
         new BABYLON.Vector3( 1.48,0, -0.3), 
         new BABYLON.Vector3( 1.3,0,-0.48), 
-        new BABYLON.Vector3(-0.3,0,-0.48 )                             
-        ];
+        new BABYLON.Vector3(-0.3,0,-0.48 )  
         
-    let noChamfBlockShape = [ new BABYLON.Vector3( -0.48,0,-0.5),		
+        
+        ];
+        */
+
+        let chamfBlockShape = [	
+            
+              
+            
+            
+            new BABYLON.Vector3(-0.3,0,-0.48 ) , 
+            new BABYLON.Vector3( 1.3,0,-0.48), 
+            new BABYLON.Vector3( 1.48,0, -0.3),
+            new BABYLON.Vector3( 1.48,0,0.5),  
+            new BABYLON.Vector3( -0.48,0,0.5), 
+            new BABYLON.Vector3( -0.48,0,-0.3)	
+            ];
+
+     /*   let  nippleShape = [ new BABYLON.Vector3(-0.21,0, -0.29),		
+            new BABYLON.Vector3(0.21,0, -0.29), 
+            new BABYLON.Vector3(0.29,0, -0.21),    
+            new BABYLON.Vector3(0.29,0, 0.21), 
+            new BABYLON.Vector3(0.21,0, 0.29), 
+            new BABYLON.Vector3(-0.21,0, 0.29), 
+            new BABYLON.Vector3(-0.29,0, 0.21), 
+            new BABYLON.Vector3(-0.29, 0, -0.21) 		                    
+        ];
+*/
+        
+    /*let noChamfBlockShape = [ new BABYLON.Vector3( -0.48,0,-0.5),		
         new BABYLON.Vector3(-0.48,0,0.5 ), 
         new BABYLON.Vector3( 1.48,0,0.5), 
         new BABYLON.Vector3( 1.48,0,-0.5)                             
-        ];
+        ];*/
+
+        let noChamfBlockShape = [ 		
+            
+            
+            new BABYLON.Vector3( 1.48,0,-0.5), 
+            new BABYLON.Vector3( 1.48,0,0.5), 
+            new BABYLON.Vector3(-0.48,0,0.5 ), 
+            new BABYLON.Vector3( -0.48,0,-0.5)                            
+            ];
 
      let blockSmallLineShape = [ new BABYLON.Vector3( -0.48,1.18,-0.3),		
             new BABYLON.Vector3( -0.48,1.18,1.3), 
@@ -411,11 +447,11 @@ function initShapes(scene){
                 new BABYLON.Vector3( -0.48,1.18,-0.3),                             
                 ];
 
-    let blockChamfBody = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:chamfBlockShape, depth: 1.18, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+    let blockChamfBody = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:chamfBlockShape, depth: 1.18, sideOrientation: BABYLON.Mesh.FRONTSIDE }, scene);
     blockChamfBody.rotation.z = Math.PI;
     blockChamfBody.rotation.y = Math.PI/2;;
     
-    let blockNoChamfBody = BABYLON.MeshBuilder.ExtrudePolygon("polygonx", {shape:noChamfBlockShape, depth: 1.18, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+    let blockNoChamfBody = BABYLON.MeshBuilder.ExtrudePolygon("polygonx", {shape:noChamfBlockShape, depth: 1.18, sideOrientation: BABYLON.Mesh.FRONTSIDE }, scene);
     blockNoChamfBody.rotation.z = Math.PI;
     blockNoChamfBody.rotation.y = Math.PI/2;;
 
@@ -430,7 +466,7 @@ function initShapes(scene){
    blockBigLine.isPickable = false;
    blockBigLine.setEnabled(0); 
     
-    let blockChamfNipple1 = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:nippleShape, depth: 0.16, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+    let blockChamfNipple1 = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:nippleShape, depth: 0.16, sideOrientation: BABYLON.Mesh.FRONTSIDE }, scene);
     blockChamfNipple1.position.y =1.19;
     blockChamfNipple1.rotation.z = Math.PI;
 
@@ -440,7 +476,7 @@ function initShapes(scene){
    // blockChamfNippleLineA.position.y = 1.35;
     blockChamfNippleLineA.setEnabled(0); 
    
-    let blockChamfNipple2 = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:nippleShape, depth: 0.16, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+    let blockChamfNipple2 = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:nippleShape, depth: 0.16, sideOrientation: BABYLON.Mesh.FRONTSIDE }, scene);
     blockChamfNipple2.position.z =1;//!
     blockChamfNipple2.position.y =1.19;
     blockChamfNipple2.rotation.z = Math.PI;
@@ -454,7 +490,7 @@ function initShapes(scene){
     //blockChamfNippleLineB.position.y = 1.35;
     blockChamfNippleLineB.setEnabled(0); 
   
-    let blockNoChamfNipple1 = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:nippleShape, depth: 0.16, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+    let blockNoChamfNipple1 = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:nippleShape, depth: 0.16, sideOrientation: BABYLON.Mesh.FRONTSIDE }, scene);
     blockNoChamfNipple1.position.y =1.19;
     blockNoChamfNipple1.rotation.z = Math.PI;
 
@@ -463,7 +499,7 @@ function initShapes(scene){
    // blockNoChamfNippleLine1.isPickable = false;
     blockNoChamfNippleLine1.position.y = 1.35;
     */
-    let blockNoChamfNipple2 = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:nippleShape, depth: 0.16, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+    let blockNoChamfNipple2 = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:nippleShape, depth: 0.16, sideOrientation: BABYLON.Mesh.FRONTSIDE }, scene);
     blockNoChamfNipple2.position.z =1;//!
     blockNoChamfNipple2.position.y =1.19;
     blockNoChamfNipple2.rotation.z = Math.PI;
@@ -492,7 +528,7 @@ function initShapes(scene){
 
 
 
-    let baseNipple = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:nippleShape, depth: 0.16, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
+    let baseNipple = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:nippleShape, depth: 0.16, sideOrientation: BABYLON.Mesh.FRONTSIDE }, scene);
     baseNipple.rotation.x = Math.PI;
 
     // baseNipple -------------------------------------------------------
@@ -639,7 +675,7 @@ sphere.position.z = 4.5;
    //camera.upperAlphaLimit =2;
 
    //camera.lowerBetaLimit =Math.PI/8;
-    camera.upperBetaLimit  = Math.PI - Math.PI/2;
+   //ADD camera.upperBetaLimit  = Math.PI - Math.PI/2;
 
     camera.lowerRadiusLimit = 5;
     camera.upperRadiusLimit = 40;
