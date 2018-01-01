@@ -50,7 +50,7 @@ let camera;
 
 let blocksAllocated = 0;
 
-function allocateBlocks(currentCount){
+function shapesAllocateBlocks(currentCount){
 
     for(let i = blocksAllocated; i <currentCount; i++){
         
@@ -90,6 +90,8 @@ function allocateBlocks(currentCount){
                     
             }
 
+            blocksAllocated =  currentCount;
+
 }
 
 function initShapes(scene){
@@ -110,16 +112,6 @@ function initShapes(scene){
         new BABYLON.Vector3( -0.2,0,0.5)    
                           
     ];
-
- /*   baseLEDSide = BABYLON.MeshBuilder.ExtrudePolygon("polygon", {shape:baseLEDSideShape, depth: 0.08, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, scene);
-    baseLEDSide.position.x =4.5; 
-    baseLEDSide.position.y =-0.5;
-    baseLEDSide.position.z =-0.1;
-    baseLEDSide.rotation.y = -Math.PI/2;
-    baseLEDSide.rotation.z = -Math.PI/2 + Math.PI/12;
-    baseLEDSide.isPickable = false;
-*/
-//Copy and clone
 
     // baseLED up -------------------------------------------------------
     let baseLEDUpShape = [ new BABYLON.Vector3( 0,0,-0.5),		
@@ -263,16 +255,6 @@ function initShapes(scene){
         new BABYLON.Vector3(-0.21,1.35, -0.29)			                    
     ];
 
-  /*  let  nippleLineShapeB = [ new BABYLON.Vector3(0.79,0, -0.29),		
-        new BABYLON.Vector3(1.21,0, -0.29), 
-        new BABYLON.Vector3(1.29,0, -0.21),    
-        new BABYLON.Vector3(1.29,0, 0.21), 
-        new BABYLON.Vector3(1.21,0, 0.29), 
-        new BABYLON.Vector3(0.79,0, 0.29), 
-        new BABYLON.Vector3(0.71,0, 0.21), 
-        new BABYLON.Vector3(0.71, 0, -0.21),
-        new BABYLON.Vector3(0.79,0, -0.29)			                    
-    ];*/
 
     let  nippleLineShapeB = [ new BABYLON.Vector3(-0.21,1.35, 0.71),		
         new BABYLON.Vector3(0.21,1.35, 0.71), 
@@ -318,17 +300,7 @@ function initShapes(scene){
       
         ];
 
-    /*var scaling = function(i, distance) {
-        if(i == 0){
-            return 1;
-        }else if(i == 1){
-            return 0.95;
-        }else if(i == 2){
-            return 0.9;
-        }
-        return 0.1;
-        // return 1/(i+1);
-    };*/
+
 
     var scaling = function(i, distance) {
         if(i == 0){
@@ -341,8 +313,6 @@ function initShapes(scene){
             return 0.9;
         }
 
-     //   return 0.1;
-        // return 1/(i+1);
     };
 
     let baseSidePlane = BABYLON.MeshBuilder.ExtrudeShapeCustom("baseSidePlane", {shape: baseSideShape, path: myPath, scaleFunction: scaling, sideOrientation: BABYLON.Mesh.BACKSIDE, updatable: false}, scene);
@@ -375,22 +345,12 @@ function initShapes(scene){
 */
     // block -------------------------------------------------------
 
-    /*let chamfBlockShape = [ new BABYLON.Vector3( -0.48,0,-0.3),		
-        new BABYLON.Vector3( -0.48,0,0.5), 
-        new BABYLON.Vector3( 1.48,0,0.5),    
-        new BABYLON.Vector3( 1.48,0, -0.3), 
-        new BABYLON.Vector3( 1.3,0,-0.48), 
-        new BABYLON.Vector3(-0.3,0,-0.48 )  
-        
-        
-        ];
-        */
 
-        let chamfBlockShape = [	
-            
+    let chamfBlockShape = [	
+          
               
             
-            
+         
             new BABYLON.Vector3(-0.3,0,-0.48 ) , 
             new BABYLON.Vector3( 1.3,0,-0.48), 
             new BABYLON.Vector3( 1.48,0, -0.3),
@@ -399,22 +359,6 @@ function initShapes(scene){
             new BABYLON.Vector3( -0.48,0,-0.3)	
             ];
 
-     /*   let  nippleShape = [ new BABYLON.Vector3(-0.21,0, -0.29),		
-            new BABYLON.Vector3(0.21,0, -0.29), 
-            new BABYLON.Vector3(0.29,0, -0.21),    
-            new BABYLON.Vector3(0.29,0, 0.21), 
-            new BABYLON.Vector3(0.21,0, 0.29), 
-            new BABYLON.Vector3(-0.21,0, 0.29), 
-            new BABYLON.Vector3(-0.29,0, 0.21), 
-            new BABYLON.Vector3(-0.29, 0, -0.21) 		                    
-        ];
-*/
-        
-    /*let noChamfBlockShape = [ new BABYLON.Vector3( -0.48,0,-0.5),		
-        new BABYLON.Vector3(-0.48,0,0.5 ), 
-        new BABYLON.Vector3( 1.48,0,0.5), 
-        new BABYLON.Vector3( 1.48,0,-0.5)                             
-        ];*/
 
         let noChamfBlockShape = [ 		
             
@@ -690,52 +634,6 @@ sphere.position.z = 4.5;
     //camera.parent = light0;
     //camera.useBouncingBehavior = true;
 
-    for(let i = 0; i <100; i++){
-
-       /* renderBlocksPart1[i] = blockChamf.clone("A" + i);
-        renderBlocksPart2[i] = blockChamf.clone("X" + i);
-        renderBlocksPart3[i] = blockNoChamf.clone("B" + i);
-        renderBlocksPart4[i] = blockNoChamf.clone("C" + i);
-
-        renderBlocksLine1A[i] = blockChamfNippleLineA.clone("A" + i);
-        renderBlocksLine2A[i] = blockChamfNippleLineA.clone("X" + i); 
-        renderBlocksLine3A[i] = blockChamfNippleLineA.clone("B" + i); 
-        renderBlocksLine4A[i] = blockChamfNippleLineA.clone("C" + i); 
-
-        renderBlocksLine1B[i] = blockChamfNippleLineB.clone("A" + i);
-        renderBlocksLine2B[i] = blockChamfNippleLineB.clone("X" + i);
-        renderBlocksLine3B[i] = blockChamfNippleLineB.clone("B" + i);
-        renderBlocksLine4B[i] = blockChamfNippleLineB.clone("C" + i);
-
-        
-        renderBlocksLine1A[i].isPickable = false;
-        renderBlocksLine2A[i].isPickable = false;
-        renderBlocksLine3A[i].isPickable = false; 
-        renderBlocksLine4A[i].isPickable = false;
-
-        renderBlocksLine1B[i].isPickable = false;
-        renderBlocksLine2B[i].isPickable = false;
-        renderBlocksLine3B[i].isPickable = false;
-        renderBlocksLine4B[i].isPickable = false;
-
-        
-        renderBlocksBigLine[i] = blockBigLine.clone("Y" + i);
-        renderBlocksSmallLine[i] = blockSmallLine.clone("Y" + i);
-
-        renderBlocksBigLine[i].isPickable = false;
-        renderBlocksSmallLine[i].isPickable = false;*/
-
-      /*  renderBlocksLine1[i] = blockChamfLine.clone("A" + i);
-        renderBlocksLine1[i].color = new BABYLON.Color3(0.6, 0.6, 0.6);
-        renderBlocksLine1[i].isPickable = false;
-        renderBlocksLine2[i] = blockChamfLine.clone("X" + i);
-        renderBlocksLine2[i].isPickable = false;
-        renderBlocksLine3[i] = blockNoChamfLine.clone("B" + i);
-        renderBlocksLine3[i].isPickable = false;
-        renderBlocksLine4[i] = blockNoChamfLine.clone("C" + i);
-        renderBlocksLine4[i].isPickable = false;
-*/
-            
-    }
+    
 
 }
