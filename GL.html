@@ -9,18 +9,21 @@
     <script src="gui.js"></script>
     <script src="tangram.js"></script>
     <style>
-	html,body, can {
+
+html,body, can {
 		width:100%;
 		height:100%;
 		padding:0;
 		margin:0;
 		overflow:hidden;
+       
 	}
+	
 	
 	#renderCanvas {
 		width: 100%;
 		height: 100%;
-		touch-action: none;
+        touch-action: none;      
 	
 	}
 
@@ -33,7 +36,17 @@
     
     <script>
         /*
-        Shapes
+        // canvas 
+html,body, can {
+		width:100%;
+		height:100%;
+		padding:0;
+		margin:0;
+        overflow:hidden;
+         position:fixed;
+	}
+        touch-action: none;
+       
 
         */
         /*
@@ -72,7 +85,7 @@
         var baseCompass = [-90,0,0];
 
         
-        blocksCount = 1;
+        blocksCount = 0;
 
         for(var g = 0; g < 1; g++){
             blocksX[g] = 0;
