@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html>
+ <head>
+    <title>bilo</title>
+    <script src="babylon.js"></script>
+    <script src="babylon.gui.js"></script>
+    <script src="shapes.js"></script>
+    <script src="render.js"></script>
+    <script src="gui.js"></script>
+    <script src="tangram.js"></script>
+    <style>
+
+html,body, can {
+		width:100%;
+		height:100%;
+		padding:0;
+		margin:0;
+		overflow:hidden;
+       
+	}
+	
+	
+	#renderCanvas {
+		width: 100%;
+		height: 100%;
+        touch-action: none;      
+	
+	}
+
+    </style>
+
+
+ </head>
+ <body>
+    <canvas id="renderCanvas"></canvas>
+    
+    <script>
+        /*
+        // canvas 
+html,body, can {
+		width:100%;
+		height:100%;
+		padding:0;
+		margin:0;
+        overflow:hidden;
+         position:fixed;
+	}
+        touch-action: none;
+       
+
+        */
+        /*
+        Ask for block positions and send LED information
+        Get response from base
+        Populate BlocksX,Y,Z,R
+        Compare with last responce to rearrange LED data 
+        block and blockLast information is the same
+        Render
+        */
+ 
+
+        let bleTimeOut;
+        
+        let fpsCounter = 0;
+        let textBattery;
+
+
+
+
+        var pitchY = 1.19;
+
+        let receivedData = [];
+        var blocksUpdated = 0;
+        var blocksReceiving = 0;
+        var blocksCount = 0;
+        var blocksOngoingCount = 0;
+        var blocksOngoingOffset = 100;// (0/100)
+        var blocksOffset = 0;// (0/100)
+        var blocksX = new Array(200);
+        var blocksY = new Array(200);
+        var blocksZ = new Array(200);
+        var blocksRT = new Array(200); //rotation and type (2x2 / 2x4)
+        var blocksLEDs2x2 = new Array(100);
+        var blocksLEDs2x4 =new Array(100);
+        var baseLED = [0x00,0x11];
+        var baseCompass = [-90,0,0];
+
+        
+        blocksCount = 0;
+
+        for(var g = 0; g < 1; g++){
+            blocksX[g] = 0;
+        blocksY[g] = g;
+        blocksZ[g] = 0;
+        blocksRT[g] = 0x02;
+
+        }
+        
+        for(var i = 0; i < 100; i++){
+            blocksLEDs2x2[i] = 0x08;
+            blocksLEDs2x4[i] = 0x00;
+         }
+  
+
+        var compassRender = 1;
+        let compassCameraAlpha = 0;
+        var blocksRender = 1; //signal if block data should be rendered
+
+       
+        var canvas = document.getElementById("renderCanvas");
+        var engine = new BABYLON.Engine(canvas, true);
+        //engine.disableUniformBuffers = true;  //REMOVE
+        var scene = new BABYLON.Scene(engine);
+        scene.clearColor  = new BABYLON.Color3(1, 1, 1);
+        scene.clearColor  = new BABYLON.Color3(0.7, 0.8, 0.9);
+
+        //Color Wheel
+        var colorWheelActive = 0;
+        var colorWheelMeshI;
+        var colorWheelMeshType;
+        
+        //BLE
+        var gattServer;
+        var gattService;
+        var gattCharacteristic;
+	    var busy = false;
+        var BLEdebug = 0;
+
+//scene.ambientColor = new BABYLON.Color3(1, 1, 1);
+
+//base
+
+initShapes(scene);
+initGui();
+initTangram(scene, pitchY);
+
+      
+
+
+var advancedTextureBattery = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+    
+        textBattery = new BABYLON.GUI.TextBlock();
+        textBattery.text = "Battery: ";
+        textBattery.color = "white";
+        textBattery.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+        textBattery.textVerticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+    
+        textBattery.fontSize = 24;
+        advancedTextureBattery.addControl(textBattery);    
+
+
+
+	function handleError(error) {
+          console.log('EAEA error=' + error);
+
+        }
+        function sendCommand() {
+
+            clearTimeout(bleTimeOut);
+           
+
+            
+            bleTimeOut = setTimeout(sendCommand, 6000);
+
+
+
+            console.log('EAEA sendCommand() ');
+ //let cmd = new Uint8Array([0x80, 0x11, 0x11, 0x81]);
+
+ //--
+var cmd;
+
+let cmd_tmp = [];
+
+cmd_tmp[0] = 0x80;
+cmd_tmp[1] = baseLED[0];
+cmd_tmp[2] = baseLED[1];
+
+console.log('EAEA sendCommand() 1 ');
+
+
+let cmd_pos = 3;
+            for(let i =0; i < blocksCount; i++){
+                //console.log('EAEA sendCommand() 2 ');
+                //cmd_tmp[cmd_pos] = 0x00;
+                cmd_tmp[cmd_pos] = blocksLEDs2x2[i];
+                cmd_pos++;
+
+                if((blocksRT[i+blocksOffset] & 0x0C) == 0){
+                  //  console.log('EAEA sendCommand() 2x ');
+                    cmd_tmp[cmd_pos] = blocksLEDs2x4[i];
+                    cmd_pos++;
+                }
+               // console.log('EAEA sendCommand() 3 ');
+            }
+
+
+
+
+            cmd_tmp[cmd_pos] = 0x81;
+            cmd_pos++;
+            //console.log('EAEA sendCommand() 4 ');
+            
+let outData = [];
+
+for(var z = 0; z < cmd_pos; z++){
+   // console.log('EAEA sendCommand() 5 ');
+   // console.log('EAEA cmd_tmp[z].toString(16) ' + cmd_tmp[z].toString(16));
+
+    outData[z] =   cmd_tmp[z].toString(16);
+
+}
+
+//console.log('EAEA sendCommand() 6 ');
+
+console.log('EAEA outData = ' + outData);
+
+/*if(blocksCount == 1){
+
+     cmd = new BufferSource ([0x80, 0, 0x11, 0x01, 0x81]);
+
+}else{
+*/
+ cmd = new Uint8Array(cmd_pos);
+
+for(let i = 0; i < cmd_pos; i++ ){
+                //console.log('EAEA cmd_tmp ' + i + 'val: ' + cmd_tmp[i].toString(16) );
+                cmd[i] = cmd_tmp[i];
+                //console.log('EAEA cmd ' + i + 'val: ' + cmd[i] );
+            }
+
+              //busy signaling can't keep up, remove
+            busy = true;
+            console.log('EAEA send outData ');
+            return gattCharacteristic.writeValue(cmd).then(() => {
+                console.log('EAEA busy = false ');
+                     busy = false;
+            });
+    }
+
+
+        //GUI ---
+
+        var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+
+        var guiPanelRight = new BABYLON.GUI.StackPanel();
+        guiPanelRight.width = "220px";
+        guiPanelRight.fontSize = "14px";
+        guiPanelRight.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        guiPanelRight.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+        advancedTexture.addControl(guiPanelRight);
+
+        var buttonConBLE = BABYLON.GUI.Button.CreateSimpleButton("butBLE", "Connect");
+        buttonConBLE.width = "150px"
+        buttonConBLE.height = "40px";
+        buttonConBLE.paddingTop = "10px";
+        buttonConBLE.paddingRight = "10px";
+        buttonConBLE.color = "white";
+        buttonConBLE.cornerRadius = 20;
+        buttonConBLE.background = "green";
+        buttonConBLE.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+       // buttonConBLE.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;   
+        buttonConBLE.onPointerUpObservable.add(function() {
+
+        
+
+
+            console.log('EAEA Connecting...');
+
+	        navigator.bluetooth.requestDevice({
+                filters: [{
+                  services: ['4880c12c-fdcb-4077-8920-a450d7f9b907']
+			      
+                }]
+	        })
+	        .then(device => {
+                console.log('EAEA Connecting to GATT Server...');
+                return device.gatt.connect();
+	        })
+	        .then(server => {
+                console.log('EAEA Found GATT server');
+                gattServer = server;
+                //Get service
+                return gattServer.getPrimaryService('4880c12c-fdcb-4077-8920-a450d7f9b907');
+	        })
+	        .then(service => {
+                console.log('EAEA Found GATT service');
+                gattService = service;
+                // Get characteristic
+                return gattService.getCharacteristic('fec26ec4-6d71-4442-9f81-55bc21d658d6');
+	        })
+  	        .then(characteristic => {
+                console.log('EAEA Found characteristic');
+                gattCharacteristic = characteristic;
+
+  		    // Listen to device notifications
+		    return gattCharacteristic.startNotifications().then(() => {
+			gattCharacteristic.addEventListener('characteristicvaluechanged', event => {
+
+                /*
+                two block
+                update
+                one block
+                update
+                updated
+                two bock
+                need to update twice to see result
+
+
+                */
+
+                console.log('EAEA characteristicvaluechanged = ' + event.target.value + ' [' + event.target.value.byteLength +']');
+
+                //need to keep old in data
+                let inData = [];
+                for(let z = 0; z <event.target.value.byteLength; z++ ){
+                    inData[z] = event.target.value.getUint8(z).toString(16);
+                    //inData += ' ';
+
+                }
+                console.log('EAEA inData = ' + inData);
+                //console.log('EAEA 1 = ' + event.target.value.getUint8(1).toString(16) );
+                //console.log('EAEA 2 = ' + event.target.value.getUint8(2).toString(16) );
+                //console.log('EAEA 3 = ' + event.target.value.getUint8(3).toString(16) );
+
+                
+                let i = 0;
+
+              //  receivedData   
+
+              let recivedDataLength =  receivedData.length;
+              for(; i < event.target.value.byteLength; i++){
+
+                receivedData[i + recivedDataLength]  = event.target.value.getUint8(i);
+     
+                }
+
+                i =0;
+                if(blocksReceiving == 0){
+                    while(i < receivedData.length){
+                        if(receivedData[i] == 0x80){
+                            receivedData.splice(0, i +1);                           
+                            blocksOngoingCount = 0;
+                            blocksReceiving = 1;
+                            break;
+
+                        }else{
+                            i++;
+                        }
+                       
+
+                    }
+                }
+
+                if(blocksReceiving == 1){
+                    while( 3 < receivedData.length){
+                        if(receivedData[0] == 0x82){
+                            blocksReceiving = 2;
+                            receivedData.splice(0, 1);   
+                           // console.log('EAEA break ');                     
+                            break;
+                         }
+
+                   // console.log('EAEA receivedData[0] = ' + receivedData[0] );
+
+                    blocksZ[blocksOngoingCount + blocksOngoingOffset] = receivedData[1]; 
+                    blocksX[blocksOngoingCount + blocksOngoingOffset] = receivedData[0]; 
+                    blocksY[blocksOngoingCount + blocksOngoingOffset] = receivedData[2]; 
+                    blocksRT[blocksOngoingCount + blocksOngoingOffset] = receivedData[3]; 
+
+                    if ( blocksZ[blocksOngoingCount + blocksOngoingOffset] > 127){
+                        blocksZ[blocksOngoingCount + blocksOngoingOffset] -= 256;                             
+                    }
+                    if ( blocksX[blocksOngoingCount + blocksOngoingOffset] > 127){
+                        blocksX[blocksOngoingCount + blocksOngoingOffset] -= 256;                             
+                    }
+                    if ( blocksY[blocksOngoingCount + blocksOngoingOffset] > 127){
+                        blocksY[blocksOngoingCount + blocksOngoingOffset] -= 256;                             
+                    }
+
+                    blocksOngoingCount++;
+
+                    receivedData.splice(0, 4);  
+
+
+                    }
+
+                }
+
+ 
+              if(blocksReceiving == 2 && receivedData.length >6){
+
+                textBattery.text =  (receivedData[6] * 0.028) + "V";
+                baseCompass[0] = (receivedData[0] << 8) + receivedData[1];
+                baseCompass[1] = (receivedData[2] << 8) + receivedData[3];
+                baseCompass[2] = (receivedData[4] << 8) + receivedData[5];
+
+                if ( baseCompass[0] > 32767){
+                    baseCompass[0] -= 65536;                             
+                }
+
+                
+                if ( baseCompass[1] > 32767){
+                    baseCompass[1] -= 65536;                             
+                }
+
+                
+                if ( baseCompass[2] > 32767){
+                    baseCompass[2] -= 65536;                             
+                }
+
+                console.log('EAEA A' + baseCompass[0] );
+                console.log('EAEA A' + baseCompass[1] );
+                console.log('EAEA A' + baseCompass[2] );
+                
+
+
+                tmpDegree = Math.atan (baseCompass[1]/baseCompass[0]);
+
+                if(baseCompass[0] >= 0 && baseCompass[1] >= 0){
+
+                    if(tmpDegree > compassCameraAlpha + Math.PI/20  || tmpDegree < compassCameraAlpha - Math.PI/20 ){
+
+                        compassCameraAlpha = tmpDegree;
+                        compassRender = 1;
+                    }
+                   // camera.alpha =  tmpDegree;
+                }else if (baseCompass[0] < 0 && baseCompass[1] >= 0){
+                    if(tmpDegree + Math.PI  > compassCameraAlpha + Math.PI/20  || tmpDegree + Math.PI  < compassCameraAlpha - Math.PI/20 ){
+
+                        compassCameraAlpha = Math.PI + tmpDegree;
+                        compassRender = 1;
+                    }
+
+                   // camera.alpha =  Math.PI + tmpDegree;
+                }
+
+                else if (baseCompass[0] < 0 && baseCompass[1] < 0){
+
+                    if(tmpDegree + Math.PI  > compassCameraAlpha + Math.PI/20  || tmpDegree + Math.PI  < compassCameraAlpha - Math.PI/20 ){
+
+                        compassCameraAlpha = Math.PI + tmpDegree;
+                        compassRender = 1;
+                    }
+
+                   // camera.alpha =  Math.PI + tmpDegree;
+                }
+                else if (baseCompass[0] >= 0 && baseCompass[1] < 0){
+                    if(tmpDegree > compassCameraAlpha + Math.PI/20  || tmpDegree < compassCameraAlpha - Math.PI/20 ){
+
+                        compassCameraAlpha = tmpDegree;
+                        compassRender = 1;
+                    }
+
+                   // camera.alpha =   tmpDegree;
+                }
+              //  compassRender = 0;
+
+
+              //  compassRender = 1;
+                //console.log('EAEA B ');
+                blocksCount = blocksOngoingCount;
+                console.log('EAEA blocksCount: ' + blocksCount);
+                let tmp = blocksOffset;
+                blocksOffset = blocksOngoingOffset;
+                blocksOngoingOffset = tmp;
+                blocksReceiving = 0;
+                blocksUpdated += 1;
+
+
+                blocksRender = 1; //don't render on each update
+
+                receivedData.splice(0, receivedData.length);  
+
+               
+
+                sendCommand().then(() => {
+                    console.log('EAEA gattWrite sent');
+           
+                 })
+                .catch(handleError);
+
+                return;
+              }
+
+
+			});
+
+		});
+	})
+	.catch(handleError);
+
+
+        //alert("Connect");
+        });
+    guiPanelRight.addControl(buttonConBLE); 
+
+
+
+
+    var buttonUpdate = BABYLON.GUI.Button.CreateSimpleButton("butUpdate", "Update");
+    buttonUpdate.width = "150px"
+    buttonUpdate.height = "40px";
+    buttonUpdate.paddingTop = "10px";
+    buttonUpdate.paddingRight = "10px";
+    buttonUpdate.color = "white";
+    buttonUpdate.cornerRadius = 20;
+    buttonUpdate.background = "green";
+    buttonUpdate.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+    buttonUpdate.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;   
+    buttonUpdate.onPointerUpObservable.add(function() {
+
+ console.log('gattWrite');
+
+ blocksOngoingCount = 0;
+blocksReceiving = 0;
+
+    sendCommand().then(() => {
+            console.log('gattWrite sent');
+           
+ })
+ .catch(handleError);
+
+
+    });
+
+    guiPanelRight.addControl(buttonUpdate); 
+
+ 
+
+
+
+
+        scene.activeCamera.attachControl(canvas);
+
+
+        engine.runRenderLoop(function () {
+
+            fpsCounter++;
+         
+            if(compassRender){
+
+                camera.alpha =  compassCameraAlpha;
+                compassRender = 0;
+
+            }
+
+
+            if(blocksRender){
+               
+               blocksRender = 0;
+
+               shapesAllocateBlocks(blocksCount);
+
+                render();
+                tangramRender();
+           
+            }
+        
+
+            //console.log('renderBlocksPart1[0].material.diffuseColor = ' +renderBlocksPart1[0].material.diffuseColor);
+            //console.log('renderBlocksPart2[0].material.diffuseColor = ' +renderBlocksPart2[0].material.diffuseColor);
+
+            scene.render();
+        });
+
+        window.addEventListener("resize", function () {
+            engine.resize();
+        });
+    </script>
+ </body>
+</html>
