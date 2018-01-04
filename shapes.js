@@ -134,14 +134,14 @@ function initShapes(scene){
         baseLEDUp[i].position.y =0.001;
         baseLEDUp[i].position.z =-0.5;
         baseLEDUp[i].rotation.y = -Math.PI/2;
-        baseLEDUp[i].name = "E1";
+        baseLEDUp[i].name = "F1";
 
         baseLEDSide[i].position.x  =1 + i%3 * 3.5;
         baseLEDSide[i].position.y =-0.5;
         baseLEDSide[i].position.z =-0.1;
         baseLEDSide[i].rotation.y = -Math.PI/2;
         baseLEDSide[i].rotation.z = -Math.PI/2 + Math.PI/12;
-        baseLEDSide[i].name = "E1";
+        baseLEDSide[i].name = "F1";
 
 
 
@@ -158,7 +158,7 @@ function initShapes(scene){
         baseLEDUp[i].position.x =-0.5;
         baseLEDUp[i].position.y =0.001;
         baseLEDUp[i].position.z = 1 + i%3 * 3.5; 
-        baseLEDUp[i].name = "F0";
+        baseLEDUp[i].name = "E0";
 
         baseLEDSide[i].position.x  = -0.1;
         baseLEDSide[i].position.y =-0.5;
@@ -167,7 +167,7 @@ function initShapes(scene){
         //baseLEDSide[i].rotation.z = -Math.PI/2 + Math.PI/12;
         baseLEDSide[i].rotation.z = -Math.PI/2 + Math.PI/12;
 
-        baseLEDSide[i].name = "F0";
+        baseLEDSide[i].name = "E0";
     }
 
     for(let i = 6; i < 9; i++){
@@ -183,7 +183,7 @@ function initShapes(scene){
         baseLEDUp[i].position.y =0.001;
         baseLEDUp[i].position.z =  9.5;
         baseLEDUp[i].rotation.y = Math.PI/2;       
-        baseLEDUp[i].name = "E0";
+        baseLEDUp[i].name = "F0";
 
         baseLEDSide[i].position.x  = 1 + i%3 * 3.5;
         baseLEDSide[i].position.y =-0.5;
@@ -192,7 +192,7 @@ function initShapes(scene){
         //baseLEDSide[i].rotation.z = -Math.PI/2 + Math.PI/12;
         baseLEDSide[i].rotation.z = -Math.PI/2 - Math.PI/12;
 
-        baseLEDSide[i].name = "E0";
+        baseLEDSide[i].name = "F0";
     
 
                 
@@ -210,7 +210,7 @@ function initShapes(scene){
         baseLEDUp[i].position.y =0.001;
         baseLEDUp[i].position.z = 1 + i%3 * 3.5;
         baseLEDUp[i].rotation.y = Math.PI;        
-        baseLEDUp[i].name = "F1";      
+        baseLEDUp[i].name = "E1";      
         
         baseLEDSide[i].position.x  = 9.18;
         baseLEDSide[i].position.y =-0.5;
@@ -219,7 +219,7 @@ function initShapes(scene){
         //baseLEDSide[i].rotation.z = -Math.PI/2 + Math.PI/12;
         baseLEDSide[i].rotation.z = -Math.PI/2 - Math.PI/12;
 
-        baseLEDSide[i].name = "F1";
+        baseLEDSide[i].name = "E1";
     }
     
     // nipple -------------------------------------------------------
@@ -523,6 +523,23 @@ function initShapes(scene){
         
     materials[0].diffuseColor = new BABYLON.Color3(1, 1, 1);
     materials[0].emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+    materials[1].diffuseColor = new BABYLON.Color3(1, 0, 0);
+    materials[1].emissiveColor = new BABYLON.Color3(emissiveColor, 0, 0);
+    materials[2].diffuseColor = new BABYLON.Color3(0, 1, 0);
+    materials[2].emissiveColor = new BABYLON.Color3(0, emissiveColor, 0);
+    materials[3].diffuseColor = new BABYLON.Color3(1, 1, 0);
+    materials[3].emissiveColor = new BABYLON.Color3(emissiveColor, emissiveColor, 0);
+    materials[4].diffuseColor = new BABYLON.Color3(0, 0, 1);
+    materials[4].emissiveColor = new BABYLON.Color3(0, 0,emissiveColor );
+    materials[5].diffuseColor = new BABYLON.Color3(1, 0, 1);
+    materials[5].emissiveColor = new BABYLON.Color3(emissiveColor, 0, emissiveColor);
+    materials[6].diffuseColor = new BABYLON.Color3(0, 1, 1);
+    materials[6].emissiveColor = new BABYLON.Color3(0, emissiveColor, emissiveColor);
+    materials[7].diffuseColor = new BABYLON.Color3(1, 1, 1);
+    materials[7].emissiveColor = new BABYLON.Color3(0.3, 0.3, 0.3);
+
+    /*materials[0].diffuseColor = new BABYLON.Color3(1, 1, 1);
+    materials[0].emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
     materials[1].diffuseColor = new BABYLON.Color3(0, 0, 1);
     materials[1].emissiveColor = new BABYLON.Color3(0, 0, emissiveColor);
     materials[2].diffuseColor = new BABYLON.Color3(0, 1, 0);
@@ -536,7 +553,7 @@ function initShapes(scene){
     materials[6].diffuseColor = new BABYLON.Color3(1, 1, 0);
     materials[6].emissiveColor = new BABYLON.Color3(emissiveColor, emissiveColor, 0);
     materials[7].diffuseColor = new BABYLON.Color3(1, 1, 1);
-    materials[7].emissiveColor = new BABYLON.Color3(0.3, 0.3, 0.3);
+    materials[7].emissiveColor = new BABYLON.Color3(0.3, 0.3, 0.3);*/
 
     materialsBaseLED[0] = new BABYLON.StandardMaterial("BASE NA", scene);
     materialsBaseLED[1] = new BABYLON.StandardMaterial("BASE RED", scene);

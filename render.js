@@ -29,15 +29,15 @@ renderBlocksSmallLine[i].setEnabled(0);
 
     }
 
-    baseLEDUp[3].material = materials[(baseLED[0] & 0x38) >> 3];              
-    baseLEDUp[6].material = materials[baseLED[0] & 0x07];
-    baseLEDUp[9].material = materials[(baseLED[1] & 0x38) >> 3];
-    baseLEDUp[0].material = materials[baseLED[1] & 0x07];
+    baseLEDUp[6].material = materials[(baseLED[0] & 0x38) >> 3];              
+    baseLEDUp[3].material = materials[baseLED[0] & 0x07];
+    baseLEDUp[0].material = materials[(baseLED[1] & 0x38) >> 3];
+    baseLEDUp[9].material = materials[baseLED[1] & 0x07];
 
-    baseLEDSide[3].material = materials[(baseLED[0] & 0x38) >> 3];              
-    baseLEDSide[6].material = materials[baseLED[0] & 0x07];
-    baseLEDSide[9].material = materials[(baseLED[1] & 0x38) >> 3];
-    baseLEDSide[0].material = materials[baseLED[1] & 0x07];
+    baseLEDSide[6].material = materials[(baseLED[0] & 0x38) >> 3];              
+    baseLEDSide[3].material = materials[baseLED[0] & 0x07];
+    baseLEDSide[0].material = materials[(baseLED[1] & 0x38) >> 3];
+    baseLEDSide[9].material = materials[baseLED[1] & 0x07];
 
     for(var i = 0; i < blocksCount; i++){
         
@@ -139,8 +139,8 @@ renderBlocksSmallLine[i].setEnabled(0);
                                 // console.log('i: ' + i);
                                // console.log('materials[blocksLEDs2x2[i] & 0x07]: ' + materials[blocksLEDs2x2[i] & 0x07]);
                                // console.log('materials[(blocksLEDs2x2[i] & 0x38) >> 3]: ' + materials[(blocksLEDs2x2[i] & 0x38) >> 3]);
-                                    renderBlocksPart1[i].material = materials[blocksLEDs2x2[i] & 0x07];
-                                    renderBlocksPart2[i].material = materials[(blocksLEDs2x2[i] & 0x38) >> 3];
+                                    renderBlocksPart2[i].material = materials[blocksLEDs2x2[i] & 0x07];
+                                    renderBlocksPart1[i].material = materials[(blocksLEDs2x2[i] & 0x38) >> 3];
         
                                // console.log('renderBlocksPart1[i].material = ' +renderBlocksPart1[i].material);
                                // console.log('renderBlocksPart2[i].material = ' +renderBlocksPart2[i].material);
@@ -227,8 +227,8 @@ renderBlocksSmallLine[i].setEnabled(0);
                                 // console.log('i: ' + i);
                                // console.log('materials[blocksLEDs2x2[i] & 0x07]: ' + materials[blocksLEDs2x2[i] & 0x07]);
                                // console.log('materials[(blocksLEDs2x2[i] & 0x38) >> 3]: ' + materials[(blocksLEDs2x2[i] & 0x38) >> 3]);
-                                    renderBlocksPart1[i].material = materials[blocksLEDs2x2[i] & 0x07];
-                                    renderBlocksPart3[i].material = materials[(blocksLEDs2x2[i] & 0x38) >> 3];
+                                    renderBlocksPart3[i].material = materials[blocksLEDs2x2[i] & 0x07];
+                                    renderBlocksPart1[i].material = materials[(blocksLEDs2x2[i] & 0x38) >> 3];
         
                                // console.log('renderBlocksPart1[i].material = ' +renderBlocksPart1[i].material);
                                // console.log('renderBlocksPart2[i].material = ' +renderBlocksPart2[i].material);
@@ -344,8 +344,8 @@ renderBlocksSmallLine[i].setEnabled(0);
                                 
         
                                 if(blocksLEDs2x4[i] != null){
-                                    renderBlocksPart4[i].material = materials[blocksLEDs2x4[i] & 0x07];
-                                    renderBlocksPart2[i].material = materials[(blocksLEDs2x4[i] & 0x38) >> 3];
+                                    renderBlocksPart2[i].material = materials[blocksLEDs2x4[i] & 0x07];
+                                    renderBlocksPart4[i].material = materials[(blocksLEDs2x4[i] & 0x38) >> 3];
         
                                 }
         

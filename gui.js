@@ -68,22 +68,24 @@ var buttonColorWheelSize = "1px";
               //buttonColorWheel[tmpI].margin = "40px";
               buttonColorWheel[tmpI].thickness = 3;
               let colorString = "#"
+              
+              if(b){
+                colorString += "FF"
+            }else{
+                colorString += "00"
+            }
 
-              if(r){
-                  colorString += "FF"
-              }else{                    
-                  colorString += "00"
-              }
               if(g){
                   colorString += "FF"
               }else{
                   colorString += "00"
               }
-              if(b){
-                  colorString += "FF"
-              }else{
-                  colorString += "00"
-              }
+
+              if(r){
+                colorString += "FF"
+            }else{                    
+                colorString += "00"
+            }
 
               if(r||g||b){
               buttonColorWheel[tmpI].background =    colorString;
@@ -93,27 +95,27 @@ var buttonColorWheelSize = "1px";
               buttonColorWheel[tmpI].onPointerMoveObservable.add(function() {
                  // console.log('buttoncolorwheel R: ' + tmpI);
                   //blocksLEDs2x2[colorWheelMeshI] = tmpI;
-                  if( colorWheelMeshType == 'A'){
+                  if( colorWheelMeshType == 'B'){
                      // console.log('A colorWheelMeshI: ' + colorWheelMeshI);
                     //  console.log(' ( tmpI | (0xF1 & blocksLEDs2x2[colorWheelMeshI] )): ' +  ( tmpI | (0xF8 & blocksLEDs2x2[colorWheelMeshI] )));
                       if(blocksLEDs2x2[colorWheelMeshI] != ( tmpI | (0xF8 & blocksLEDs2x2[colorWheelMeshI] ))){
                           blocksLEDs2x2[colorWheelMeshI] = ( tmpI | (0xF8 & blocksLEDs2x2[colorWheelMeshI] )); 
                           blocksRender = 1;
                       }
-                  }else if (colorWheelMeshType == 'B'){
+                  }else if (colorWheelMeshType == 'A'){
                      // console.log('B colorWheelMeshI: ' + colorWheelMeshI);
                      // console.log(' ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI]))' + ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI])));
                       if(blocksLEDs2x2[colorWheelMeshI] != ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI]))){
                           blocksLEDs2x2[colorWheelMeshI] = ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI])); 
                           blocksRender = 1;
                       }
-                  }else if (colorWheelMeshType == 'C'){
+                  }else if (colorWheelMeshType == 'D'){
                       if(blocksLEDs2x4[colorWheelMeshI] != ( tmpI | (0xF8 & blocksLEDs2x4[colorWheelMeshI] ))){
                           blocksLEDs2x4[colorWheelMeshI] = ( tmpI | (0xF8 & blocksLEDs2x4[colorWheelMeshI] )); 
                           blocksRender = 1;
                       }
                       
-                  }else if (colorWheelMeshType == 'D'){
+                  }else if (colorWheelMeshType == 'C'){
                       if(blocksLEDs2x4[colorWheelMeshI] != ( (tmpI << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI])) ){
                           blocksLEDs2x4[colorWheelMeshI] = ( (tmpI << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI])); 
                           blocksRender = 1;

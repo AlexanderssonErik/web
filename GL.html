@@ -62,6 +62,7 @@ html,body, can {
         let bleTimeOut;
         
         let fpsCounter = 0;
+        let textBattery;
 
 
 
@@ -85,13 +86,13 @@ html,body, can {
         var baseCompass = [-90,0,0];
 
         
-        blocksCount = 0;
+        blocksCount = 1;
 
         for(var g = 0; g < 1; g++){
-            blocksX[g] = 0;
+            blocksX[g] = 1;
         blocksY[g] = g;
         blocksZ[g] = 0;
-        blocksRT[g] = 0x02;
+        blocksRT[g] = 0x04;
 
         }
         
@@ -135,6 +136,17 @@ initTangram(scene, pitchY);
 
       
 
+
+var advancedTextureBattery = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+    
+        textBattery = new BABYLON.GUI.TextBlock();
+        textBattery.text = "Battery: ";
+        textBattery.color = "white";
+        textBattery.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+        textBattery.textVerticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+    
+        textBattery.fontSize = 24;
+        advancedTextureBattery.addControl(textBattery);    
 
 
 
@@ -376,7 +388,9 @@ for(let i = 0; i < cmd_pos; i++ ){
                 }
 
  
-              if(blocksReceiving == 2 && receivedData.length >5){
+              if(blocksReceiving == 2 && receivedData.length >6){
+
+                textBattery.text =  (receivedData[6] * 0.028) + "V";
                 baseCompass[0] = (receivedData[0] << 8) + receivedData[1];
                 baseCompass[1] = (receivedData[2] << 8) + receivedData[3];
                 baseCompass[2] = (receivedData[4] << 8) + receivedData[5];
@@ -446,11 +460,15 @@ for(let i = 0; i < cmd_pos; i++ ){
               //  compassRender = 1;
                 //console.log('EAEA B ');
                 blocksCount = blocksOngoingCount;
+                console.log('EAEA blocksCount: ' + blocksCount);
                 let tmp = blocksOffset;
                 blocksOffset = blocksOngoingOffset;
                 blocksOngoingOffset = tmp;
                 blocksReceiving = 0;
                 blocksUpdated += 1;
+
+
+                blocksRender = 1; //don't render on each update
 
                 receivedData.splice(0, receivedData.length);  
 
