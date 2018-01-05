@@ -137,10 +137,15 @@ renderBlocksSmallLine[i].setEnabled(0);
         
                                 if(blocksLEDs2x2[i] != null){
                                 // console.log('i: ' + i);
-                               // console.log('materials[blocksLEDs2x2[i] & 0x07]: ' + materials[blocksLEDs2x2[i] & 0x07]);
-                               // console.log('materials[(blocksLEDs2x2[i] & 0x38) >> 3]: ' + materials[(blocksLEDs2x2[i] & 0x38) >> 3]);
-                                    renderBlocksPart2[i].material = materials[blocksLEDs2x2[i] & 0x07];
-                                    renderBlocksPart1[i].material = materials[(blocksLEDs2x2[i] & 0x38) >> 3];
+                             //   console.log('materials[blocksLEDs2x2[i+blocksOffset] & 0x07]: ' + materials[blocksLEDs2x2[i+blocksOffset] & 0x07]);
+                              //  console.log('materials[(blocksLEDs2x2[i+blocksOffset] & 0x38) >> 3]: ' + materials[(blocksLEDs2x2[i+blocksOffset] & 0x38) >> 3]);
+                             //   console.log('blocksLEDs2x2[i+blocksOffset] & 0x07: ' + (blocksLEDs2x2[i+blocksOffset] & 0x07));
+                             //   console.log('(blocksLEDs2x2[i+blocksOffset] & 0x38) >> 3: ' +((blocksLEDs2x2[i+blocksOffset] & 0x38) >> 3));
+                             //   console.log('i+blocksOffset: ' + (i+blocksOffset));
+                                
+
+                                    renderBlocksPart2[i].material = materials[blocksLEDs2x2[i+blocksOffset] & 0x07];
+                                    renderBlocksPart1[i].material = materials[(blocksLEDs2x2[i+blocksOffset] & 0x38) >> 3];
         
                                // console.log('renderBlocksPart1[i].material = ' +renderBlocksPart1[i].material);
                                // console.log('renderBlocksPart2[i].material = ' +renderBlocksPart2[i].material);
@@ -227,8 +232,8 @@ renderBlocksSmallLine[i].setEnabled(0);
                                 // console.log('i: ' + i);
                                // console.log('materials[blocksLEDs2x2[i] & 0x07]: ' + materials[blocksLEDs2x2[i] & 0x07]);
                                // console.log('materials[(blocksLEDs2x2[i] & 0x38) >> 3]: ' + materials[(blocksLEDs2x2[i] & 0x38) >> 3]);
-                                    renderBlocksPart3[i].material = materials[blocksLEDs2x2[i] & 0x07];
-                                    renderBlocksPart1[i].material = materials[(blocksLEDs2x2[i] & 0x38) >> 3];
+                                    renderBlocksPart3[i].material = materials[blocksLEDs2x2[i+blocksOffset] & 0x07];
+                                    renderBlocksPart1[i].material = materials[(blocksLEDs2x2[i+blocksOffset] & 0x38) >> 3];
         
                                // console.log('renderBlocksPart1[i].material = ' +renderBlocksPart1[i].material);
                                // console.log('renderBlocksPart2[i].material = ' +renderBlocksPart2[i].material);
@@ -344,8 +349,8 @@ renderBlocksSmallLine[i].setEnabled(0);
                                 
         
                                 if(blocksLEDs2x4[i] != null){
-                                    renderBlocksPart2[i].material = materials[blocksLEDs2x4[i] & 0x07];
-                                    renderBlocksPart4[i].material = materials[(blocksLEDs2x4[i] & 0x38) >> 3];
+                                    renderBlocksPart2[i].material = materials[blocksLEDs2x4[i+blocksOffset] & 0x07];
+                                    renderBlocksPart4[i].material = materials[(blocksLEDs2x4[i+blocksOffset] & 0x38) >> 3];
         
                                 }
         

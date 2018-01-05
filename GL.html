@@ -80,8 +80,8 @@ html,body, can {
         var blocksY = new Array(200);
         var blocksZ = new Array(200);
         var blocksRT = new Array(200); //rotation and type (2x2 / 2x4)
-        var blocksLEDs2x2 = new Array(100);
-        var blocksLEDs2x4 =new Array(100);
+        var blocksLEDs2x2 = new Array(200);
+        var blocksLEDs2x4 =new Array(200);
         var baseLED = [0x00,0x11];
         var baseCompass = [-90,0,0];
 
@@ -96,8 +96,8 @@ html,body, can {
 
         }
         
-        for(var i = 0; i < 100; i++){
-            blocksLEDs2x2[i] = 0x08;
+        for(var i = 0; i < 200; i++){
+            blocksLEDs2x2[i] = 0x00;
             blocksLEDs2x4[i] = 0x00;
          }
   
@@ -183,12 +183,12 @@ let cmd_pos = 3;
             for(let i =0; i < blocksCount; i++){
                 //console.log('EAEA sendCommand() 2 ');
                 //cmd_tmp[cmd_pos] = 0x00;
-                cmd_tmp[cmd_pos] = blocksLEDs2x2[i];
+                cmd_tmp[cmd_pos] = blocksLEDs2x2[i+blocksOffset];
                 cmd_pos++;
 
                 if((blocksRT[i+blocksOffset] & 0x0C) == 0){
                   //  console.log('EAEA sendCommand() 2x ');
-                    cmd_tmp[cmd_pos] = blocksLEDs2x4[i];
+                    cmd_tmp[cmd_pos] = blocksLEDs2x4[i+blocksOffset];
                     cmd_pos++;
                 }
                // console.log('EAEA sendCommand() 3 ');
@@ -459,6 +459,34 @@ for(let i = 0; i < cmd_pos; i++ ){
 
               //  compassRender = 1;
                 //console.log('EAEA B ');
+
+
+                for(i=blocksOffset; i < blocksOffset+blocksCount; i++ ){
+                    for(let z = blocksOngoingOffset; z < blocksOngoingOffset+blocksOngoingCount; z++){
+                        if( blocksX[z] == blocksX[i] && 
+                            blocksY[z] == blocksY[i] &&
+                            blocksZ[z] == blocksZ[i] &&
+                            blocksRT[z] == blocksRT[i] ){
+
+                            if(blocksRT[z] & 0x04){
+                                blocksLEDs2x2[z] == blocksLEDs2x2[i];
+                                break;
+                            }else{
+                                blocksLEDs2x2[z] == blocksLEDs2x2[i];
+                                blocksLEDs2x4[z] == blocksLEDs2x4[i];
+                                break;
+                            }
+
+
+                        }
+
+                    }
+                    blocksLEDs2x2[i] = 0x00;
+                    blocksLEDs2x4[i] = 0x00;
+                }
+
+                
+
                 blocksCount = blocksOngoingCount;
                 console.log('EAEA blocksCount: ' + blocksCount);
                 let tmp = blocksOffset;
@@ -540,7 +568,7 @@ blocksReceiving = 0;
          
             if(compassRender){
 
-                camera.alpha =  compassCameraAlpha;
+                camera.alpha =  -compassCameraAlpha;
                 compassRender = 0;
 
             }

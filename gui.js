@@ -93,31 +93,38 @@ var buttonColorWheelSize = "1px";
               //buttonColorWheel[tmpI].onPointerEnterObservable.add(function() {
 
               buttonColorWheel[tmpI].onPointerMoveObservable.add(function() {
-                 // console.log('buttoncolorwheel R: ' + tmpI);
+                  //console.log('buttoncolorwheel R: ' + tmpI);
                   //blocksLEDs2x2[colorWheelMeshI] = tmpI;
                   if( colorWheelMeshType == 'B'){
-                     // console.log('A colorWheelMeshI: ' + colorWheelMeshI);
+                    //  console.log('A colorWheelMeshI: ' + colorWheelMeshI);
                     //  console.log(' ( tmpI | (0xF1 & blocksLEDs2x2[colorWheelMeshI] )): ' +  ( tmpI | (0xF8 & blocksLEDs2x2[colorWheelMeshI] )));
-                      if(blocksLEDs2x2[colorWheelMeshI] != ( tmpI | (0xF8 & blocksLEDs2x2[colorWheelMeshI] ))){
-                          blocksLEDs2x2[colorWheelMeshI] = ( tmpI | (0xF8 & blocksLEDs2x2[colorWheelMeshI] )); 
+                      if(blocksLEDs2x2[colorWheelMeshI+blocksOffset] != ( tmpI | (0xF8 & blocksLEDs2x2[colorWheelMeshI+blocksOffset] ))){
+                          blocksLEDs2x2[colorWheelMeshI+blocksOffset] = ( tmpI | (0xF8 & blocksLEDs2x2[colorWheelMeshI+blocksOffset] )); 
                           blocksRender = 1;
+                        //  console.log('B colorWheelMeshI+blocksOffset: ' + (colorWheelMeshI+blocksOffset));
+                        //  console.log('B blocksLEDs2x2[colorWheelMeshI+blocksOffset]: ' + blocksLEDs2x2[colorWheelMeshI+blocksOffset]);
+                        //  console.log('B blocksLEDs2x2[0]: ' + blocksLEDs2x2[0]);
+                         
                       }
                   }else if (colorWheelMeshType == 'A'){
                      // console.log('B colorWheelMeshI: ' + colorWheelMeshI);
                      // console.log(' ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI]))' + ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI])));
-                      if(blocksLEDs2x2[colorWheelMeshI] != ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI]))){
-                          blocksLEDs2x2[colorWheelMeshI] = ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI])); 
+                      if(blocksLEDs2x2[colorWheelMeshI+blocksOffset] != ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI+blocksOffset]))){
+                          blocksLEDs2x2[colorWheelMeshI+blocksOffset] = ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI+blocksOffset])); 
                           blocksRender = 1;
+                      //    console.log('A colorWheelMeshI+blocksOffset: ' + (colorWheelMeshI+blocksOffset));
+                       //   console.log('A blocksLEDs2x2[colorWheelMeshI+blocksOffset]: ' + blocksLEDs2x2[colorWheelMeshI+blocksOffset]);
+                      //    console.log('A blocksLEDs2x2[0]: ' + blocksLEDs2x2[0]);
                       }
                   }else if (colorWheelMeshType == 'D'){
-                      if(blocksLEDs2x4[colorWheelMeshI] != ( tmpI | (0xF8 & blocksLEDs2x4[colorWheelMeshI] ))){
-                          blocksLEDs2x4[colorWheelMeshI] = ( tmpI | (0xF8 & blocksLEDs2x4[colorWheelMeshI] )); 
+                      if(blocksLEDs2x4[colorWheelMeshI+blocksOffset] != ( tmpI | (0xF8 & blocksLEDs2x4[colorWheelMeshI+blocksOffset] ))){
+                          blocksLEDs2x4[colorWheelMeshI+blocksOffset] = ( tmpI | (0xF8 & blocksLEDs2x4[colorWheelMeshI+blocksOffset] )); 
                           blocksRender = 1;
                       }
                       
                   }else if (colorWheelMeshType == 'C'){
-                      if(blocksLEDs2x4[colorWheelMeshI] != ( (tmpI << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI])) ){
-                          blocksLEDs2x4[colorWheelMeshI] = ( (tmpI << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI])); 
+                      if(blocksLEDs2x4[colorWheelMeshI+blocksOffset] != ( (tmpI << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI+blocksOffset])) ){
+                          blocksLEDs2x4[colorWheelMeshI+blocksOffset] = ( (tmpI << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI+blocksOffset])); 
                           blocksRender = 1;
                       }
                       
@@ -273,7 +280,7 @@ var buttonColorWheelSize = "1px";
         
                     advancedTextureColorSelect = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("ColorSelect");
                 
-                    colorWheelMeshI = pickResult.pickedMesh.name.match(/\d+$/)[0];
+                    colorWheelMeshI = Number(pickResult.pickedMesh.name.match(/\d+$/)[0]);
                     colorWheelMeshType = pickResult.pickedMesh.name.slice(0, 1);
         
         
