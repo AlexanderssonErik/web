@@ -58,7 +58,7 @@ html,body, can {
         Render
         */
  
-
+      
         let bleTimeOut;
         
         let fpsCounter = 0;
@@ -86,21 +86,48 @@ html,body, can {
         var baseCompass = [-90,0,0];
 
         
+
+
         blocksCount = 0;
 
-        for(var g = 0; g < 1; g++){
-            blocksX[g] = 1;
+       /* for(var g = 0; g < 1; g++){
+            blocksX[g] = 3;
         blocksY[g] = g;
-        blocksZ[g] = 0;
-        blocksRT[g] = 0x04;
+        blocksZ[g] = 2;
+        blocksRT[g] = 0x03;
 
-        }
+        }*/
         
         for(var i = 0; i < 200; i++){
             blocksLEDs2x2[i] = 0x00;
             blocksLEDs2x4[i] = 0x00;
          }
   
+
+
+  /*     blocksX[0] = 3;
+      blocksY[0] = 0;
+      blocksZ[0] = 2;
+      blocksRT[0] = 0;
+      blocksLEDs2x2[0] = 0x04;
+      blocksLEDs2x4[0] = 0x04;
+
+      blocksX[1] = 5;
+      blocksY[1] = 1;
+      blocksZ[1] = 2;
+      blocksRT[1] = 2;
+      blocksLEDs2x2[1] = 0x02;
+      blocksLEDs2x4[1] = 0x04;*/
+
+    /*  blocksX[0] = 5;
+      blocksY[0] = 1;
+      blocksZ[0] = 2;
+      blocksRT[0] = 2;
+      blocksLEDs2x2[0] = 0x02;
+      blocksLEDs2x4[0] = 0x04;
+     
+      blocksCount = 1;
+*/
 
         var compassRender = 1;
         let compassCameraAlpha = 0;
@@ -309,7 +336,7 @@ for(let i = 0; i < cmd_pos; i++ ){
 
                 */
 
-                console.log('EAEA characteristicvaluechanged = ' + event.target.value + ' [' + event.target.value.byteLength +']');
+                //console.log('EAEA characteristicvaluechanged = ' + event.target.value + ' [' + event.target.value.byteLength +']');
 
                 //need to keep old in data
                 let inData = [];
@@ -409,9 +436,9 @@ for(let i = 0; i < cmd_pos; i++ ){
                     baseCompass[2] -= 65536;                             
                 }
 
-                console.log('EAEA A' + baseCompass[0] );
-                console.log('EAEA A' + baseCompass[1] );
-                console.log('EAEA A' + baseCompass[2] );
+                //console.log('EAEA A' + baseCompass[0] );
+                //console.log('EAEA A' + baseCompass[1] );
+                //console.log('EAEA A' + baseCompass[2] );
                 
 
 
@@ -469,11 +496,17 @@ for(let i = 0; i < cmd_pos; i++ ){
                             blocksRT[z] == blocksRT[i] ){
 
                             if(blocksRT[z] & 0x04){
-                                blocksLEDs2x2[z] == blocksLEDs2x2[i];
+                                //console.log('EAEA HIT: ');
+                                //console.log('EAEA z: ' + z);
+                                //console.log('EAEA i: ' + i);
+                                //console.log('EAEA blocksLEDs2x2[z]: ' + blocksLEDs2x2[z]);
+                                //console.log('EAEA blocksLEDs2x2[i]: ' + blocksLEDs2x2[i]);
+                                blocksLEDs2x2[z] = blocksLEDs2x2[i];
                                 break;
                             }else{
-                                blocksLEDs2x2[z] == blocksLEDs2x2[i];
-                                blocksLEDs2x4[z] == blocksLEDs2x4[i];
+                                //console.log('EAEA HIT2: ');
+                                blocksLEDs2x2[z] = blocksLEDs2x2[i];
+                                blocksLEDs2x4[z] = blocksLEDs2x4[i];
                                 break;
                             }
 
@@ -484,6 +517,20 @@ for(let i = 0; i < cmd_pos; i++ ){
                     blocksLEDs2x2[i] = 0x00;
                     blocksLEDs2x4[i] = 0x00;
                 }
+
+                /*if(debugCount){
+
+                    while(true){
+
+                    }}
+
+                if(blocksCount == 3 && blocksOngoingCount == 2){
+
+                    console.log('EA EA lock: ');
+
+                   
+                    debugCount++;
+                }*/
 
                 
 
@@ -503,7 +550,7 @@ for(let i = 0; i < cmd_pos; i++ ){
                
 
                 sendCommand().then(() => {
-                    console.log('EAEA gattWrite sent');
+                    //console.log('EAEA gattWrite sent');
            
                  })
                 .catch(handleError);
