@@ -13,6 +13,7 @@ let blockChamf;
 
 let materials = [];
 let materialsBaseLED = [];
+let shapesMaterialsStar = []
 
 let renderBlocksPart1 = [];
 let renderBlocksPart2 = [];
@@ -49,6 +50,14 @@ let baseLEDSide = [];
 let camera;
 
 let blocksAllocated = 0;
+
+let shapesStar;
+
+
+
+
+
+
 
 function shapesAllocateBlocks(currentCount){
 
@@ -99,6 +108,106 @@ function initShapes(scene){
 
  //   https://www.babylonjs-playground.com/#165IV6#71
 
+
+
+ // star shape ----------------
+ let starShape = [ new BABYLON.Vector3( 0,0.3,0),		
+    new BABYLON.Vector3( 0.069,0.094,0),	
+    new BABYLON.Vector3( 0.285,0.093,0), 
+    new BABYLON.Vector3( 0.111,-0.036,0),    
+    new BABYLON.Vector3( 0.176,-0.243,0), 
+    new BABYLON.Vector3( 0,-0.117,0),        
+    new BABYLON.Vector3( -0.176,-0.243,0),  
+    new BABYLON.Vector3( -0.111,-0.036,0),  
+    new BABYLON.Vector3( -0.285,0.093,0),   
+    new BABYLON.Vector3( -0.069,0.094,0), 
+    new BABYLON.Vector3( 0,0.3,0)
+                      
+];
+
+
+var starPath = [
+    new BABYLON.Vector3(0, 0, 0),
+    new BABYLON.Vector3(0, 0, 0.1)
+   // new BABYLON.Vector3(0, 0, 0.1)
+    
+  
+    ];
+
+
+
+var starScaling = function(i, distance) {
+    if(i == 0){
+        return 1;
+    }else if(i == 1){
+        return 0;
+    }else if(i == 2){
+        return 0;
+    }else if(i == 3){
+        return 0.9;
+    }
+
+};
+
+shapesMaterialsStar[0] = new BABYLON.StandardMaterial("STAR GOLD", scene);
+shapesMaterialsStar[0].diffuseColor = new BABYLON.Color3(1, 1, 0);
+shapesMaterialsStar[0].emissiveColor = new BABYLON.Color3(0.4, 0.4, 0.1);
+
+shapesMaterialsStar[1] = new BABYLON.StandardMaterial("STAR WHITE", scene);
+shapesMaterialsStar[1].diffuseColor = new BABYLON.Color3(1, 1, 1);
+shapesMaterialsStar[1].emissiveColor = new BABYLON.Color3(0.4, 0.4, 0.1);
+
+let shapesStar1 = BABYLON.MeshBuilder.ExtrudeShapeCustom("shapesStar1", {shape: starShape, path: starPath, scaleFunction: starScaling, sideOrientation: BABYLON.Mesh.BACKSIDE, updatable: false}, scene);
+shapesStar1.rotation.x = Math.PI;
+shapesStar1.rotation.y = Math.PI + Math.PI/2;
+shapesStar1.rotation.z = Math.PI;
+//shapesStar1.rotation.z = Math.PI/10;
+//shapesStar1.position.x =4.5; 
+//shapesStar1.position.y =2; 
+//shapesStar1.position.z =4.5;
+shapesStar1.isPickable = false;
+shapesStar1.scaling = new BABYLON.Vector3(3, 3, 3);
+
+let shapesStar2 = shapesStar1.clone("shapesStar2");
+//shapesStar2.rotation.x = Math.PI;
+shapesStar2.isPickable = false;
+shapesStar2.rotation.y = Math.PI/2;
+
+
+shapesStar2Array = [shapesStar1, shapesStar2];
+shapesStar = BABYLON.Mesh.MergeMeshes(shapesStar2Array); 
+shapesStar.material = shapesMaterialsStar[0];
+
+
+//scene.meshes.pop();
+
+
+
+
+//shapesStar.setEnabled(1); 
+
+//shapesStar2.position.x =1; 
+//shapesStar2.position.y =2; 
+//shapesStar2.position.z =4.5;
+//shapesStar2.isPickable = false;
+//shapesStar2.scaling = new BABYLON.Vector3(3, 3, 3);
+
+/*
+ var octahedron = BABYLON.MeshBuilder.CreatePolyhedron("oct", {type: 0, size: 0.5}, scene);
+ octahedron.position.y = 1;
+
+ var octahedron2 = BABYLON.MeshBuilder.CreatePolyhedron("oct", {type: 1, size: 0.5}, scene);
+ octahedron2.position.y = 2;
+*/
+
+/*
+var x = []
+
+ for(var i = 0; i < 15; i++){
+x[i] = BABYLON.MeshBuilder.CreatePolyhedron("oct", {type: i, size: 0.5}, scene);
+x[i].position.y = i;
+
+ }*/
 
    // baseLED side -------------------------------------------------------
 
@@ -520,6 +629,16 @@ function initShapes(scene){
     materials[5] = new BABYLON.StandardMaterial("PURPLE", scene);
     materials[6] = new BABYLON.StandardMaterial("CYAN", scene);
     materials[7] = new BABYLON.StandardMaterial("WHITE", scene);
+
+    materials[8] = new BABYLON.StandardMaterial("NA", scene);
+    materials[9] = new BABYLON.StandardMaterial("RED", scene);
+    materials[10] = new BABYLON.StandardMaterial("GREEN", scene);
+    materials[11] = new BABYLON.StandardMaterial("YELLOW", scene);
+    materials[12] = new BABYLON.StandardMaterial("BLUE", scene);
+    materials[13] = new BABYLON.StandardMaterial("PURPLE", scene);
+    materials[14] = new BABYLON.StandardMaterial("CYAN", scene);
+    materials[15] = new BABYLON.StandardMaterial("WHITE", scene);
+
         
     materials[0].diffuseColor = new BABYLON.Color3(1, 1, 1);
     materials[0].emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
@@ -537,6 +656,36 @@ function initShapes(scene){
     materials[6].emissiveColor = new BABYLON.Color3(0, emissiveColor, emissiveColor);
     materials[7].diffuseColor = new BABYLON.Color3(1, 1, 1);
     materials[7].emissiveColor = new BABYLON.Color3(0.3, 0.3, 0.3);
+
+
+    let alphaSetting1 = 0.6;
+
+
+    materials[8].diffuseColor = new BABYLON.Color3(1, 1, 1);
+    materials[8].emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+    materials[8].alpha = alphaSetting1;
+    materials[9].diffuseColor = new BABYLON.Color3(1, 0, 0);
+    materials[9].emissiveColor = new BABYLON.Color3(emissiveColor, 0, 0);
+    materials[9].alpha = alphaSetting1;
+    materials[10].diffuseColor = new BABYLON.Color3(0, 1, 0);
+    materials[10].emissiveColor = new BABYLON.Color3(0, emissiveColor, 0);
+    materials[10].alpha = alphaSetting1;
+    materials[11].diffuseColor = new BABYLON.Color3(1, 1, 0);
+    materials[11].emissiveColor = new BABYLON.Color3(emissiveColor, emissiveColor, 0);
+    materials[11].alpha = alphaSetting1;
+    materials[12].diffuseColor = new BABYLON.Color3(0, 0, 1);
+    materials[12].emissiveColor = new BABYLON.Color3(0, 0,emissiveColor );
+    materials[12].alpha = alphaSetting1;
+    materials[13].diffuseColor = new BABYLON.Color3(1, 0, 1);
+    materials[13].emissiveColor = new BABYLON.Color3(emissiveColor, 0, emissiveColor);
+    materials[13].alpha = alphaSetting1;
+    materials[14].diffuseColor = new BABYLON.Color3(0, 1, 1);
+    materials[14].emissiveColor = new BABYLON.Color3(0, emissiveColor, emissiveColor);
+    materials[14].alpha = alphaSetting1;
+    materials[15].diffuseColor = new BABYLON.Color3(1, 1, 1);
+    materials[15].emissiveColor = new BABYLON.Color3(0.3, 0.3, 0.3);
+    materials[15].alpha = alphaSetting1;
+
 
     /*materials[0].diffuseColor = new BABYLON.Color3(1, 1, 1);
     materials[0].emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
@@ -562,6 +711,8 @@ function initShapes(scene){
     materialsBaseLED[0].emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
     materialsBaseLED[1].diffuseColor = new BABYLON.Color3(1, 0, 0);
     materialsBaseLED[1].emissiveColor = new BABYLON.Color3(emissiveColorBaseLED, 0, 0);
+
+
         
         /*
         .specularColor = new BABYLON.Color3(0, 0, 0);
@@ -649,7 +800,7 @@ sphere.position.z = 4.5;
     camera.wheelPrecision = 50;
 
     //camera.parent = light0;
-    //camera.useBouncingBehavior = true;
+    //camera.useBouncingBehavior = false;
 
     
 

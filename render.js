@@ -1,7 +1,8 @@
-function render(){
+function render(blocksX, blocksY, blocksZ, blocksRT, blocksLEDs2x2, blocksLEDs2x4, blocksUseAlpha, blocksOffset, blocksCount, blocksCountFromWorld){
 
     for(var i = 0; i <100; i++){
         if(renderBlocksPart1[i] != null){
+          
             renderBlocksPart1[i].setEnabled(0); 
        
             renderBlocksPart2[i].setEnabled(0); 
@@ -39,11 +40,12 @@ renderBlocksSmallLine[i].setEnabled(0);
     baseLEDSide[0].material = materials[(baseLED[1] & 0x38) >> 3];
     baseLEDSide[9].material = materials[baseLED[1] & 0x07];
 
+    console.log("r blocksOffset:" + blocksOffset);
     for(var i = 0; i < blocksCount; i++){
         
                             
         
-        
+                 
                             //!!renderBlocksPart1[i] = blockChamf.clone("A" + i);
                             renderBlocksPart1[i].setEnabled(1); 
                             renderBlocksPart1[i].position.x = blocksX[i+blocksOffset];
@@ -63,8 +65,12 @@ renderBlocksSmallLine[i].setEnabled(0);
                             renderBlocksLine1B[i].position.y = blocksY[i+blocksOffset] * pitchY;
                             renderBlocksLine1B[i].rotation.y = (blocksRT[i+blocksOffset] & 0x03) *Math.PI/2;
         
-                  
-        
+                        /*    if(i < blocksCountFromWorld){
+                                renderBlocksPart1[i].isPickable = true;
+                            }else{
+                                renderBlocksPart1[i].isPickable = false;
+                            }*/
+
         
         
         
@@ -135,7 +141,7 @@ renderBlocksSmallLine[i].setEnabled(0);
                                 renderBlocksLine2B[i].position.y = blocksY[i+blocksOffset] * pitchY;
                                 renderBlocksLine2B[i].rotation.y  = (blocksRT[i+blocksOffset] & 0x03) *Math.PI/2 -Math.PI;
         
-                                if(blocksLEDs2x2[i] != null){
+                               //!! if(blocksLEDs2x2[i] != null){
                                 // console.log('i: ' + i);
                              //   console.log('materials[blocksLEDs2x2[i+blocksOffset] & 0x07]: ' + materials[blocksLEDs2x2[i+blocksOffset] & 0x07]);
                               //  console.log('materials[(blocksLEDs2x2[i+blocksOffset] & 0x38) >> 3]: ' + materials[(blocksLEDs2x2[i+blocksOffset] & 0x38) >> 3]);
@@ -143,14 +149,15 @@ renderBlocksSmallLine[i].setEnabled(0);
                              //   console.log('(blocksLEDs2x2[i+blocksOffset] & 0x38) >> 3: ' +((blocksLEDs2x2[i+blocksOffset] & 0x38) >> 3));
                              //   console.log('i+blocksOffset: ' + (i+blocksOffset));
                                 
+                                    
 
-                                    renderBlocksPart2[i].material = materials[blocksLEDs2x2[i+blocksOffset] & 0x07];
-                                    renderBlocksPart1[i].material = materials[(blocksLEDs2x2[i+blocksOffset] & 0x38) >> 3];
-        
-                               // console.log('renderBlocksPart1[i].material = ' +renderBlocksPart1[i].material);
+                                    renderBlocksPart2[i].material = materials[(blocksLEDs2x2[i+blocksOffset] & 0x07) + 8*blocksUseAlpha[i+blocksOffset]];
+                                    renderBlocksPart1[i].material = materials[((blocksLEDs2x2[i+blocksOffset] & 0x38) >> 3) + 8*blocksUseAlpha[i+blocksOffset]];
+                                    
+                                   // console.log('renderBlocksPart1[i].material = ' +renderBlocksPart1[i].material);
                                // console.log('renderBlocksPart2[i].material = ' +renderBlocksPart2[i].material);
         
-                                }
+                              //!!  }
                             
                             //0 = 2x4
                             
@@ -228,17 +235,18 @@ renderBlocksSmallLine[i].setEnabled(0);
                                 renderBlocksLine3B[i].rotation.y  = (blocksRT[i+blocksOffset] & 0x03) *Math.PI/2 -Math.PI;
         
         
-                                if(blocksLEDs2x2[i] != null){
+                                //!!if(blocksLEDs2x2[i] != null){
                                 // console.log('i: ' + i);
                                // console.log('materials[blocksLEDs2x2[i] & 0x07]: ' + materials[blocksLEDs2x2[i] & 0x07]);
                                // console.log('materials[(blocksLEDs2x2[i] & 0x38) >> 3]: ' + materials[(blocksLEDs2x2[i] & 0x38) >> 3]);
-                                    renderBlocksPart3[i].material = materials[blocksLEDs2x2[i+blocksOffset] & 0x07];
-                                    renderBlocksPart1[i].material = materials[(blocksLEDs2x2[i+blocksOffset] & 0x38) >> 3];
+                                    renderBlocksPart3[i].material = materials[(blocksLEDs2x2[i+blocksOffset] & 0x07) + 8*blocksUseAlpha[i+blocksOffset]];
+                                    renderBlocksPart1[i].material = materials[((blocksLEDs2x2[i+blocksOffset] & 0x38) >> 3)  + 8*blocksUseAlpha[i+blocksOffset]];
         
+                               //     console.log('renderBlocksPart1[i].material = ' +renderBlocksPart1[i].material);
                                // console.log('renderBlocksPart1[i].material = ' +renderBlocksPart1[i].material);
                                // console.log('renderBlocksPart2[i].material = ' +renderBlocksPart2[i].material);
         
-                                }
+                                //!!}
         
                                 renderBlocksPart4[i].setEnabled(1); 
         
@@ -348,11 +356,11 @@ renderBlocksSmallLine[i].setEnabled(0);
                                 renderBlocksLine2B[i].rotation.y  = (blocksRT[i+blocksOffset] & 0x03) *Math.PI/2 -Math.PI;
                                 
         
-                                if(blocksLEDs2x4[i] != null){
-                                    renderBlocksPart2[i].material = materials[blocksLEDs2x4[i+blocksOffset] & 0x07];
-                                    renderBlocksPart4[i].material = materials[(blocksLEDs2x4[i+blocksOffset] & 0x38) >> 3];
+                               //!! if(blocksLEDs2x4[i] != null){
+                                    renderBlocksPart2[i].material = materials[(blocksLEDs2x4[i+blocksOffset] & 0x07)  + 8*blocksUseAlpha[i+blocksOffset]];
+                                    renderBlocksPart4[i].material = materials[((blocksLEDs2x4[i+blocksOffset] & 0x38) >> 3) + 8*blocksUseAlpha[i+blocksOffset]];
         
-                                }
+                               //!! }
         
                             }
                            

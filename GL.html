@@ -8,6 +8,7 @@
     <script src="render.js"></script>
     <script src="gui.js"></script>
     <script src="tangram.js"></script>
+    <script src="guidedBuild.js"></script>
     <style>
 
 html,body, can {
@@ -82,35 +83,53 @@ html,body, can {
         var blocksRT = new Array(200); //rotation and type (2x2 / 2x4)
         var blocksLEDs2x2 = new Array(200);
         var blocksLEDs2x4 =new Array(200);
+        var blocksUseAlpha = new Array(200);
         var baseLED = [0x00,0x11];
         var baseCompass = [-90,0,0];
 
         
 
+   
+      //  blocksOffset = 100;// (0/100)
+      //  blocksOngoingOffset = 0;
 
-        blocksCount = 0;
+        blocksCount = 2;
 
-       /* for(var g = 0; g < 1; g++){
+        for(var g = 0; g < 2; g++){
             blocksX[g] = 3;
         blocksY[g] = g;
         blocksZ[g] = 2;
         blocksRT[g] = 0x03;
 
-        }*/
+        }
+
+      //  blocksRT[0] = 0x04;
         
         for(var i = 0; i < 200; i++){
             blocksLEDs2x2[i] = 0x00;
             blocksLEDs2x4[i] = 0x00;
+            blocksUseAlpha[i] = 0;
          }
   
 
 
-  /*     blocksX[0] = 3;
+   /*    blocksX[100] = 3;
+      blocksY[100] = 0;
+      blocksZ[100] = 3;
+      blocksRT[100] = 0;
+      blocksLEDs2x2[100] = 0x04;
+      blocksLEDs2x4[100] = 0x04;
+      blocksCount = 1;*/
+/*
+      blocksX[0] = 3;
       blocksY[0] = 0;
-      blocksZ[0] = 2;
+      blocksZ[0] = 3;
       blocksRT[0] = 0;
       blocksLEDs2x2[0] = 0x04;
       blocksLEDs2x4[0] = 0x04;
+      blocksCount = 1;
+*/
+    /*
 
       blocksX[1] = 5;
       blocksY[1] = 1;
@@ -159,7 +178,9 @@ html,body, can {
 
 initShapes(scene);
 initGui();
-initTangram(scene, pitchY);
+
+guiInitSettingsMenu();
+//!!1initTangram(scene, pitchY);
 
       
 
@@ -601,17 +622,281 @@ blocksReceiving = 0;
 
     guiPanelRight.addControl(buttonUpdate); 
 
+
+    function consolePrintBlocks(tmpString, tmpArray){
+
+            
+
+        for(var i = 0; i <blocksCount; i++){
+    if(i!=0){
+        tmpString += ",";
+    } 
+    tmpString += tmpArray[i];
+}
+
+tmpString += "];";
+console.log(tmpString);
+
+}
+
+    
+    var buttonPrintBlockConfig = BABYLON.GUI.Button.CreateSimpleButton("butPrint", "Print");
+    buttonPrintBlockConfig.width = "150px"
+    buttonPrintBlockConfig.height = "40px";
+    buttonPrintBlockConfig.paddingTop = "10px";
+    buttonPrintBlockConfig.paddingRight = "10px";
+    buttonPrintBlockConfig.color = "white";
+    buttonPrintBlockConfig.cornerRadius = 20;
+    buttonPrintBlockConfig.background = "green";
+    buttonPrintBlockConfig.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+    buttonPrintBlockConfig.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;   
+    buttonPrintBlockConfig.onPointerUpObservable.add(function() {
+
+        
+       let tmpString = "let gameX = [";
+       consolePrintBlocks(tmpString, blocksX);
+       tmpString = "let gameY = [";
+       consolePrintBlocks(tmpString, blocksY);
+       tmpString = "let gameZ = [";
+       consolePrintBlocks(tmpString, blocksZ);
+       tmpString = "let gameRT = [";
+       consolePrintBlocks(tmpString, blocksRT);
+       tmpString = "let gameLEDs2x2 = [";
+       consolePrintBlocks(tmpString, blocksLEDs2x2);
+       tmpString = "let gameLEDs2x4 = [";
+       consolePrintBlocks(tmpString, blocksLEDs2x4);
+
+
+
  
 
+       
+
+       
+/*
+        levelBlockX[0] = 3;
+      levelBlockY[0] = 0;
+      levelBlockZ[0] = 2;
+      levelBlockRT[0] = 0;
+      levelBlocksLEDs2x2[0] = 0x04;
+      levelBlocksLEDs2x4[0] = 0x04;*/
+
+    });
+
+    advancedTexture.addControl(buttonPrintBlockConfig);
+    
+    console.log("56%0:" + 56%0)
+ 
+                                  //When pointer down event is raised
+    let pointerIsDown;
+    //let snapDistance = (Math.PI/4);
+
+    //let snapDistanceOffset = (Math.PI/4);
+
+   // let snapCameraLastAlpha = 0;
+    scene.onPointerDown = function (evt, pickResult) {
+        guiPointerDownd(pickResult);
+        pointerIsDown = true;
+    };
+
+                //When pointer down event is raised
+                scene.onPointerUp = function (evt, pickResult) {
+                
+                guiPointerUp(pickResult);
+                pointerIsDown = false;
+                
+                    };
+
+    //camera .alpha snapper 
+
+    var starAnimateFrameRate = 10;
+//var starAnimateFrameTime = 2; //speed
+var starAnimateYR;
+var starAnimateYR2;
+var starAnimateYR3;
+var starAnimateScale;
+var starAnimateKeyFrames = []; 
+var starAnimateScaleKeyFrames = []; 
+var starAnimateScaleKeyFrames2 = []; 
+let starAnimatableYR;
+//let starAnimatableXR;
+let starAnimatableScale;
+let starAnimatableScale2;
+let starAnimatableScale3;
 
 
 
-        scene.activeCamera.attachControl(canvas);
+shapesStar.position.x =4.5; 
+shapesStar.position.y =2; 
+shapesStar.position.z =4.5;
 
+let shapesStar2 =  shapesStar.createInstance("shapesStar2");
+let shapesStar3 =  shapesStar.createInstance("shapesStar3");
+
+shapesStar2.position.x =4.5; 
+shapesStar2.position.y =2; 
+shapesStar2.position.z =6.5;
+
+shapesStar3.position.x =4.5; 
+shapesStar3.position.y =2; 
+shapesStar3.position.z =2.5;
+
+//shapesStar.rotation.x = 1;
+//shapesStar.rotation.y = 1;
+
+//starAnimateScale2 = new BABYLON.Animation("starAnimateScale", "scaling", starAnimateFrameRate, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE );
+
+
+starAnimateYR = new BABYLON.Animation("starAnimateYR", "rotation.y", starAnimateFrameRate, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE );
+//starAnimateXR = new BABYLON.Animation("starAnimateXR", "rotation.z", starAnimateFrameRate, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE );
+starAnimateScale = new BABYLON.Animation("starAnimateScale", "scaling", starAnimateFrameRate, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE );
+starAnimateScale2 = new BABYLON.Animation("starAnimateScale", "scaling", starAnimateFrameRate, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT );
+
+
+
+//.scaling = new BABYLON.Vector3(3, 3, 3);
+starAnimateKeyFrames.push({
+    frame: 0,
+    value: 0
+});
+
+starAnimateKeyFrames.push({
+    frame: cameraAnimateFrameRate,
+    value: Math.PI
+});
+
+starAnimateKeyFrames.push({
+    frame: cameraAnimateFrameRate*2,
+    value: Math.PI*2
+});
+
+
+starAnimateScaleKeyFrames.push({
+    frame: 0,
+    value: new BABYLON.Vector3(1, 1, 1)
+});
+
+starAnimateScaleKeyFrames.push({
+    frame: cameraAnimateFrameRate,
+    value: new BABYLON.Vector3(1.5, 1.5, 1.5)
+});
+
+starAnimateScaleKeyFrames.push({
+    frame: cameraAnimateFrameRate*2,
+    value: new BABYLON.Vector3(1, 1, 1)
+});
+
+starAnimateScaleKeyFrames2.push({
+    frame: 0,
+    value: new BABYLON.Vector3(1, 1, 1)
+});
+
+starAnimateScaleKeyFrames2.push({
+    frame: cameraAnimateFrameRate,
+    value: new BABYLON.Vector3(0.6, 0.6, 0.6)
+});
+
+starAnimateScaleKeyFrames2.push({
+    frame: cameraAnimateFrameRate*2,
+    value: new BABYLON.Vector3(0, 0, 0)
+});
+
+
+
+
+// scene.beginDirectAnimation(camera, [cameraAnimate], 0, 2 * cameraAnimateFrameRate, false);
+//var cameraAnimatable = scene.beginDirectAnimation(camera, [cameraAnimate], 0, 2 * cameraAnimateFrameRate, false);
+starAnimatableYR = scene.beginDirectAnimation(shapesStar, [starAnimateYR], 0, 2 * starAnimateFrameRate, true);
+starAnimatableYR2 = scene.beginDirectAnimation(shapesStar2, [starAnimateYR], 0, 2 * starAnimateFrameRate, true);
+starAnimatableYR3 = scene.beginDirectAnimation(shapesStar3, [starAnimateYR], 0, 2 * starAnimateFrameRate, true);
+starAnimatableScale = scene.beginDirectAnimation(shapesStar, [starAnimateScale], 0, 2 *   starAnimateFrameRate, true);
+starAnimatableScale2 = scene.beginDirectAnimation(shapesStar2, [starAnimateScale2], 0, 2 *   starAnimateFrameRate, false);
+//starAnimatableScale2 = scene.beginDirectAnimation(shapesStar3, [starAnimateScale2], 0, 2 *   starAnimateFrameRate, true);
+starAnimatableScale3 = scene.beginDirectAnimation(shapesStar3, [starAnimateScale2], 0, 2 *   starAnimateFrameRate, false, 1, function (){shapesStar.material = shapesMaterialsStar[1];;});
+//tarAnimatableXR = scene.beginDirectAnimation(shapesStar, [starAnimateXR], 0, 2 * starAnimateFrameRate, true);
+//starAnimatable.animationStarted = false;
+  
+starAnimateYR.setKeys(starAnimateKeyFrames);
+starAnimateScale.setKeys(starAnimateScaleKeyFrames);
+
+starAnimateScale2.setKeys(starAnimateScaleKeyFrames2);
+//starAnimateXR.setKeys(starAnimateKeyFrames);
+
+
+var fountain = BABYLON.Mesh.CreateBox("foutain", 1.0, scene);
+
+var url = "http://upload.wikimedia.org/wikipedia/en/8/86/Einstein_tongue.jpg";
+    
+
+  
+
+    // Create a particle system
+    var particleSystem = new BABYLON.ParticleSystem("particles", 1000, scene);
+
+    //Texture of each particle
+    particleSystem.particleTexture = new BABYLON.Texture(url, scene);
+
+    // Where the particles come from
+    particleSystem.emitter = shapesStar; // the starting object, the emitter
+    particleSystem.minEmitBox = new BABYLON.Vector3(-1, 0, 0); // Starting all from
+    particleSystem.maxEmitBox = new BABYLON.Vector3(1, 0, 0); // To...
+
+    // Colors of all particles
+    //particleSystem.color1 = new BABYLON.Color4(0.7, 0.8, 1.0, 1.0);
+    particleSystem.color1 = new BABYLON.Color4(0.9, 1, 0, 1.0);
+    //particleSystem.color2 = new BABYLON.Color4(0.2, 0.5, 1.0, 1.0);
+    particleSystem.color2 = new BABYLON.Color4(0.8, 0.9, 0, 1.0);
+    particleSystem.colorDead = new BABYLON.Color4(0.7, 0.8, 0, 0.5);
+
+    // Size of each particle (random between...
+    //particleSystem.minSize = 0.1;
+    //particleSystem.maxSize = 0.5;
+    particleSystem.minSize = 0.05;
+    particleSystem.maxSize = 0.3;
+
+    // Life time of each particle (random between...
+    particleSystem.minLifeTime = 0.3;
+    //particleSystem.maxLifeTime = 1.5;
+    particleSystem.maxLifeTime = 1;
+
+    // Emission rate
+    particleSystem.emitRate = 200;
+
+    // Blend mode : BLENDMODE_ONEONE, or BLENDMODE_STANDARD
+    particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
+
+    // Set the gravity of all particles
+    particleSystem.gravity = new BABYLON.Vector3(0, -9.81, 0);
+
+    // Direction of each particle after it has been emitted
+   // particleSystem.direction1 = new BABYLON.Vector3(-7, 8, 3);
+   // particleSystem.direction2 = new BABYLON.Vector3(7, 8, -3);
+
+    particleSystem.direction1 = new BABYLON.Vector3(-7, 8, 3);
+    particleSystem.direction2 = new BABYLON.Vector3(7, 8, -3);
+
+    // Angular speed, in radians
+    particleSystem.minAngularSpeed = 0;
+    particleSystem.maxAngularSpeed = Math.PI;
+
+    // Speed
+    particleSystem.minEmitPower = 1;
+    particleSystem.maxEmitPower = 3;
+    particleSystem.updateSpeed = 0.005;
+
+    // Start the particle system
+    particleSystem.start();
 
         engine.runRenderLoop(function () {
-
+           // animationStarted 
+           
+          //  console.log ("l: " + cameraAnimatable.animationStarted);
             fpsCounter++;
+            
+            /*if(!cameraAnimatable.animationStarted){
+                camera.alpha = 0;
+                cameraAnimatable = scene.beginDirectAnimation(camera, [cameraAnimate], 0, 2 * cameraAnimateFrameRate, false);
+            }*/
          
             if(compassRender){
 
@@ -621,14 +906,103 @@ blocksReceiving = 0;
             }
 
 
+            guiRender(pointerIsDown);
+            //if()
+            //if(camera.alpha > Math.PI/2){
+
+               // snapCameraLastAlpha
+            
+               
+
+
+                    /*if(camera.alpha%snapDistance > 0.05 && ! cameraAnimatable.animationStarted){                            
+                            if(camera.alpha%snapDistance - snapDistance/2 > 0){
+                                cameraAnimateKeyFrames.pop();
+                                cameraAnimateKeyFrames.pop();
+                                cameraAnimateKeyFrames.push({
+                                    frame: 0,
+                                    value: camera.alpha
+                                });
+                                cameraAnimateKeyFrames.push({
+                                    frame: cameraAnimateFrameTime,
+                                    value: camera.alpha += snapDistance - camera.alpha%snapDistance 
+                                });
+                                cameraAnimate.setKeys(cameraAnimateKeyFrames);                                
+                                cameraAnimatable = scene.beginDirectAnimation(camera, [cameraAnimate], 0, 2 * cameraAnimateFrameRate, false);
+                            }else if(camera.alpha%snapDistance - snapDistance/2 <  0 ){
+                                cameraAnimateKeyFrames.pop();
+                                cameraAnimateKeyFrames.pop();
+                                cameraAnimateKeyFrames.push({
+                                    frame: 0,
+                                    value: camera.alpha
+                                });
+                                cameraAnimateKeyFrames.push({
+                                    frame: cameraAnimateFrameTime,
+                                    value: camera.alpha -= camera.alpha%snapDistance 
+                                });
+                                cameraAnimate.setKeys(cameraAnimateKeyFrames);                                
+                                cameraAnimatable = scene.beginDirectAnimation(camera, [cameraAnimate], 0, 2 * cameraAnimateFrameRate, false);
+                            }
+                        }*/
+
+                    /*   if(camera.alpha%(Math.PI/4) > 0.05 && ! cameraAnimatable.animationStarted){                            
+                            if(camera.alpha%(Math.PI/4) - Math.PI/8 > 0){
+                                cameraAnimateKeyFrames.pop();
+                                cameraAnimateKeyFrames.pop();
+                                cameraAnimateKeyFrames.push({
+                                    frame: 0,
+                                    value: camera.alpha
+                                });
+                                cameraAnimateKeyFrames.push({
+                                    frame: cameraAnimateFrameTime,
+                                    value: camera.alpha += Math.PI/4 - camera.alpha%(Math.PI/4)
+                                });
+                                cameraAnimate.setKeys(cameraAnimateKeyFrames);                                
+                                cameraAnimatable = scene.beginDirectAnimation(camera, [cameraAnimate], 0, 2 * cameraAnimateFrameRate, false);
+                            }else if(camera.alpha%(Math.PI/4) - Math.PI/8 <  0 ){
+                                cameraAnimateKeyFrames.pop();
+                                cameraAnimateKeyFrames.pop();
+                                cameraAnimateKeyFrames.push({
+                                    frame: 0,
+                                    value: camera.alpha
+                                });
+                                cameraAnimateKeyFrames.push({
+                                    frame: cameraAnimateFrameTime,
+                                    value: camera.alpha -= camera.alpha%(Math.PI/4)
+                                });
+                                cameraAnimate.setKeys(cameraAnimateKeyFrames);                                
+                                cameraAnimatable = scene.beginDirectAnimation(camera, [cameraAnimate], 0, 2 * cameraAnimateFrameRate, false);
+                            }
+                        }*/
+                  
+    
+                
+            
+
+
             if(blocksRender){
                
                blocksRender = 0;
 
-               shapesAllocateBlocks(blocksCount);
+               
+                
+              // var tmpBlockX = [0,1];
+               
+                //use when games are chaning the number of blocks rendered compared to the real world
+                let blocksCountFromWorld = blocksCount;
 
-                render();
-                tangramRender();
+             
+
+                renderGuidedBuild(blocksX, blocksY, blocksZ, blocksRT, blocksLEDs2x2, blocksLEDs2x4, blocksUseAlpha, blocksOffset );
+               // console.log("A0:" + blocksCount);
+                shapesAllocateBlocks(blocksCount);
+               // console.log("A:" + blocksCount);
+                render(blocksX, blocksY, blocksZ, blocksRT, blocksLEDs2x2, blocksLEDs2x4, blocksUseAlpha, blocksOffset, blocksCount, blocksCountFromWorld);
+                //console.log("A1:" + blocksCount);
+               //!!1 tangramRender();
+
+
+                blocksCount = blocksCountFromWorld;
            
             }
         

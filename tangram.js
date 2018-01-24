@@ -113,6 +113,8 @@ let levelBlocksLEDs2x4 = [];
 
 let levelBlockCount;
 
+let tangramErrorColorEnabled = true;
+
 
 //how to deal with holes
 //deal when mapping pixels
@@ -146,7 +148,91 @@ function initTangram(scene, pitchY){
 
       let emissiveColor = 0.8;
       let transparencyCavity = 0.4;
-   
+
+
+      tangramMaterials[0] = new BABYLON.StandardMaterial("NA", scene);
+      tangramMaterials[1] = new BABYLON.StandardMaterial("RED", scene);
+      tangramMaterials[2] = new BABYLON.StandardMaterial("GREEN", scene);
+      tangramMaterials[3] = new BABYLON.StandardMaterial("YELLOW", scene);
+      tangramMaterials[4] = new BABYLON.StandardMaterial("BLUE", scene);
+      tangramMaterials[5] = new BABYLON.StandardMaterial("PURPLE", scene);
+      tangramMaterials[6] = new BABYLON.StandardMaterial("CYAN", scene);
+      tangramMaterials[7] = new BABYLON.StandardMaterial("WHITE", scene);
+
+      tangramMaterials[8] = new BABYLON.StandardMaterial("NA", scene);
+      tangramMaterials[9] = new BABYLON.StandardMaterial("RED", scene);
+      tangramMaterials[10] = new BABYLON.StandardMaterial("GREEN", scene);
+      tangramMaterials[11] = new BABYLON.StandardMaterial("YELLOW", scene);
+      tangramMaterials[12] = new BABYLON.StandardMaterial("BLUE", scene);
+      tangramMaterials[13] = new BABYLON.StandardMaterial("PURPLE", scene);
+      tangramMaterials[14] = new BABYLON.StandardMaterial("CYAN", scene);
+      tangramMaterials[15] = new BABYLON.StandardMaterial("WHITE", scene);
+
+      tangramMaterials[16] = new BABYLON.StandardMaterial("NO COLOR SELECTED", scene);
+      tangramMaterials[17] = new BABYLON.StandardMaterial("RED", scene);
+          
+      tangramMaterials[0].diffuseColor = new BABYLON.Color3(1, 1, 1);
+      tangramMaterials[0].emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+      tangramMaterials[1].diffuseColor = new BABYLON.Color3(1, 0, 0);
+      tangramMaterials[1].emissiveColor = new BABYLON.Color3(emissiveColor, 0, 0);
+      tangramMaterials[2].diffuseColor = new BABYLON.Color3(0, 1, 0);
+      tangramMaterials[2].emissiveColor = new BABYLON.Color3(0, emissiveColor, 0);
+      tangramMaterials[3].diffuseColor = new BABYLON.Color3(1, 1, 0);
+      tangramMaterials[3].emissiveColor = new BABYLON.Color3(emissiveColor, emissiveColor, 0);
+      tangramMaterials[4].diffuseColor = new BABYLON.Color3(0, 0, 1);
+      tangramMaterials[4].emissiveColor = new BABYLON.Color3(0, 0,emissiveColor );
+      tangramMaterials[5].diffuseColor = new BABYLON.Color3(1, 0, 1);
+      tangramMaterials[5].emissiveColor = new BABYLON.Color3(emissiveColor, 0, emissiveColor);
+      tangramMaterials[6].diffuseColor = new BABYLON.Color3(0, 1, 1);
+      tangramMaterials[6].emissiveColor = new BABYLON.Color3(0, emissiveColor, emissiveColor);
+      tangramMaterials[7].diffuseColor = new BABYLON.Color3(1, 1, 1);
+      tangramMaterials[7].emissiveColor = new BABYLON.Color3(0.3, 0.3, 0.3);
+
+
+      tangramMaterials[8].diffuseColor = new BABYLON.Color3(1, 1, 1);
+      tangramMaterials[8].emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+      tangramMaterials[8].alpha =  transparencyCavity;
+      tangramMaterials[9].diffuseColor = new BABYLON.Color3(1, 0, 0);
+      tangramMaterials[9].emissiveColor = new BABYLON.Color3(emissiveColor, 0, 0);
+      tangramMaterials[9].alpha =  transparencyCavity;
+      tangramMaterials[10].diffuseColor = new BABYLON.Color3(0, 1, 0);
+      tangramMaterials[10].emissiveColor = new BABYLON.Color3(0, emissiveColor, 0);
+      tangramMaterials[10].alpha =  transparencyCavity;
+      tangramMaterials[11].diffuseColor = new BABYLON.Color3(1, 1, 0);
+      tangramMaterials[11].emissiveColor = new BABYLON.Color3(emissiveColor, emissiveColor, 0);
+      tangramMaterials[11].alpha =  transparencyCavity;
+      tangramMaterials[12].diffuseColor = new BABYLON.Color3(0, 0, 1);
+      tangramMaterials[12].emissiveColor = new BABYLON.Color3(0, 0,emissiveColor );
+      tangramMaterials[12].alpha =  transparencyCavity;
+      tangramMaterials[13].diffuseColor = new BABYLON.Color3(1, 0, 1);
+      tangramMaterials[13].emissiveColor = new BABYLON.Color3(emissiveColor, 0, emissiveColor);
+      tangramMaterials[13].alpha =  transparencyCavity;
+      tangramMaterials[14].diffuseColor = new BABYLON.Color3(0, 1, 1);
+      tangramMaterials[14].emissiveColor = new BABYLON.Color3(0, emissiveColor, emissiveColor);
+      tangramMaterials[14].alpha =  transparencyCavity;
+      tangramMaterials[15].diffuseColor = new BABYLON.Color3(1, 1, 1);
+      tangramMaterials[15].emissiveColor = new BABYLON.Color3(0.3, 0.3, 0.3);
+      tangramMaterials[15].alpha =  transparencyCavity;
+
+
+
+      tangramMaterials[16].diffuseColor = new BABYLON.Color3(0.6, 0.6, 0.6);
+      tangramMaterials[16].emissiveColor = new BABYLON.Color3(0.4, 0.4, 0.4);
+      tangramMaterials[16].alpha =  0;
+
+      tangramMaterials[17].diffuseColor = new BABYLON.Color3(1, 0.4, 0.4);
+      tangramMaterials[17].emissiveColor = new BABYLON.Color3(1, 0.4, 0.4);
+
+
+      /*
+      tangramMaterials[8].diffuseColor = new BABYLON.Color3(0.6, 0.6, 0.6);
+      tangramMaterials[8].emissiveColor = new BABYLON.Color3(0.4, 0.4, 0.4);
+      tangramMaterials[8].alpha =  0;
+
+      tangramMaterials[9].diffuseColor = new BABYLON.Color3(1, 0, 0);
+      tangramMaterials[9].emissiveColor = new BABYLON.Color3(emissiveColor, 0, 0);
+*/
+      /*
       tangramMaterials[0] = new BABYLON.StandardMaterial("NA", scene);
       tangramMaterials[1] = new BABYLON.StandardMaterial("GREEN", scene);
       tangramMaterials[2] = new BABYLON.StandardMaterial("BLUE", scene);
@@ -193,7 +279,7 @@ function initTangram(scene, pitchY){
       tangramMaterials[9].diffuseColor = new BABYLON.Color3(1, 0, 0);
       tangramMaterials[9].emissiveColor = new BABYLON.Color3(emissiveColor, 0, 0);
 
-
+*/
     
 
       levelBlockX[0] = 3;
@@ -210,6 +296,13 @@ function initTangram(scene, pitchY){
       levelBlocksLEDs2x2[1] = 0x02;
       levelBlocksLEDs2x4[1] = 0x04;
 
+      levelBlockX[2] = 5;
+      levelBlockY[2] = 0;
+      levelBlockZ[2] = 5;
+      levelBlockRT[2] = 4;
+      levelBlocksLEDs2x2[2] = 0x02;
+      levelBlocksLEDs2x4[2] = 0x04;
+
      /* levelBlockX[0] = 3;
       levelBlockY[0] = 1;
       levelBlockZ[0] = 2;
@@ -224,13 +317,13 @@ function initTangram(scene, pitchY){
       levelBlocksLEDs2x2[2] = 0x02;
       levelBlocksLEDs2x4[2] = 0x04;
 */
-      levelBlockCount = 2;
+      levelBlockCount = 3;
 
 
       //defineLevelBlockPixels();
 
 
-        defineBlockPixels(levelBlockCount,  levelBlockX, levelBlockY, levelBlockZ, levelBlockRT, levelBlocksLEDs2x2, levelBlocksLEDs2x4);
+        defineBlockPixels(levelBlockCount,  levelBlockX, levelBlockY, levelBlockZ, levelBlockRT, levelBlocksLEDs2x2, levelBlocksLEDs2x4, 0);
 
       defineLevelPlanes();
 
@@ -256,173 +349,173 @@ levelBlocksLEDs2x4 : LEDs2x4
 
 
 */
-function defineBlockPixels(C, X, Y, Z, RT, LEDs2x2, LEDs2x4){
+function defineBlockPixels(C, X, Y, Z, RT, LEDs2x2, LEDs2x4, O){
     
         blockPixelCount = 0;
         
             for(let i = 0; i < C; i++){
         
-                blockPixelX[blockPixelCount] = X[i];   
-                blockPixelY[blockPixelCount] = Y[i];                 
-                blockPixelZ[blockPixelCount] = Z[i];    
-                blockPixelColor[blockPixelCount] = (LEDs2x2[i] & 0x38) >> 4;                 
+                blockPixelX[blockPixelCount] = X[i+O];   
+                blockPixelY[blockPixelCount] = Y[i+O];                 
+                blockPixelZ[blockPixelCount] = Z[i+O];    
+                blockPixelColor[blockPixelCount] = (LEDs2x2[i+O] & 0x38) >> 3;                 
                 blockPixelCount++;
         
-                blockPixelY[blockPixelCount] = Y[i];
-                blockPixelY[blockPixelCount+1] = Y[i];
-                blockPixelY[blockPixelCount+2] = Y[i];
+                blockPixelY[blockPixelCount] = Y[i+O];
+                blockPixelY[blockPixelCount+1] = Y[i+O];
+                blockPixelY[blockPixelCount+2] = Y[i+O];
         
                 
-                blockPixelColor[blockPixelCount] = (LEDs2x2[i] & 0x38) >> 4; 
-                blockPixelColor[blockPixelCount+1] = (LEDs2x2[i] & 0x07) >> 1;
-                blockPixelColor[blockPixelCount+2] = (LEDs2x2[i] & 0x07) >> 1; 
+                blockPixelColor[blockPixelCount] = (LEDs2x2[i+O] & 0x38) >> 3; 
+                blockPixelColor[blockPixelCount+1] = (LEDs2x2[i+O] & 0x07) ;
+                blockPixelColor[blockPixelCount+2] = (LEDs2x2[i+O] & 0x07) ; 
         
         
         
-                if((RT[i] & 0x03) == 0){            
+                if((RT[i+O] & 0x03) == 0){            
                     
-                    blockPixelX[blockPixelCount] = X[i];          
-                    blockPixelZ[blockPixelCount] = Z[i]+1;                        
+                    blockPixelX[blockPixelCount] = X[i+O];          
+                    blockPixelZ[blockPixelCount] = Z[i+O]+1;                        
                     blockPixelCount++;
         
-                    blockPixelX[blockPixelCount] = X[i]+1;            
-                    blockPixelZ[blockPixelCount] = Z[i];            
+                    blockPixelX[blockPixelCount] = X[i+O]+1;            
+                    blockPixelZ[blockPixelCount] = Z[i+O];            
                     blockPixelCount++;
         
-                    blockPixelX[blockPixelCount] = X[i]+1;           
-                    blockPixelZ[blockPixelCount] = Z[i]+1;                 
+                    blockPixelX[blockPixelCount] = X[i+O]+1;           
+                    blockPixelZ[blockPixelCount] = Z[i+O]+1;                 
                     blockPixelCount++;
         
-                }else if((RT[i] & 0x03) == 1){
+                }else if((RT[i+O] & 0x03) == 1){
                     
-                    blockPixelX[blockPixelCount] = X[i]+1;            
-                    blockPixelZ[blockPixelCount] = Z[i];                         
+                    blockPixelX[blockPixelCount] = X[i+O]+1;            
+                    blockPixelZ[blockPixelCount] = Z[i+O];                         
                     blockPixelCount++;
         
-                    blockPixelX[blockPixelCount] = X[i];            
-                    blockPixelZ[blockPixelCount] = Z[i]-1;            
+                    blockPixelX[blockPixelCount] = X[i+O];            
+                    blockPixelZ[blockPixelCount] = Z[i+O]-1;            
                     blockPixelCount++;
         
-                    blockPixelX[blockPixelCount] = X[i]+1;            
-                    blockPixelZ[blockPixelCount] = Z[i]-1;     
+                    blockPixelX[blockPixelCount] = X[i+O]+1;            
+                    blockPixelZ[blockPixelCount] = Z[i+O]-1;     
                     blockPixelCount++;
         
-                }else if((RT[i] & 0x03) == 2){
+                }else if((RT[i+O] & 0x03) == 2){
                     
-                    blockPixelX[blockPixelCount] = X[i];            
-                    blockPixelZ[blockPixelCount] = Z[i]-1;           
+                    blockPixelX[blockPixelCount] = X[i+O];            
+                    blockPixelZ[blockPixelCount] = Z[i+O]-1;           
                     blockPixelCount++;
         
-                    blockPixelX[blockPixelCount] = X[i]-1;            
-                    blockPixelZ[blockPixelCount] = Z[i];
+                    blockPixelX[blockPixelCount] = X[i+O]-1;            
+                    blockPixelZ[blockPixelCount] = Z[i+O];
                     blockPixelCount++;
         
-                    blockPixelX[blockPixelCount] = X[i]-1;            
-                    blockPixelZ[blockPixelCount] = Z[i]-1;                   
+                    blockPixelX[blockPixelCount] = X[i+O]-1;            
+                    blockPixelZ[blockPixelCount] = Z[i+O]-1;                   
                     blockPixelCount++;
         
                 }else{
         
                     
-                    blockPixelX[blockPixelCount] = X[i]-1;            
-                    blockPixelZ[blockPixelCount] = Z[i];             
+                    blockPixelX[blockPixelCount] = X[i+O]-1;            
+                    blockPixelZ[blockPixelCount] = Z[i+O];             
                     blockPixelCount++;
         
-                    blockPixelX[blockPixelCount] = X[i];            
-                    blockPixelZ[blockPixelCount] = Z[i]+1;
+                    blockPixelX[blockPixelCount] = X[i+O];            
+                    blockPixelZ[blockPixelCount] = Z[i+O]+1;
                     blockPixelCount++;
         
-                    blockPixelX[blockPixelCount] = X[i]-1;            
-                    blockPixelZ[blockPixelCount] = Z[i]+1;                    
+                    blockPixelX[blockPixelCount] = X[i+O]-1;            
+                    blockPixelZ[blockPixelCount] = Z[i+O]+1;                    
                     blockPixelCount++;
         
                 }
                 
                         //2x4
-                if((RT[i] & 0x0C) == 0){
+                if((RT[i+O] & 0x0C) == 0){
         
                     
                      
-                    blockPixelY[blockPixelCount] = Y[i];                
-                    blockPixelY[blockPixelCount+1] = Y[i];
-                    blockPixelY[blockPixelCount+2] = Y[i];
-                    blockPixelY[blockPixelCount+3] = Y[i];
+                    blockPixelY[blockPixelCount] = Y[i+O];                
+                    blockPixelY[blockPixelCount+1] = Y[i+O];
+                    blockPixelY[blockPixelCount+2] = Y[i+O];
+                    blockPixelY[blockPixelCount+3] = Y[i+O];
                             
-                    blockPixelColor[blockPixelCount] = (LEDs2x4[i] & 0x38) >> 4; 
-                    blockPixelColor[blockPixelCount+1] = (LEDs2x4[i] & 0x38) >> 4; 
-                    blockPixelColor[blockPixelCount+2] = (LEDs2x4[i] & 0x07) >> 1;
-                    blockPixelColor[blockPixelCount+3] = (LEDs2x4[i] & 0x07) >> 1; 
+                    blockPixelColor[blockPixelCount] = (LEDs2x4[i+O] & 0x38) >> 3; 
+                    blockPixelColor[blockPixelCount+1] = (LEDs2x4[i+O] & 0x38) >> 3; 
+                    blockPixelColor[blockPixelCount+2] = (LEDs2x4[i+O] & 0x07);
+                    blockPixelColor[blockPixelCount+3] = (LEDs2x4[i+O] & 0x07); 
         
-                    if((RT[i] & 0x03) == 0){       
+                    if((RT[i+O] & 0x03) == 0){       
                         
-                        blockPixelX[blockPixelCount] = X[i]+2;          
-                        blockPixelZ[blockPixelCount] = Z[i];                        
+                        blockPixelX[blockPixelCount] = X[i+O]+2;          
+                        blockPixelZ[blockPixelCount] = Z[i+O];                        
                         blockPixelCount++;
                                             
-                        blockPixelX[blockPixelCount] = X[i]+2;          
-                        blockPixelZ[blockPixelCount] = Z[i]+1;                        
+                        blockPixelX[blockPixelCount] = X[i+O]+2;          
+                        blockPixelZ[blockPixelCount] = Z[i+O]+1;                        
                         blockPixelCount++;
                                 
-                        blockPixelX[blockPixelCount] = X[i]+3;            
-                        blockPixelZ[blockPixelCount] = Z[i];            
+                        blockPixelX[blockPixelCount] = X[i+O]+3;            
+                        blockPixelZ[blockPixelCount] = Z[i+O];            
                         blockPixelCount++;
                                 
-                        blockPixelX[blockPixelCount] = X[i]+3;           
-                        blockPixelZ[blockPixelCount] = Z[i]+1;                 
+                        blockPixelX[blockPixelCount] = X[i+O]+3;           
+                        blockPixelZ[blockPixelCount] = Z[i+O]+1;                 
                         blockPixelCount++;
                                 
-                    }else if((RT[i] & 0x03) == 1){
+                    }else if((RT[i+O] & 0x03) == 1){
         
-                        blockPixelX[blockPixelCount] = X[i];          
-                        blockPixelZ[blockPixelCount] = Z[i]-2;                        
+                        blockPixelX[blockPixelCount] = X[i+O];          
+                        blockPixelZ[blockPixelCount] = Z[i+O]-2;                        
                         blockPixelCount++;
                         
-                        blockPixelX[blockPixelCount] = X[i]+1;            
-                        blockPixelZ[blockPixelCount] = Z[i]-2;                         
+                        blockPixelX[blockPixelCount] = X[i+O]+1;            
+                        blockPixelZ[blockPixelCount] = Z[i+O]-2;                         
                         blockPixelCount++;
             
-                        blockPixelX[blockPixelCount] = X[i];            
-                        blockPixelZ[blockPixelCount] = Z[i]-3;            
+                        blockPixelX[blockPixelCount] = X[i+O];            
+                        blockPixelZ[blockPixelCount] = Z[i+O]-3;            
                         blockPixelCount++;
             
-                        blockPixelX[blockPixelCount] = X[i]+1;            
-                        blockPixelZ[blockPixelCount] = Z[i]-3;     
+                        blockPixelX[blockPixelCount] = X[i+O]+1;            
+                        blockPixelZ[blockPixelCount] = Z[i+O]-3;     
                         blockPixelCount++;
             
-                    }else if((RT[i] & 0x03) == 2){
+                    }else if((RT[i+O] & 0x03) == 2){
         
-                        blockPixelX[blockPixelCount] = X[i]-2;          
-                        blockPixelZ[blockPixelCount] = Z[i];                        
+                        blockPixelX[blockPixelCount] = X[i+O]-2;          
+                        blockPixelZ[blockPixelCount] = Z[i+O];                        
                         blockPixelCount++;
                         
-                        blockPixelX[blockPixelCount] = X[i]-2;            
-                        blockPixelZ[blockPixelCount] = Z[i]-1;           
+                        blockPixelX[blockPixelCount] = X[i+O]-2;            
+                        blockPixelZ[blockPixelCount] = Z[i+O]-1;           
                         blockPixelCount++;
             
-                        blockPixelX[blockPixelCount] = X[i]-3;            
-                        blockPixelZ[blockPixelCount] = Z[i];
+                        blockPixelX[blockPixelCount] = X[i+O]-3;            
+                        blockPixelZ[blockPixelCount] = Z[i+O];
                         blockPixelCount++;
             
-                        blockPixelX[blockPixelCount] = X[i]-3;            
-                        blockPixelZ[blockPixelCount] = Z[i]-1;                   
+                        blockPixelX[blockPixelCount] = X[i+O]-3;            
+                        blockPixelZ[blockPixelCount] = Z[i+O]-1;                   
                         blockPixelCount++;
             
                     }else{
         
-                        blockPixelX[blockPixelCount] = X[i];          
-                        blockPixelZ[blockPixelCount] = Z[i]+2;                        
+                        blockPixelX[blockPixelCount] = X[i+O];          
+                        blockPixelZ[blockPixelCount] = Z[i+O]+2;                        
                         blockPixelCount++;    
                         
-                        blockPixelX[blockPixelCount] = X[i]-1;            
-                        blockPixelZ[blockPixelCount] = Z[i]+2;             
+                        blockPixelX[blockPixelCount] = X[i+O]-1;            
+                        blockPixelZ[blockPixelCount] = Z[i+O]+2;             
                         blockPixelCount++;
             
-                        blockPixelX[blockPixelCount] = X[i];            
-                        blockPixelZ[blockPixelCount] = Z[i]+3;
+                        blockPixelX[blockPixelCount] = X[i+O];            
+                        blockPixelZ[blockPixelCount] = Z[i+O]+3;
                         blockPixelCount++;
             
-                        blockPixelX[blockPixelCount] = X[i]-1;            
-                        blockPixelZ[blockPixelCount] = Z[i]+3;                    
+                        blockPixelX[blockPixelCount] = X[i+O]-1;            
+                        blockPixelZ[blockPixelCount] = Z[i+O]+3;                    
                         blockPixelCount++;
             
                     } 
@@ -630,13 +723,15 @@ function defineGamePlanes(){
                 if(blockPixelX[i] == renderGameSideAX[x]){
                     if(blockPixelY[i] == renderGameSideAY[x]){
                         //need to update accordingly
-                        if(blockPixelColor[i] != renderGameSideAColor[x] && renderGameSideAColor[x] == 0){
+                        /*if(blockPixelColor[i] != renderGameSideAColor[x] && renderGameSideAColor[x] == 0){
     
                             renderGameSideAColor[x] = blockPixelColor[i];
     
                         }else if(blockPixelColor[i] != renderGameSideAColor[x] && blockPixelColor[i] != 0){
                             renderGameSideAColor[x] = 3;
-                        }
+                        }*/
+
+                        renderGameSideAColor[x] |= blockPixelColor[i];
                         
                         if(blockPixelZ[i] > renderGameSideAZMax[x] ){
                            
@@ -673,13 +768,15 @@ function defineGamePlanes(){
                 if(blockPixelZ[i] == renderGameSideBZ[x]){
                     if(blockPixelY[i] == renderGameSideBY[x]){
                         //need to update accordingly
-                        if(blockPixelColor[i] != renderGameSideBColor[x] && renderGameSideBColor[x] == 0){
+                        /*if(blockPixelColor[i] != renderGameSideBColor[x] && renderGameSideBColor[x] == 0){
     
                             renderGameSideBColor[x] = blockPixelColor[i];
     
                         }else if(blockPixelColor[i] != renderGameSideBColor[x] && blockPixelColor[i] != 0){
                             renderGameSideBColor[x] = 3;
-                        }
+                        }*/
+
+                        renderGameSideBColor[x] |= blockPixelColor[i];
                         
                         if(blockPixelX[i] > renderGameSideBXMax[x] ){
                            
@@ -717,13 +814,15 @@ function defineGamePlanes(){
                 if(blockPixelX[i] == renderGameSideCX[x]){
                     if(blockPixelZ[i] == renderGameSideCZ[x]){
                         //need to update accordingly
-                        if(blockPixelColor[i] != renderGameSideCColor[x] && renderGameSideCColor[x] == 0){
+                       /* if(blockPixelColor[i] != renderGameSideCColor[x] && renderGameSideCColor[x] == 0){
     
                             renderGameSideCColor[x] = blockPixelColor[i];
     
                         }else if(blockPixelColor[i] != renderGameSideCColor[x] && blockPixelColor[i] != 0){
                             renderGameSideCColor[x] = 3;
-                        }
+                        }*/
+
+                        renderGameSideCColor[x] |= blockPixelColor[i];
                         
                         if(blockPixelY[i] > renderGameSideCYMax[x] ){
                            
@@ -763,7 +862,7 @@ function defineGamePlanes(){
         for(let i = 0; i < renderGameCountSideA; i++){
             
                     if(renderGameSideAZMax[i] - renderGameSideAZMin[i] > renderGameSideAZCount[i]){
-                        renderGameSideAColor[i] +=4;
+                        renderGameSideAColor[i] +=8;//4;
                         
                     }
         }
@@ -771,7 +870,7 @@ function defineGamePlanes(){
         for(let i = 0; i < renderGameCountSideB; i++){
             
                     if(renderGameSideBXMax[i] - renderGameSideBXMin[i] > renderGameSideBXCount[i]){
-                        renderGameSideBColor[i] +=4;
+                        renderGameSideBColor[i] +=8;//4;
                         
                     }
                 }
@@ -779,7 +878,7 @@ function defineGamePlanes(){
         for(let i = 0; i < renderGameCountSideC; i++){
                     
             if(renderGameSideCYMax[i] - renderGameSideCYMin[i] > renderGameSideCYCount[i]){
-                renderGameSideCColor[i] +=4;
+                renderGameSideCColor[i] +=8;//4;
                                 
             }
         }
@@ -800,13 +899,16 @@ function defineLevelPlanes(){
             if(blockPixelX[i] == renderSideAX[x]){
                 if(blockPixelY[i] == renderSideAY[x]){
                     //need to update accordingly
+                    /*
                     if(blockPixelColor[i] != renderSideAColor[x] && renderSideAColor[x] == 0){
 
                         renderSideAColor[x] = blockPixelColor[i];
 
                     }else if(blockPixelColor[i] != renderSideAColor[x] && blockPixelColor[i] != 0){
                         renderSideAColor[x] = 3;
-                    }
+                    }*/
+
+                    renderGameSideAColor[x] |= blockPixelColor[i];
                     
                     if(blockPixelZ[i] > renderSideAZMax[x] ){
                        
@@ -843,14 +945,17 @@ function defineLevelPlanes(){
             if(blockPixelZ[i] == renderSideBZ[x]){
                 if(blockPixelY[i] == renderSideBY[x]){
                     //need to update accordingly
+                    /*
                     if(blockPixelColor[i] != renderSideBColor[x] && renderSideBColor[x] == 0){
 
                         renderSideBColor[x] = blockPixelColor[i];
 
                     }else if(blockPixelColor[i] != renderSideBColor[x] && blockPixelColor[i] != 0){
                         renderSideBColor[x] = 3;
-                    }
+                    }*/
                     
+                    renderGameSideBColor[x] |= blockPixelColor[i];
+
                     if(blockPixelX[i] > renderSideBXMax[x] ){
                        
                        renderSideBXMax[x] = blockPixelX[i];
@@ -887,14 +992,17 @@ function defineLevelPlanes(){
             if(blockPixelX[i] == renderSideCX[x]){
                 if(blockPixelZ[i] == renderSideCZ[x]){
                     //need to update accordingly
+                    /*
                     if(blockPixelColor[i] != renderSideCColor[x] && renderSideCColor[x] == 0){
 
                         renderSideCColor[x] = blockPixelColor[i];
 
                     }else if(blockPixelColor[i] != renderSideCColor[x] && blockPixelColor[i] != 0){
                         renderSideCColor[x] = 3;
-                    }
+                    }*/
                     
+                    renderGameSideCColor[x] |= blockPixelColor[i];
+
                     if(blockPixelY[i] > renderSideCYMax[x] ){
                        
                        renderSideCYMax[x] = blockPixelY[i];
@@ -934,7 +1042,7 @@ function defineLevelPlanes(){
     for(let i = 0; i < renderCountSideA; i++){
         
                 if(renderSideAZMax[i] - renderSideAZMin[i] > renderSideAZCount[i]){
-                    renderSideAColor[i] +=4;
+                    renderSideAColor[i] +=8;//4;
                     
                 }
     }
@@ -942,7 +1050,7 @@ function defineLevelPlanes(){
     for(let i = 0; i < renderCountSideB; i++){
         
                 if(renderSideBXMax[i] - renderSideBXMin[i] > renderSideBXCount[i]){
-                    renderSideBColor[i] +=4;
+                    renderSideBColor[i] +=8;//4;
                     
                 }
             }
@@ -950,7 +1058,7 @@ function defineLevelPlanes(){
     for(let i = 0; i < renderCountSideC; i++){
                 
         if(renderSideCYMax[i] - renderSideCYMin[i] > renderSideCYCount[i]){
-            renderSideCColor[i] +=4;
+            renderSideCColor[i] +=8;//4;
                             
         }
     }
@@ -1119,7 +1227,7 @@ function tangramRender(){
     
         //Define Plane
 
-        defineBlockPixels(blocksCount, blocksX, blocksY, blocksZ, blocksRT, blocksLEDs2x2, blocksLEDs2x4);
+        defineBlockPixels(blocksCount, blocksX, blocksY, blocksZ, blocksRT, blocksLEDs2x2, blocksLEDs2x4, blocksOffset);
        
     
         defineGamePlanes();
@@ -1208,7 +1316,7 @@ function tangramRender(){
     
                }
     
-                if(l == renderCountSideA){
+                if(l == renderCountSideA && tangramErrorColorEnabled){
                     
     
                     if(renderCountA >=  renderAllocatedCountSideA){
@@ -1221,14 +1329,15 @@ function tangramRender(){
                     renderSideA[renderCountA].position.x = renderGameSideAX[i];
                     renderSideA[renderCountA].position.y = tangramOffsetY + renderGameSideAY[i] * tangramPitchY;
                     renderSideA[renderCountA].position.z = renderGameSideAZ[i];
-                    renderSideA[renderCountA].material = tangramMaterials[9];
+                    
+                    renderSideA[renderCountA].material = tangramMaterials[17];
                     renderSideA[renderCountA].setEnabled(1);
     
                     renderSideA2[renderCountA].isPickable = false;
                     renderSideA2[renderCountA].position.x = renderGameSideAX[i];
                     renderSideA2[renderCountA].position.y = tangramOffsetY + renderGameSideAY[i] * tangramPitchY;
                     renderSideA2[renderCountA].position.z = renderGameSideAZ[i] -10;
-                    renderSideA2[renderCountA].material = tangramMaterials[9];
+                    renderSideA2[renderCountA].material = tangramMaterials[17];
                     renderSideA2[renderCountA].rotation.y = Math.PI;
                     renderSideA2[renderCountA].setEnabled(1);
     
@@ -1313,7 +1422,7 @@ function tangramRender(){
     
                }
     
-                if(l == renderCountSideB){
+                if(l == renderCountSideB && tangramErrorColorEnabled){
                     
     
                     if(renderCountB >=  renderAllocatedCountSideB){
@@ -1326,7 +1435,7 @@ function tangramRender(){
                     renderSideB[renderCountB].position.x = renderGameSideBX[i];
                     renderSideB[renderCountB].position.y = tangramOffsetY + renderGameSideBY[i] * tangramPitchY;
                     renderSideB[renderCountB].position.z = renderGameSideBZ[i];
-                    renderSideB[renderCountB].material = tangramMaterials[9];
+                    renderSideB[renderCountB].material = tangramMaterials[17];
                     renderSideB[renderCountB].rotation.y = -Math.PI/2;
                     renderSideB[renderCountB].setEnabled(1);
     
@@ -1334,8 +1443,8 @@ function tangramRender(){
                     renderSideB2[renderCountB].position.x = renderGameSideBX[i] +10;
                     renderSideB2[renderCountB].position.y = tangramOffsetY + renderGameSideBY[i] * tangramPitchY;
                     renderSideB2[renderCountB].position.z = renderGameSideBZ[i];
-                    renderSideB2[renderCountB].material = tangramMaterials[9];
-                    renderSideB2[renderCountB].rotation.y = Math.PI;
+                    renderSideB2[renderCountB].material = tangramMaterials[17];
+                    renderSideB2[renderCountB].rotation.y = Math.PI/2;
                     renderSideB2[renderCountB].setEnabled(1);
     
                     renderCountB++;
@@ -1416,7 +1525,7 @@ function tangramRender(){
     
                }
     
-                if(l == renderCountSideC){
+                if(l == renderCountSideC && tangramErrorColorEnabled){
                     
     
                     if(renderCountC >=  renderAllocatedCountSideC){
@@ -1429,7 +1538,7 @@ function tangramRender(){
                     renderSideC[renderCountC].position.x = renderGameSideCX[i];
                     renderSideC[renderCountC].position.y =  renderGameSideCY[i] +0.01;
                     renderSideC[renderCountC].position.z = renderGameSideCZ[i];
-                    renderSideC[renderCountC].material = tangramMaterials[9];
+                    renderSideC[renderCountC].material = tangramMaterials[17];
                     renderSideC[renderCountC].rotation.x = Math.PI/2;
                     renderSideC[renderCountC].setEnabled(1);
     
