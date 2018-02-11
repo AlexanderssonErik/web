@@ -5,19 +5,31 @@ let guiAdvancedTextureSettings;
 let guiSettingsStart;
 
 let guiSettingsSnap;
+let guiSettingsSnapImage;
 let guiSettingsSnapOff;
+let guiSettingsSnapOffImage;
 let guiSettingsSnap4Diagonal;
+let guiSettingsSnap4DiagonalImage;
 let guiSettingsSnap4Horizontal;
+let guiSettingsSnap4HorizontalImage;
 let guiSettingsSnap8;
+let guiSettingsSnap8Image;
 
 let guiSettingsRender;
+let guiSettingsRenderImage;
 let guiSettingsRenderLow;
+let guiSettingsRenderLowImage;
 let guiSettingsRenderMid;
+let guiSettingsRenderMidImage;
 let guiSettingsRenderHigh;
+let guiSettingsRenderHighImage;
 
 let guiSettingsCompass;
+let guiSettingsCompassImage;
 let guiSettingsCompassOff;
+let guiSettingsCompassOffImage;
 let guiSettingsCompassOn;
+let guiSettingsCompassOnImage;
 
 let guiFps = 60;
 
@@ -466,7 +478,7 @@ function guiFpsFunction() {
 
 
     let guiSettingsClickTransparancy = 0.5;
-    let guiSettingsNoClickTransparancy = 0.2;
+    let guiSettingsNoClickTransparancy = 0.3;
     let guiSettingsActive  =false ;
 
 function guiSettingsFocusChange(){
@@ -478,26 +490,38 @@ function guiSettingsFocusChange(){
     guiSettingsSnap4Diagonal.alpha = guiSettingsNoClickTransparancy;
     guiSettingsSnap4Horizontal.alpha = guiSettingsNoClickTransparancy;
     guiSettingsSnap8.alpha = guiSettingsNoClickTransparancy;
+    guiSettingsSnapImage.isVisible = false;
     guiSettingsSnap.isVisible = false;
+    guiSettingsSnapOffImage.isVisible = false;
     guiSettingsSnapOff.isVisible = false;
+    guiSettingsSnap4DiagonalImage.isVisible = false;
     guiSettingsSnap4Diagonal.isVisible = false;
+    guiSettingsSnap4HorizontalImage.isVisible = false;
     guiSettingsSnap4Horizontal.isVisible = false;
+    guiSettingsSnap8Image.isVisible = false;
     guiSettingsSnap8.isVisible = false;
 
     guiSettingsRender.alpha = guiSettingsNoClickTransparancy;
     guiSettingsRenderLow.alpha = guiSettingsNoClickTransparancy;
     guiSettingsRenderMid.alpha = guiSettingsNoClickTransparancy;
     guiSettingsRenderHigh.alpha = guiSettingsNoClickTransparancy;
+    guiSettingsRenderImage.isVisible = false;
     guiSettingsRender.isVisible = false;
+    guiSettingsRenderLowImage.isVisible = false;
     guiSettingsRenderLow.isVisible = false;
+    guiSettingsRenderMidImage.isVisible = false;
     guiSettingsRenderMid.isVisible = false;
+    guiSettingsRenderHighImage.isVisible = false;
     guiSettingsRenderHigh.isVisible = false;
     
     guiSettingsCompass.alpha = guiSettingsNoClickTransparancy;
     guiSettingsCompassOff.alpha = guiSettingsNoClickTransparancy;
     guiSettingsCompassOn.alpha = guiSettingsNoClickTransparancy;
+    guiSettingsCompassImage.isVisible = false;
     guiSettingsCompass.isVisible = false;
+    guiSettingsCompassOffImage.isVisible = false;
     guiSettingsCompassOff.isVisible = false;
+    guiSettingsCompassOnImage.isVisible = false;
     guiSettingsCompassOn.isVisible = false;
 
     
@@ -541,9 +565,11 @@ function guiInitSettingsMenu(){
     let guiSettingsSizeM = 100;
     let guiSettingsPaddingBottom = 10;
     let guiSettingsPaddingTop = 5;    
-    let guiSettingsColor = "#00FF00";
+    let guiSettingsColor = "#606060";
     let guiSettingsLineThickness = 0;    
-    let guiSettingsClickColor = "black";
+   // let guiSettingsClickColor = "black";
+   let guiSettingsClickColor = "#606060";
+   
     //let guiSettingsNoClickColor = "black";
     
         //alpha
@@ -551,8 +577,22 @@ function guiInitSettingsMenu(){
     //focusedBackground
     //let paddingPitch = "110px"
 
-    
+    guiAdvancedTextureSettings = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("Settings");
 
+
+
+    var guiSettingsSizeImage = new BABYLON.GUI.Image("Start", "http://rawgit.com/AlexanderssonErik/web/master/ic_aspect_ratio_white_48px.svg");
+    //guiSettingsStartImage.width = 0.2;
+    //guiSettingsStartImage.height = "40px";
+    guiSettingsSizeChange(guiSettingsSizeImage, guiSettingsSizeM, guiSettingsPaddingBottom, guiSettingsPaddingBottom);
+    
+    guiSettingsSizeImage.paddingTop = guiSettingsPaddingTop;              
+    guiSettingsSizeImage.paddingRight = guiSettingsPaddingTop;
+    
+    guiSettingsSizeImage.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+    guiSettingsSizeImage.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+
+ 
     guiSettingsSize = new BABYLON.GUI.Ellipse();
     guiSettingsSize.color = guiSettingsColor;
     guiSettingsSize.thickness = guiSettingsLineThickness;
@@ -568,7 +608,7 @@ function guiInitSettingsMenu(){
     guiSettingsSize.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
     guiSettingsSize.background = guiSettingsClickColor;
     guiSettingsSize.alpha = guiSettingsNoClickTransparancy;
-    guiSettingsSize.onPointerDownObservable.add(function() {
+    guiSettingsSizeImage.onPointerDownObservable.add(function() {
 
         if(guiSettingsSizeM == 50){
             guiSettingsSizeM = 100;
@@ -598,25 +638,44 @@ function guiInitSettingsMenu(){
 
         if(guiSettingsSizeM == 50){
             guiSettingsSizeChange(guiSettingsSize, 100, guiSettingsPaddingBottom, guiSettingsPaddingBottom);
+            guiSettingsSizeChange(guiSettingsSizeImage, 100, guiSettingsPaddingBottom, guiSettingsPaddingBottom);
         }else{
             guiSettingsSizeChange(guiSettingsSize, guiSettingsSizeM, guiSettingsPaddingBottom, guiSettingsPaddingBottom);
+            guiSettingsSizeChange(guiSettingsSizeImage, guiSettingsSizeM, guiSettingsPaddingBottom, guiSettingsPaddingBottom);
         }
         
         
 
         guiSettingsSizeChange(guiSettingsStart, guiSettingsSizeM, guiSettingsPaddingBottom, guiSettingsPaddingBottom);
+        guiSettingsSizeChange(guiSettingsStartImage, guiSettingsSizeM, guiSettingsPaddingBottom, guiSettingsPaddingBottom); 
+        guiSettingsSizeChange(guiSettingsSnapImage, guiSettingsSizeM, guiSettingsPaddingBottom, guiSettingsPaddingBottom + guiSettingsSizeM);
         guiSettingsSizeChange(guiSettingsSnap, guiSettingsSizeM, guiSettingsPaddingBottom, guiSettingsPaddingBottom + guiSettingsSizeM);
+        
+        guiSettingsSizeChange(guiSettingsSnapOffImage, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM);
+        guiSettingsSizeChange(guiSettingsSnap4DiagonalImage, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*2, guiSettingsPaddingBottom + guiSettingsSizeM);
+        guiSettingsSizeChange(guiSettingsSnap4HorizontalImage, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*3, guiSettingsPaddingBottom + guiSettingsSizeM);
+        guiSettingsSizeChange(guiSettingsSnap8Image, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*4, guiSettingsPaddingBottom + guiSettingsSizeM);
+      
+
         guiSettingsSizeChange(guiSettingsSnapOff, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM);
         guiSettingsSizeChange(guiSettingsSnap4Diagonal, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*2, guiSettingsPaddingBottom + guiSettingsSizeM);
         guiSettingsSizeChange(guiSettingsSnap4Horizontal, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*3, guiSettingsPaddingBottom + guiSettingsSizeM);
         guiSettingsSizeChange(guiSettingsSnap8, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*4, guiSettingsPaddingBottom + guiSettingsSizeM);
         
+        guiSettingsSizeChange(guiSettingsRenderImage, guiSettingsSizeM, guiSettingsPaddingBottom, guiSettingsPaddingBottom + guiSettingsSizeM*2);
+        guiSettingsSizeChange(guiSettingsRenderLowImage, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*2);
+        guiSettingsSizeChange(guiSettingsRenderMidImage, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*2, guiSettingsPaddingBottom + guiSettingsSizeM*2);
+        guiSettingsSizeChange(guiSettingsRenderHighImage, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*3, guiSettingsPaddingBottom + guiSettingsSizeM*2);
+   
         guiSettingsSizeChange(guiSettingsRender, guiSettingsSizeM, guiSettingsPaddingBottom, guiSettingsPaddingBottom + guiSettingsSizeM*2);
         guiSettingsSizeChange(guiSettingsRenderLow, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*2);
-        
         guiSettingsSizeChange(guiSettingsRenderMid, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*2, guiSettingsPaddingBottom + guiSettingsSizeM*2);
-        
         guiSettingsSizeChange(guiSettingsRenderHigh, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*3, guiSettingsPaddingBottom + guiSettingsSizeM*2);
+        
+        guiSettingsSizeChange(guiSettingsCompassImage, guiSettingsSizeM, guiSettingsPaddingBottom, guiSettingsPaddingBottom + guiSettingsSizeM*3);
+        guiSettingsSizeChange(guiSettingsCompassOffImage, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*3);
+        guiSettingsSizeChange(guiSettingsCompassOnImage, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*2, guiSettingsPaddingBottom + guiSettingsSizeM*3);
+ 
         guiSettingsSizeChange(guiSettingsCompass, guiSettingsSizeM, guiSettingsPaddingBottom, guiSettingsPaddingBottom + guiSettingsSizeM*3);
         guiSettingsSizeChange(guiSettingsCompassOff, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*3);
         guiSettingsSizeChange(guiSettingsCompassOn, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*2, guiSettingsPaddingBottom + guiSettingsSizeM*3);
@@ -624,6 +683,23 @@ function guiInitSettingsMenu(){
     });
 
     
+
+    var guiSettingsStartImage = new BABYLON.GUI.Image("Start", "http://rawgit.com/AlexanderssonErik/web/master/ic_settings_white_48px.svg");
+    //guiSettingsStartImage.width = 0.2;
+    //guiSettingsStartImage.height = "40px";
+    guiSettingsSizeChange(guiSettingsStartImage, guiSettingsSizeM, guiSettingsPaddingBottom, guiSettingsPaddingBottom); 
+       
+    guiSettingsStartImage.paddingTop = guiSettingsPaddingTop;              
+    guiSettingsStartImage.paddingRight = guiSettingsPaddingTop;
+    
+    guiSettingsStartImage.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+    guiSettingsStartImage.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+
+    
+
+    //guiAdvancedTextureSettings.addControl(guiSettingsStartImage);    
+
+
     guiSettingsStart = new BABYLON.GUI.Ellipse();
     guiSettingsStart.color = guiSettingsColor;
     guiSettingsStart.thickness = guiSettingsLineThickness;
@@ -638,27 +714,53 @@ function guiInitSettingsMenu(){
     guiSettingsStart.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
     guiSettingsStart.background = guiSettingsClickColor;
     guiSettingsStart.alpha = guiSettingsNoClickTransparancy;
-    guiSettingsStart.onPointerDownObservable.add(function() {
+    
+    
+    guiSettingsStartImage.onPointerDownObservable.add(function() {
         
         guiSettingsFocusChange();
+        guiSettingsSnapImage.isVisible = true;
         guiSettingsSnap.isVisible = true;
+        
+        guiSettingsRenderImage.isVisible = true;
         guiSettingsRender.isVisible = true;
+
+        guiSettingsCompassImage.isVisible = true;
         guiSettingsCompass.isVisible = true;
         guiSettingsStart.alpha = guiSettingsClickTransparancy;
         guiSettingsActive = true;
         scene.activeCamera.detachControl(canvas);
     });
-    guiSettingsStart.onPointerMoveObservable.add(function() {
+    guiSettingsStartImage.onPointerMoveObservable.add(function() {
         guiSettingsFocusChange();
         if(guiSettingsActive){
+            guiSettingsSnapImage.isVisible = true;
             guiSettingsSnap.isVisible = true;
+            
+            guiSettingsRenderImage.isVisible = true;
             guiSettingsRender.isVisible = true;
+
+            guiSettingsCompassImage.isVisible = true;
             guiSettingsCompass.isVisible = true;
             guiSettingsStart.alpha = guiSettingsClickTransparancy;
         }
 
     });
 
+
+    guiSettingsSnapImage = new BABYLON.GUI.Image("guiSettingsSnapImage", "http://rawgit.com/AlexanderssonErik/web/master/ic_3d_rotation_white_48px.svg");
+    //guiSettingsStartImage.width = 0.2;
+    //guiSettingsStartImage.height = "40px";
+    guiSettingsSizeChange(guiSettingsSnapImage, guiSettingsSizeM, guiSettingsPaddingBottom, guiSettingsPaddingBottom + guiSettingsSizeM); 
+       
+    guiSettingsSnapImage.paddingTop = guiSettingsPaddingTop;              
+    guiSettingsSnapImage.paddingRight = guiSettingsPaddingTop;
+    
+    guiSettingsSnapImage.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+    guiSettingsSnapImage.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+
+
+  
     guiSettingsSnap = new BABYLON.GUI.Ellipse();
     guiSettingsSnap.color = guiSettingsColor;
     guiSettingsSnap.thickness = guiSettingsLineThickness;
@@ -673,19 +775,44 @@ function guiInitSettingsMenu(){
     guiSettingsSnap.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
     guiSettingsSnap.background = guiSettingsClickColor;
     guiSettingsSnap.alpha = guiSettingsNoClickTransparancy;
-    guiSettingsSnap.onPointerMoveObservable.add(function() {
+    guiSettingsSnapImage.onPointerMoveObservable.add(function() {
         guiSettingsFocusChange();
         //if(guiSettingsActive){
+            guiSettingsSnapImage.isVisible = true;
             guiSettingsSnap.isVisible = true;
+            
+            guiSettingsSnapOffImage.isVisible = true;
             guiSettingsSnapOff.isVisible = true;
+
+            guiSettingsSnap4DiagonalImage.isVisible = true;
             guiSettingsSnap4Diagonal.isVisible = true;
+
+            guiSettingsSnap4HorizontalImage.isVisible = true;
             guiSettingsSnap4Horizontal.isVisible = true;
+
+            guiSettingsSnap8Image.isVisible = true;
             guiSettingsSnap8.isVisible = true;
+
+            guiSettingsRenderImage.isVisible = true;
             guiSettingsRender.isVisible = true;
+
+            guiSettingsCompassImage.isVisible = true;
             guiSettingsCompass.isVisible = true;
             guiSettingsSnap.alpha = guiSettingsClickTransparancy;
        // }
     });
+
+
+    guiSettingsSnapOffImage = new BABYLON.GUI.Image("guiSettingsSnapOffImage", "http://rawgit.com/AlexanderssonErik/web/master/ic_rotate_90_degrees_ccw_white_48px.svg");
+    //guiSettingsStartImage.width = 0.2;
+    //guiSettingsStartImage.height = "40px";
+    guiSettingsSizeChange(guiSettingsSnapOffImage, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM);
+    
+    guiSettingsSnapOffImage.paddingTop = guiSettingsPaddingTop;              
+    guiSettingsSnapOffImage.paddingRight = guiSettingsPaddingTop;
+    
+    guiSettingsSnapOffImage.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+    guiSettingsSnapOffImage.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
 
 
 
@@ -703,13 +830,22 @@ function guiInitSettingsMenu(){
     guiSettingsSnapOff.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
     guiSettingsSnapOff.background = guiSettingsClickColor;
     guiSettingsSnapOff.alpha = guiSettingsNoClickTransparancy;
-    guiSettingsSnapOff.onPointerMoveObservable.add(function() {
+    guiSettingsSnapOffImage.onPointerMoveObservable.add(function() {
         guiSettingsFocusChange();
        // if(guiSettingsActive){
+        guiSettingsSnapImage.isVisible = true;
             guiSettingsSnap.isVisible = true;
+        
+            guiSettingsSnapOffImage.isVisible = true;
             guiSettingsSnapOff.isVisible = true;
+
+            guiSettingsSnap4DiagonalImage.isVisible = true;
             guiSettingsSnap4Diagonal.isVisible = true;
+
+            guiSettingsSnap4HorizontalImage.isVisible = true;
             guiSettingsSnap4Horizontal.isVisible = true;
+
+            guiSettingsSnap8Image.isVisible = true; 
             guiSettingsSnap8.isVisible = true;            
             guiSettingsSnapOff.alpha = guiSettingsClickTransparancy;
 
@@ -717,6 +853,17 @@ function guiInitSettingsMenu(){
             snapDiagonalB = 1; //1 for 8pos, 2 4pos
        // }
     });
+
+    guiSettingsSnap4DiagonalImage = new BABYLON.GUI.Image("guiSettingsSnap4DiagonalImage", "http://rawgit.com/AlexanderssonErik/web/master/ic_rotate_90_degrees_ccw_white_48px.svg");
+    //guiSettingsStartImage.width = 0.2;
+    //guiSettingsStartImage.height = "40px";
+    guiSettingsSizeChange(guiSettingsSnap4DiagonalImage, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*2, guiSettingsPaddingBottom + guiSettingsSizeM);
+    
+    guiSettingsSnap4DiagonalImage.paddingTop = guiSettingsPaddingTop;              
+    guiSettingsSnap4DiagonalImage.paddingRight = guiSettingsPaddingTop;
+    
+    guiSettingsSnap4DiagonalImage.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+    guiSettingsSnap4DiagonalImage.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
 
    
     guiSettingsSnap4Diagonal = new BABYLON.GUI.Ellipse();
@@ -734,13 +881,22 @@ function guiInitSettingsMenu(){
     guiSettingsSnap4Diagonal.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
     guiSettingsSnap4Diagonal.background = guiSettingsClickColor;
     guiSettingsSnap4Diagonal.alpha = guiSettingsNoClickTransparancy;
-    guiSettingsSnap4Diagonal.onPointerMoveObservable.add(function() {
+    guiSettingsSnap4DiagonalImage.onPointerMoveObservable.add(function() {
         guiSettingsFocusChange();
        // if(guiSettingsActive){
+        guiSettingsSnapImage.isVisible = true;
             guiSettingsSnap.isVisible = true;
+            
+            guiSettingsSnapOffImage.isVisible = true;
             guiSettingsSnapOff.isVisible = true;
+
+            guiSettingsSnap4DiagonalImage.isVisible = true;
             guiSettingsSnap4Diagonal.isVisible = true;
+
+            guiSettingsSnap4HorizontalImage.isVisible = true;
             guiSettingsSnap4Horizontal.isVisible = true;
+
+            guiSettingsSnap8Image.isVisible = true;
             guiSettingsSnap8.isVisible = true;
             guiSettingsSnap4Diagonal.alpha = guiSettingsClickTransparancy;
 
@@ -748,6 +904,19 @@ function guiInitSettingsMenu(){
             snapDiagonalB = 2; //1 for 8pos, 2 4pos
        // }
     });
+
+
+    guiSettingsSnap4HorizontalImage = new BABYLON.GUI.Image("guiSettingsSnap4HorizontalImage", "http://rawgit.com/AlexanderssonErik/web/master/ic_rotate_90_degrees_ccw_white_48px.svg");
+    //guiSettingsStartImage.width = 0.2;
+    //guiSettingsStartImage.height = "40px";
+    guiSettingsSizeChange(guiSettingsSnap4HorizontalImage, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*3, guiSettingsPaddingBottom + guiSettingsSizeM);
+    
+    guiSettingsSnap4HorizontalImage.paddingTop = guiSettingsPaddingTop;              
+    guiSettingsSnap4HorizontalImage.paddingRight = guiSettingsPaddingTop;
+    
+    guiSettingsSnap4HorizontalImage.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+    guiSettingsSnap4HorizontalImage.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+
 
     guiSettingsSnap4Horizontal = new BABYLON.GUI.Ellipse();
     guiSettingsSnap4Horizontal.color = guiSettingsColor;
@@ -764,13 +933,22 @@ function guiInitSettingsMenu(){
     guiSettingsSnap4Horizontal.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
     guiSettingsSnap4Horizontal.background = guiSettingsClickColor;
     guiSettingsSnap4Horizontal.alpha = guiSettingsNoClickTransparancy;
-    guiSettingsSnap4Horizontal.onPointerMoveObservable.add(function() {
+    guiSettingsSnap4HorizontalImage.onPointerMoveObservable.add(function() {
         guiSettingsFocusChange();
        // if(guiSettingsActive){
+        guiSettingsSnapImage.isVisible = true;
             guiSettingsSnap.isVisible = true;
+            
+            guiSettingsSnapOffImage.isVisible = true;
             guiSettingsSnapOff.isVisible = true;
+
+            guiSettingsSnap4DiagonalImage.isVisible = true;
             guiSettingsSnap4Diagonal.isVisible = true;
+
+            guiSettingsSnap4HorizontalImage.isVisible = true;
             guiSettingsSnap4Horizontal.isVisible = true;
+
+            guiSettingsSnap8Image.isVisible = true;
             guiSettingsSnap8.isVisible = true;
             guiSettingsSnap4Horizontal.alpha = guiSettingsClickTransparancy;
 
@@ -779,6 +957,20 @@ function guiInitSettingsMenu(){
         
        // }
     });
+
+
+    guiSettingsSnap8Image = new BABYLON.GUI.Image("guiSettingsSnap8Image", "http://rawgit.com/AlexanderssonErik/web/master/ic_rotate_90_degrees_ccw_white_48px.svg");
+    //guiSettingsStartImage.width = 0.2;
+    //guiSettingsStartImage.height = "40px";
+    guiSettingsSizeChange(guiSettingsSnap8Image, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*4, guiSettingsPaddingBottom + guiSettingsSizeM);
+    
+    guiSettingsSnap8Image.paddingTop = guiSettingsPaddingTop;              
+    guiSettingsSnap8Image.paddingRight = guiSettingsPaddingTop;
+    
+    guiSettingsSnap8Image.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+    guiSettingsSnap8Image.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+
+
 
     guiSettingsSnap8 = new BABYLON.GUI.Ellipse();
     guiSettingsSnap8.color = guiSettingsColor;
@@ -796,13 +988,22 @@ function guiInitSettingsMenu(){
     guiSettingsSnap8.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
     guiSettingsSnap8.background = guiSettingsClickColor;
     guiSettingsSnap8.alpha = guiSettingsNoClickTransparancy;
-    guiSettingsSnap8.onPointerMoveObservable.add(function() {
+    guiSettingsSnap8Image.onPointerMoveObservable.add(function() {
         guiSettingsFocusChange();
        // if(guiSettingsActive){
+        guiSettingsSnapImage.isVisible = true;
             guiSettingsSnap.isVisible = true;
+            
+            guiSettingsSnapOffImage.isVisible = true;
             guiSettingsSnapOff.isVisible = true;
+
+            guiSettingsSnap4DiagonalImage.isVisible = true;
             guiSettingsSnap4Diagonal.isVisible = true;
+
+            guiSettingsSnap4HorizontalImage.isVisible = true;
             guiSettingsSnap4Horizontal.isVisible = true;
+
+            guiSettingsSnap8Image.isVisible = true;
             guiSettingsSnap8.isVisible = true;
             guiSettingsSnap8.alpha = guiSettingsClickTransparancy;
 
@@ -811,6 +1012,18 @@ function guiInitSettingsMenu(){
        // }
     });
     
+
+    guiSettingsRenderImage = new BABYLON.GUI.Image("guiSettingsRenderImage", "http://rawgit.com/AlexanderssonErik/web/master/ic_settings_system_daydream_white_48px.svg");
+    //guiSettingsStartImage.width = 0.2;
+    //guiSettingsStartImage.height = "40px";
+    guiSettingsSizeChange(guiSettingsRenderImage, guiSettingsSizeM, guiSettingsPaddingBottom, guiSettingsPaddingBottom + guiSettingsSizeM*2);
+    
+    guiSettingsRenderImage.paddingTop = guiSettingsPaddingTop;              
+    guiSettingsRenderImage.paddingRight = guiSettingsPaddingTop;
+    
+    guiSettingsRenderImage.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+    guiSettingsRenderImage.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+
 
     guiSettingsRender = new BABYLON.GUI.Ellipse();
     guiSettingsRender.color = guiSettingsColor;
@@ -827,16 +1040,43 @@ function guiInitSettingsMenu(){
     guiSettingsRender.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
     guiSettingsRender.background = guiSettingsClickColor;
     guiSettingsRender.alpha = guiSettingsNoClickTransparancy;
-    guiSettingsRender.onPointerMoveObservable.add(function() {
+    guiSettingsRenderImage.onPointerMoveObservable.add(function() {
         guiSettingsFocusChange();
+
+        guiSettingsRenderImage.isVisible = true;
         guiSettingsRender.isVisible = true;
+
+        guiSettingsRenderLowImage.isVisible = true;
         guiSettingsRenderLow.isVisible = true;
+
+        guiSettingsRenderMidImage.isVisible = true;
         guiSettingsRenderMid.isVisible = true;
+
+        guiSettingsRenderHighImage.isVisible = true;
         guiSettingsRenderHigh.isVisible = true;
+
+        
+        guiSettingsSnapImage.isVisible = true;
         guiSettingsSnap.isVisible = true;
+        
+        guiSettingsCompassImage.isVisible = true;
         guiSettingsCompass.isVisible = true;
         guiSettingsRender.alpha = guiSettingsClickTransparancy;
     });
+
+
+    guiSettingsRenderLowImage = new BABYLON.GUI.Image("guiSettingsRenderLowImage", "http://rawgit.com/AlexanderssonErik/web/master/ic_high_quality_white_48px.svg");
+    //guiSettingsStartImage.width = 0.2;
+    //guiSettingsStartImage.height = "40px";
+    guiSettingsSizeChange(guiSettingsRenderLowImage, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*2);
+    
+    guiSettingsRenderLowImage.paddingTop = guiSettingsPaddingTop;              
+    guiSettingsRenderLowImage.paddingRight = guiSettingsPaddingTop;
+    
+    guiSettingsRenderLowImage.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+    guiSettingsRenderLowImage.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+
+
 
     guiSettingsRenderLow = new BABYLON.GUI.Ellipse();
     guiSettingsRenderLow.color = guiSettingsColor;
@@ -854,14 +1094,34 @@ function guiInitSettingsMenu(){
     guiSettingsRenderLow.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
     guiSettingsRenderLow.background = guiSettingsClickColor;
     guiSettingsRenderLow.alpha = guiSettingsNoClickTransparancy;
-    guiSettingsRenderLow.onPointerMoveObservable.add(function() {
+    guiSettingsRenderLowImage.onPointerMoveObservable.add(function() {
         guiSettingsFocusChange();
+        guiSettingsRenderImage.isVisible = true;
         guiSettingsRender.isVisible = true;
+
+        guiSettingsRenderLowImage.isVisible = true;
         guiSettingsRenderLow.isVisible = true;
+
+        guiSettingsRenderMidImage.isVisible = true;
         guiSettingsRenderMid.isVisible = true;
+
+        guiSettingsRenderHighImage.isVisible = true;
         guiSettingsRenderHigh.isVisible = true;
         guiSettingsRenderLow.alpha = guiSettingsClickTransparancy;
     });
+
+
+    guiSettingsRenderMidImage = new BABYLON.GUI.Image("guiSettingsRenderMidImage", "http://rawgit.com/AlexanderssonErik/web/master/ic_high_quality_white_48px.svg");
+    //guiSettingsStartImage.width = 0.2;
+    //guiSettingsStartImage.height = "40px";
+    guiSettingsSizeChange(guiSettingsRenderMidImage, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*2, guiSettingsPaddingBottom + guiSettingsSizeM*2);
+    
+    guiSettingsRenderMidImage.paddingTop = guiSettingsPaddingTop;              
+    guiSettingsRenderMidImage.paddingRight = guiSettingsPaddingTop;
+    
+    guiSettingsRenderMidImage.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+    guiSettingsRenderMidImage.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+
 
     guiSettingsRenderMid = new BABYLON.GUI.Ellipse();
     guiSettingsRenderMid.color = guiSettingsColor;
@@ -878,14 +1138,35 @@ function guiInitSettingsMenu(){
     guiSettingsRenderMid.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
     guiSettingsRenderMid.background = guiSettingsClickColor;
     guiSettingsRenderMid.alpha = guiSettingsNoClickTransparancy;
-    guiSettingsRenderMid.onPointerMoveObservable.add(function() {
+    guiSettingsRenderMidImage.onPointerMoveObservable.add(function() {
         guiSettingsFocusChange();
+        guiSettingsRenderImage.isVisible = true;
         guiSettingsRender.isVisible = true;
+
+        guiSettingsRenderLowImage.isVisible = true;
         guiSettingsRenderLow.isVisible = true;
+
+        guiSettingsRenderMidImage.isVisible = true;
         guiSettingsRenderMid.isVisible = true;
+
+        guiSettingsRenderHighImage.isVisible = true;
         guiSettingsRenderHigh.isVisible = true;
         guiSettingsRenderMid.alpha = guiSettingsClickTransparancy;
     });
+
+
+    guiSettingsRenderHighImage = new BABYLON.GUI.Image("guiSettingsRenderHighImage", "http://rawgit.com/AlexanderssonErik/web/master/ic_high_quality_white_48px.svg");
+    //guiSettingsStartImage.width = 0.2;
+    //guiSettingsStartImage.height = "40px";
+    guiSettingsSizeChange(guiSettingsRenderHighImage, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*3, guiSettingsPaddingBottom + guiSettingsSizeM*2);
+    
+    guiSettingsRenderHighImage.paddingTop = guiSettingsPaddingTop;              
+    guiSettingsRenderHighImage.paddingRight = guiSettingsPaddingTop;
+    
+    guiSettingsRenderHighImage.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+    guiSettingsRenderHighImage.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+
+
 
     guiSettingsRenderHigh = new BABYLON.GUI.Ellipse();
     guiSettingsRenderHigh.color = guiSettingsColor;
@@ -902,14 +1183,34 @@ function guiInitSettingsMenu(){
     guiSettingsRenderHigh.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
     guiSettingsRenderHigh.background = guiSettingsClickColor;
     guiSettingsRenderHigh.alpha = guiSettingsNoClickTransparancy;
-    guiSettingsRenderHigh.onPointerMoveObservable.add(function() {
+    guiSettingsRenderHighImage.onPointerMoveObservable.add(function() {
         guiSettingsFocusChange();
+        guiSettingsRenderImage.isVisible = true;
         guiSettingsRender.isVisible = true;
+
+        guiSettingsRenderLowImage.isVisible = true;
         guiSettingsRenderLow.isVisible = true;
+
+        guiSettingsRenderMidImage.isVisible = true;
         guiSettingsRenderMid.isVisible = true;
+
+        guiSettingsRenderHighImage.isVisible = true;
         guiSettingsRenderHigh.isVisible = true;
         guiSettingsRenderHigh.alpha = guiSettingsClickTransparancy;
     });
+
+    guiSettingsCompassImage = new BABYLON.GUI.Image("guiSettingsCompassImage", "http://rawgit.com/AlexanderssonErik/web/master/ic_3d_rotation_white_48px.svg");
+    //guiSettingsStartImage.width = 0.2;
+    //guiSettingsStartImage.height = "40px";
+    guiSettingsSizeChange(guiSettingsCompassImage, guiSettingsSizeM, guiSettingsPaddingBottom, guiSettingsPaddingBottom + guiSettingsSizeM*3);
+    
+    guiSettingsCompassImage.paddingTop = guiSettingsPaddingTop;              
+    guiSettingsCompassImage.paddingRight = guiSettingsPaddingTop;
+    
+    guiSettingsCompassImage.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+    guiSettingsCompassImage.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+
+
 
     guiSettingsCompass = new BABYLON.GUI.Ellipse();
     guiSettingsCompass.color = guiSettingsColor;
@@ -926,15 +1227,36 @@ function guiInitSettingsMenu(){
     guiSettingsCompass.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
     guiSettingsCompass.background = guiSettingsClickColor;
     guiSettingsCompass.alpha = guiSettingsNoClickTransparancy;
-    guiSettingsCompass.onPointerMoveObservable.add(function() {
+    guiSettingsCompassImage.onPointerMoveObservable.add(function() {
         guiSettingsFocusChange();
+        guiSettingsRenderImage.isVisible = true;
         guiSettingsRender.isVisible = true;
+
+        guiSettingsSnapImage.isVisible = true;
         guiSettingsSnap.isVisible = true;
+       
+        guiSettingsCompassImage.isVisible = true;
         guiSettingsCompass.isVisible = true;
+
+        guiSettingsCompassOffImage.isVisible = true;
         guiSettingsCompassOff.isVisible = true;
+
+        guiSettingsCompassOnImage.isVisible = true;     
         guiSettingsCompassOn.isVisible = true;     
         guiSettingsCompass.alpha = guiSettingsClickTransparancy;
     });
+
+    guiSettingsCompassOffImage = new BABYLON.GUI.Image("guiSettingsCompassImage", "http://rawgit.com/AlexanderssonErik/web/master/ic_explore_white_48px.svg");
+    //guiSettingsStartImage.width = 0.2;
+    //guiSettingsStartImage.height = "40px";
+    guiSettingsSizeChange(guiSettingsCompassOffImage, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*3);
+    
+    guiSettingsCompassOffImage.paddingTop = guiSettingsPaddingTop;              
+    guiSettingsCompassOffImage.paddingRight = guiSettingsPaddingTop;
+    
+    guiSettingsCompassOffImage.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+    guiSettingsCompassOffImage.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+
 
     guiSettingsCompassOff = new BABYLON.GUI.Ellipse();
     guiSettingsCompassOff.color = guiSettingsColor;
@@ -951,15 +1273,32 @@ function guiInitSettingsMenu(){
     guiSettingsCompassOff.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
     guiSettingsCompassOff.background = guiSettingsClickColor;
     guiSettingsCompassOff.alpha = guiSettingsNoClickTransparancy;
-    guiSettingsCompassOff.onPointerMoveObservable.add(function() {
+    guiSettingsCompassOffImage.onPointerMoveObservable.add(function() {
         guiSettingsFocusChange();
+        guiSettingsCompassImage.isVisible = true;
         guiSettingsCompass.isVisible = true;
+
+        guiSettingsCompassOffImage.isVisible = true;
         guiSettingsCompassOff.isVisible = true;
+
+        guiSettingsCompassOnImage.isVisible = true; 
         guiSettingsCompassOn.isVisible = true;     
         guiSettingsCompassOff.alpha = guiSettingsClickTransparancy;
     });
 
     
+    guiSettingsCompassOnImage = new BABYLON.GUI.Image("guiSettingsCompassOnImage", "http://rawgit.com/AlexanderssonErik/web/master/ic_explore_white_48px.svg");
+    //guiSettingsStartImage.width = 0.2;
+    //guiSettingsStartImage.height = "40px";
+    guiSettingsSizeChange(guiSettingsCompassOnImage, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*2, guiSettingsPaddingBottom + guiSettingsSizeM*3);
+    
+    guiSettingsCompassOnImage.paddingTop = guiSettingsPaddingTop;              
+    guiSettingsCompassOnImage.paddingRight = guiSettingsPaddingTop;
+    
+    guiSettingsCompassOnImage.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+    guiSettingsCompassOnImage.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+
+
     guiSettingsCompassOn = new BABYLON.GUI.Ellipse();
     guiSettingsCompassOn.color = guiSettingsColor;
     guiSettingsCompassOn.thickness = guiSettingsLineThickness;
@@ -975,10 +1314,15 @@ function guiInitSettingsMenu(){
     guiSettingsCompassOn.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
     guiSettingsCompassOn.background = guiSettingsClickColor;
     guiSettingsCompassOn.alpha = guiSettingsNoClickTransparancy;
-    guiSettingsCompassOn.onPointerMoveObservable.add(function() {
+    guiSettingsCompassOnImage.onPointerMoveObservable.add(function() {
         guiSettingsFocusChange();
+        guiSettingsCompassImage.isVisible = true;
         guiSettingsCompass.isVisible = true;
+
+        guiSettingsCompassOffImage.isVisible = true;
         guiSettingsCompassOff.isVisible = true;
+
+        guiSettingsCompassOnImage.isVisible = true; 
         guiSettingsCompassOn.isVisible = true;     
         guiSettingsCompassOn.alpha = guiSettingsClickTransparancy;
     });
@@ -1000,34 +1344,76 @@ function guiInitSettingsMenu(){
     //guiSettingsStart.width = 60;
     //guiSettingsStart.height = 60;
   
-    guiAdvancedTextureSettings = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("Settings");
+   
                 
     guiAdvancedTextureSettings.addControl(guiSettingsStart);
+    guiAdvancedTextureSettings.addControl(guiSettingsStartImage); 
     guiAdvancedTextureSettings.addControl(guiSettingsSnap);
     guiSettingsSnap.isVisible = false;
+    guiAdvancedTextureSettings.addControl(guiSettingsSnapImage);
+    guiSettingsSnapImage.isVisible = false;
+
     guiAdvancedTextureSettings.addControl(guiSettingsSnapOff);
     guiSettingsSnapOff.isVisible = false;
+    guiAdvancedTextureSettings.addControl(guiSettingsSnapOffImage);
+    guiSettingsSnapOffImage.isVisible = false;
+
     guiAdvancedTextureSettings.addControl(guiSettingsSnap4Diagonal);
     guiSettingsSnap4Diagonal.isVisible = false;
+    guiAdvancedTextureSettings.addControl(guiSettingsSnap4DiagonalImage);
+    guiSettingsSnap4DiagonalImage.isVisible = false;
+
     guiAdvancedTextureSettings.addControl(guiSettingsSnap4Horizontal);
     guiSettingsSnap4Horizontal.isVisible = false;
+    guiAdvancedTextureSettings.addControl(guiSettingsSnap4HorizontalImage);
+    guiSettingsSnap4HorizontalImage.isVisible = false;
+
+
     guiAdvancedTextureSettings.addControl(guiSettingsSnap8);
     guiSettingsSnap8.isVisible = false;
+    guiAdvancedTextureSettings.addControl(guiSettingsSnap8Image);
+    guiSettingsSnap8Image.isVisible = false;
+
+
     guiAdvancedTextureSettings.addControl(guiSettingsRender);
     guiSettingsRender.isVisible = false;
+    guiAdvancedTextureSettings.addControl(guiSettingsRenderImage);
+    guiSettingsRenderImage.isVisible = false;
+
     guiAdvancedTextureSettings.addControl(guiSettingsRenderLow);
     guiSettingsRenderLow.isVisible = false;
+    guiAdvancedTextureSettings.addControl(guiSettingsRenderLowImage);
+    guiSettingsRenderLowImage.isVisible = false;
+
     guiAdvancedTextureSettings.addControl(guiSettingsRenderMid);
     guiSettingsRenderMid.isVisible = false;
+    guiAdvancedTextureSettings.addControl(guiSettingsRenderMidImage);
+    guiSettingsRenderMidImage.isVisible = false;
+
     guiAdvancedTextureSettings.addControl(guiSettingsRenderHigh);
     guiSettingsRenderHigh.isVisible = false;
+    guiAdvancedTextureSettings.addControl(guiSettingsRenderHighImage);
+    guiSettingsRenderHighImage.isVisible = false;
+
     guiAdvancedTextureSettings.addControl(guiSettingsCompass);
     guiSettingsCompass.isVisible = false;
+    guiAdvancedTextureSettings.addControl(guiSettingsCompassImage);
+    guiSettingsCompassImage.isVisible = false;
+
     guiAdvancedTextureSettings.addControl(guiSettingsCompassOff);
     guiSettingsCompassOff.isVisible = false;
+    guiAdvancedTextureSettings.addControl(guiSettingsCompassOffImage);
+    guiSettingsCompassOffImage.isVisible = false;
+
     guiAdvancedTextureSettings.addControl(guiSettingsCompassOn);
     guiSettingsCompassOn.isVisible = false;
+    guiAdvancedTextureSettings.addControl(guiSettingsCompassOnImage);
+    guiSettingsCompassOnImage.isVisible = false;
+
     guiAdvancedTextureSettings.addControl(guiSettingsSize);
+    guiAdvancedTextureSettings.addControl(guiSettingsSizeImage);
+    
+    
     
     
 }

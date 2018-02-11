@@ -9,6 +9,8 @@
     <script src="gui.js"></script>
     <script src="tangram.js"></script>
     <script src="guidedBuild.js"></script>
+
+
     <style>
 
 html,body, can {
@@ -30,11 +32,13 @@ html,body, can {
 
     </style>
 
+ <script src="https://cdn.babylonjs.com/babylon.js"></script> 
+ <script src="https://code.jquery.com/pep/0.4.1/pep.js"></script>
 
  </head>
  <body>
-    <canvas id="renderCanvas"></canvas>
-    
+    <canvas id="renderCanvas" touch-action="none"></canvas>
+
     <script>
         /*
         // canvas 
@@ -93,7 +97,7 @@ html,body, can {
       //  blocksOffset = 100;// (0/100)
       //  blocksOngoingOffset = 0;
 
-        blocksCount = 2;
+        blocksCount = 0;
 
         for(var g = 0; g < 2; g++){
             blocksX[g] = 3;
