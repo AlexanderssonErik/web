@@ -794,9 +794,9 @@ sphere.position.z = 4.5;
     // This attaches the camera to the canvas
     camera.attachControl(canvas, true);
     
-    camera.angularSensibilityX = 5000;
-    camera.angularSensibilityY = 5000;
-    camera.angularSensibilityZ = 5000;
+    camera.angularSensibilityX = 2000;
+    camera.angularSensibilityY = 2000;
+    camera.angularSensibilityZ = 2000;
     camera.wheelPrecision = 50;
 
     //camera.parent = light0;
