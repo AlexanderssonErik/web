@@ -40,7 +40,7 @@ renderBlocksSmallLine[i].setEnabled(0);
     baseLEDSide[0].material = materials[(baseLED[1] & 0x38) >> 3];
     baseLEDSide[9].material = materials[baseLED[1] & 0x07];
 
-    console.log("r blocksOffset:" + blocksOffset);
+    //console.log("r blocksOffset:" + blocksOffset);
     for(var i = 0; i < blocksCount; i++){
         
                             

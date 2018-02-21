@@ -149,13 +149,26 @@ var starScaling = function(i, distance) {
 
 };
 
-shapesMaterialsStar[0] = new BABYLON.StandardMaterial("STAR GOLD", scene);
-shapesMaterialsStar[0].diffuseColor = new BABYLON.Color3(1, 1, 0);
-shapesMaterialsStar[0].emissiveColor = new BABYLON.Color3(0.4, 0.4, 0.1);
+shapesMaterialsStar[0] = new BABYLON.StandardMaterial("STAR STEEL", scene);
+shapesMaterialsStar[0].diffuseColor = new BABYLON.Color3(0.6, 0.6, 0.6);
+shapesMaterialsStar[0].emissiveColor = new BABYLON.Color3(0.3, 0.3, 0.3);
 
-shapesMaterialsStar[1] = new BABYLON.StandardMaterial("STAR WHITE", scene);
-shapesMaterialsStar[1].diffuseColor = new BABYLON.Color3(1, 1, 1);
-shapesMaterialsStar[1].emissiveColor = new BABYLON.Color3(0.4, 0.4, 0.1);
+shapesMaterialsStar[1] = new BABYLON.StandardMaterial("STAR BRONZE", scene);
+shapesMaterialsStar[1].diffuseColor = new BABYLON.Color3(0.9, 0.4, 0.1);
+shapesMaterialsStar[1].emissiveColor = new BABYLON.Color3(0.3, 0.3, 0.3);
+
+shapesMaterialsStar[2] = new BABYLON.StandardMaterial("STAR SILVER", scene);
+shapesMaterialsStar[2].diffuseColor = new BABYLON.Color3(0.5, 0.5, 0.5);
+shapesMaterialsStar[2].emissiveColor = new BABYLON.Color3(0.5, 0.5, 0.5);
+//shapesMaterialsStar[2].specularColor = new BABYLON.Color3(0.6, 0.6, 0.6);
+
+shapesMaterialsStar[3] = new BABYLON.StandardMaterial("STAR GOLD", scene);
+shapesMaterialsStar[3].diffuseColor = new BABYLON.Color3(1, 1, 0);
+shapesMaterialsStar[3].emissiveColor = new BABYLON.Color3(0.4, 0.4, 0.1);
+
+shapesMaterialsStar[4] = new BABYLON.StandardMaterial("STAR WHITE", scene);
+shapesMaterialsStar[4].diffuseColor = new BABYLON.Color3(1, 1, 1);
+shapesMaterialsStar[4].emissiveColor = new BABYLON.Color3(0.5, 0.5, 0.1);
 
 let shapesStar1 = BABYLON.MeshBuilder.ExtrudeShapeCustom("shapesStar1", {shape: starShape, path: starPath, scaleFunction: starScaling, sideOrientation: BABYLON.Mesh.BACKSIDE, updatable: false}, scene);
 shapesStar1.rotation.x = Math.PI;
@@ -177,7 +190,8 @@ shapesStar2.rotation.y = Math.PI/2;
 shapesStar2Array = [shapesStar1, shapesStar2];
 shapesStar = BABYLON.Mesh.MergeMeshes(shapesStar2Array); 
 shapesStar.material = shapesMaterialsStar[0];
-
+shapesStar.setEnabled(0); 
+shapesStar.isPickable = false;
 
 //scene.meshes.pop();
 

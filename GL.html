@@ -7,6 +7,8 @@
     <script src="shapes.js"></script>
     <script src="render.js"></script>
     <script src="gui.js"></script>
+    <script src="guiAnimate.js"></script>
+    <script src="guiLevel.js"></script>
     <script src="tangram.js"></script>
     <script src="guidedBuild.js"></script>
 
@@ -91,13 +93,55 @@ html,body, can {
         var baseLED = [0x00,0x11];
         var baseCompass = [-90,0,0];
 
-        
 
+        //Game and level settings
+
+        //0 = not selected
+        //2 = Tangram
+        var biloGame = 0;
+        var lastBiloGame = 0;
+        var biloHideBlocks = false;
+
+        // 0 = not selected
+        var biloLevel = 0;   
+        var lastBiloLevel = 0; 
+
+        var biloNumberWin = []
+        var biloWinning = false;
+        var biloNext = false;
+        var biloAwaitNextLevel = false;
+
+        
+        biloNumberWin[0] = 0;
+        biloNumberWin[1] = 0;
+        biloNumberWin[2] = 0;
+        biloNumberWin[3] = 0;
+        biloNumberWin[4] = 0;
+        biloNumberWin[5] = 0;
+       // biloNumberWin[6] = 0;
    
       //  blocksOffset = 100;// (0/100)
       //  blocksOngoingOffset = 0;
 
-        blocksCount = 0;
+      blocksCount = 3;
+
+      blocksX[0] = 0;
+        blocksY[0] = 0;
+        blocksZ[0] = 2;
+        blocksRT[0] = 0x00;
+
+        blocksX[1] = 0;
+        blocksY[1] = 0;
+        blocksZ[1] = 4;
+        blocksRT[1] = 0x00;
+
+
+        blocksX[2] = 0;
+        blocksY[2] = 1;
+        blocksZ[2] = 2;
+        blocksRT[2] = 0x00;
+
+       /* blocksCount = 2;
 
         for(var g = 0; g < 2; g++){
             blocksX[g] = 3;
@@ -105,7 +149,7 @@ html,body, can {
         blocksZ[g] = 2;
         blocksRT[g] = 0x03;
 
-        }
+        }*/
 
       //  blocksRT[0] = 0x04;
         
@@ -154,6 +198,8 @@ html,body, can {
 
         var compassRender = 1;
         let compassCameraAlpha = 0;
+        let compassCameraAlphaDiff = 0;
+
         var blocksRender = 1; //signal if block data should be rendered
 
        
@@ -184,6 +230,8 @@ initShapes(scene);
 initGui();
 
 guiInitSettingsMenu();
+guiInitGameSelectMenu();
+guiAnimateInit();
 //!!1initTangram(scene, pitchY);
 
       
@@ -689,7 +737,7 @@ console.log(tmpString);
 
     advancedTexture.addControl(buttonPrintBlockConfig);
     
-    console.log("56%0:" + 56%0)
+    console.log("56%0:" + 56%0);
  
                                   //When pointer down event is raised
     let pointerIsDown;
@@ -707,12 +755,29 @@ console.log(tmpString);
                 scene.onPointerUp = function (evt, pickResult) {
                 
                 guiPointerUp(pickResult);
+                guiLevelPointerUp();
                 pointerIsDown = false;
                 
                     };
 
     //camera .alpha snapper 
+//--------------
+//guiWinningAndNext(1);
+//guiAnimateWin(1);
+//guiAnimateWin(0);
+//guiAnimateWin(2);
+//guiAnimateWin(3);
+//guiAnimateWin(5);
+//guiAnimateWin(6);
+//guiAnimateWin(8);
+//guiAnimateWin(9);
+//guiAnimateWin(11);
+//guiAnimateWin(12);
+//guiAnimateWin(14);
+//guiAnimateWin(15);
+//guiAnimateWin(17);
 
+/*
     var starAnimateFrameRate = 10;
 //var starAnimateFrameTime = 2; //speed
 var starAnimateYR;
@@ -827,7 +892,6 @@ starAnimateScale2.setKeys(starAnimateScaleKeyFrames2);
 //starAnimateXR.setKeys(starAnimateKeyFrames);
 
 
-var fountain = BABYLON.Mesh.CreateBox("foutain", 1.0, scene);
 
 var url = "http://upload.wikimedia.org/wikipedia/en/8/86/Einstein_tongue.jpg";
     
@@ -891,7 +955,83 @@ var url = "http://upload.wikimedia.org/wikipedia/en/8/86/Einstein_tongue.jpg";
     // Start the particle system
     particleSystem.start();
 
+*/
+    //----
+    //camera.di
+
+    //camera.inputs.attached.mouse.detachControl();
+
+    //camera.detachControl();
+
+    //camera.inputs.remove(camera.inputs.attached.mouse);
+
         engine.runRenderLoop(function () {
+
+            if(lastBiloGame != biloGame){
+
+                if(biloGame == 1){
+
+                }else if(biloGame == 2){
+                    initTangram(scene, pitchY);
+
+                }
+
+                lastBiloGame = biloGame;
+            }
+
+
+
+            if(lastBiloLevel != biloLevel){
+                if(biloGame == 2 && biloLevel !=0){
+                    guiAnimateStopWinningAndNext();
+                    //guiStopWinningAndNext();
+                    biloAwaitNextLevel = true;
+                    biloWinning = false;
+                    tangramCreateGame(biloLevel);
+                   
+                }else if(biloLevel == 0){
+                    guiAnimateStopWinningAndNext();
+                    //guiStopWinningAndNext();
+                    biloWinning = false;
+                }
+                lastBiloLevel = biloLevel;
+
+            }
+
+            if(biloWinning && biloAwaitNextLevel){
+              //console.log("biloWinning!!!!!!!!");
+              console.log("biloWinning!!!!!!!!");
+                if(biloGame == 2){
+                    
+                    //animate and show button
+                    //guiWinningAndNext(biloGame, biloLevel);
+                    guiWinningAndNext(biloNumberWin[biloLevel-1]);
+                    biloNumberWin[biloLevel-1]++;
+                    biloWinning = 0;
+                  
+                }              
+                biloAwaitNextLevel = false;  
+
+            }
+
+
+            if(biloNext){
+                console.log("biloNext!!!!!!!!");
+                if(biloGame == 2){
+                    
+                    biloAwaitNextLevel = true;
+                    tangramCreateGame(biloLevel);
+                   
+                }      
+
+                biloNext = false;
+
+            }
+
+
+            
+
+
            // animationStarted 
            
           //  console.log ("l: " + cameraAnimatable.animationStarted);
@@ -902,15 +1042,22 @@ var url = "http://upload.wikimedia.org/wikipedia/en/8/86/Einstein_tongue.jpg";
                 cameraAnimatable = scene.beginDirectAnimation(camera, [cameraAnimate], 0, 2 * cameraAnimateFrameRate, false);
             }*/
          
-            if(compassRender){
+           /* if(compassRender){
 
-                camera.alpha =  -compassCameraAlpha;
+                guiRenderCompass(compassRender);
+
+                //camera.alpha =  -compassCameraAlpha;
+                camera.alpha =  -compassCameraAlpha + compassCameraAlphaDiff;
                 compassRender = 0;
 
-            }
+            }else{
+
+                compassCameraAlphaDiff = camera.alpha + compassCameraAlpha
+            }*/
 
 
-            guiRender(pointerIsDown);
+            guiRender(pointerIsDown, compassRender, compassCameraAlpha);
+            compassRender = 0;
             //if()
             //if(camera.alpha > Math.PI/2){
 
@@ -985,7 +1132,7 @@ var url = "http://upload.wikimedia.org/wikipedia/en/8/86/Einstein_tongue.jpg";
 
 
             if(blocksRender){
-               
+              
                blocksRender = 0;
 
                
@@ -995,20 +1142,33 @@ var url = "http://upload.wikimedia.org/wikipedia/en/8/86/Einstein_tongue.jpg";
                 //use when games are chaning the number of blocks rendered compared to the real world
                 let blocksCountFromWorld = blocksCount;
 
+                //used when hiding blocks from world
+                if(biloHideBlocks){
+                    blocksCount = 0;
+                }
              
-
+                if(biloGame == 1 && biloLevel != 0){
                 renderGuidedBuild(blocksX, blocksY, blocksZ, blocksRT, blocksLEDs2x2, blocksLEDs2x4, blocksUseAlpha, blocksOffset );
+                }
                // console.log("A0:" + blocksCount);
+               
                 shapesAllocateBlocks(blocksCount);
                // console.log("A:" + blocksCount);
                 render(blocksX, blocksY, blocksZ, blocksRT, blocksLEDs2x2, blocksLEDs2x4, blocksUseAlpha, blocksOffset, blocksCount, blocksCountFromWorld);
                 //console.log("A1:" + blocksCount);
+
+                if(biloGame == 2 && biloLevel != 0){
+                    tangramRender(blocksCount);
+
+  
+                 
+                }
                //!!1 tangramRender();
 
 
                 blocksCount = blocksCountFromWorld;
            
-            }
+           }
         
 
             //console.log('renderBlocksPart1[0].material.diffuseColor = ' +renderBlocksPart1[0].material.diffuseColor);

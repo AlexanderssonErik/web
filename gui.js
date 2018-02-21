@@ -1,7 +1,46 @@
 let textFps;
 let fpsTimeOut;
 
+
+let guiSettingsSizeM = 100;
+let guiSettingsPaddingBottom = 10;
+let guiSettingsPaddingTop = 5;    
+let guiSettingsColor = "#606060";
+let guiSettingsLineThickness = 0;    
+let guiSettingsClickColor = "#606060";
+
+
+
+
+
+//--
+let guiAdvancedTextureGameSelect;
+let guiGameSelectBuilder;
+let guiGameSelectBuilderImage;
+
+let guiGameSelectTangram;
+let guiGameSelectTangramImage;
+
+let guiGameSelectMemo;
+let guiGameSelectMemoImage;
+
+let guiGameSelectFindShape;
+let guiGameSelectFindShapeImage;
+
+let guiGameSelectFree;
+let guiGameSelectFreeImage;
+
+let guiGameSelectProgram;
+let guiGameSelectProgramImage;
+
+//MATH
+
+//--
+let guiCompassCameraAlphaDiff= 0;
+
 let guiAdvancedTextureSettings;
+
+
 let guiSettingsStart;
 
 let guiSettingsZoom;
@@ -41,15 +80,41 @@ let guiSettingsCompassOnImage;
 let guiFps = 60;
 
 
-var bCWPSize = 120;
-var bCWPMax = 100;
-var bCWPMin = 60;
-var bCWPOT = 40;
-var bCWPOR = 40;
+let guiColorWheelLimitedFunction = true;
+let guiColorWheelMid;
+let guiColorWheelSection;
+let guiColorWheelSectionR;
+let guiColorWheelSectionG;
+let guiColorWheelSectionB;
+let guiColorWheelSectionRG;
+let guiColorWheelSectionRB;
+let guiColorWheelSectionGB;
+let guiColorWheelSectionRGB;
+
+
+
+let guiColorWheelFull;
+let guiColorWheelFullR;
+let guiColorWheelFullG;
+let guiColorWheelFullB;
+let guiColorWheelFullRG;
+let guiColorWheelFullRB;
+let guiColorWheelFullGB;
+let guiColorWheelFullRGB;
+
+
+
+/*
+var bCWPSize = 240;
+var bCWPMax = 200;
+var bCWPMin = 120;
+var bCWPOT = 80;
+var bCWPOR = 80;
+*/
 
 let snapDistance = (Math.PI/4); 
 var cameraAnimateFrameRate = 10;
-var cameraAnimateFrameTime = 2; //speed
+var cameraAnimateFrameTime = 5; //speed
 var cameraAnimate;
 var cameraAnimateKeyFrames = []; 
 let cameraAnimatable;
@@ -62,10 +127,420 @@ let snapDiagonalB = 2; //1 for 8pos, 2 4pos
 var buttonColorWheel = [];
 var advancedTextureColorSelect; //= BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("ColorSelect");
 
-function initGui() {
+function guiColorWheelFunctionSection(colorWheel, color) {
 
+
+    colorWheel.onPointerMoveObservable.add(function() {
+        //console.log('buttoncolorwheel R: ' + tmpI);
+        //blocksLEDs2x2[colorWheelMeshI] = tmpI;
+
+    if(guiColorWheelLimitedFunction){
+
+        
+
+            if( colorWheelMeshType == 'B' || colorWheelMeshType == 'A' || colorWheelMeshType == 'D'|| colorWheelMeshType == 'C'){
+                //  console.log('A colorWheelMeshI: ' + colorWheelMeshI);
+                //  console.log(' ( tmpI | (0xF1 & blocksLEDs2x2[colorWheelMeshI] )): ' +  ( tmpI | (0xF8 & blocksLEDs2x2[colorWheelMeshI] )));
+                  if(blocksLEDs2x2[colorWheelMeshI+blocksOffset] != ( color | (0xF8 & blocksLEDs2x2[colorWheelMeshI+blocksOffset] )) ||
+                  blocksLEDs2x2[colorWheelMeshI+blocksOffset] != ( (color << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI+blocksOffset])) ||
+                  blocksLEDs2x4[colorWheelMeshI+blocksOffset] != ( color | (0xF8 & blocksLEDs2x4[colorWheelMeshI+blocksOffset] )) ||
+                  blocksLEDs2x4[colorWheelMeshI+blocksOffset] != ( (color << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI+blocksOffset])) 
+                      ){
+                      blocksLEDs2x2[colorWheelMeshI+blocksOffset] = ( color | (0xF8 & blocksLEDs2x2[colorWheelMeshI+blocksOffset] )); 
+                      blocksLEDs2x2[colorWheelMeshI+blocksOffset] = ( (color << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI+blocksOffset]));
+                      blocksLEDs2x4[colorWheelMeshI+blocksOffset] = ( color | (0xF8 & blocksLEDs2x4[colorWheelMeshI+blocksOffset] )); 
+                      blocksLEDs2x4[colorWheelMeshI+blocksOffset] = ( (color << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI+blocksOffset]));
+                      blocksRender = 1;
+                    //  console.log('B colorWheelMeshI+blocksOffset: ' + (colorWheelMeshI+blocksOffset));
+                    //  console.log('B blocksLEDs2x2[colorWheelMeshI+blocksOffset]: ' + blocksLEDs2x2[colorWheelMeshI+blocksOffset]);
+                    //  console.log('B blocksLEDs2x2[0]: ' + blocksLEDs2x2[0]);
+                     
+                  }
+              }
+            
+
+    }else{
+
+        if( colorWheelMeshType == 'B'){
+          //  console.log('A colorWheelMeshI: ' + colorWheelMeshI);
+          //  console.log(' ( tmpI | (0xF1 & blocksLEDs2x2[colorWheelMeshI] )): ' +  ( tmpI | (0xF8 & blocksLEDs2x2[colorWheelMeshI] )));
+            if(blocksLEDs2x2[colorWheelMeshI+blocksOffset] != ( color | (0xF8 & blocksLEDs2x2[colorWheelMeshI+blocksOffset] ))){
+                blocksLEDs2x2[colorWheelMeshI+blocksOffset] = ( color | (0xF8 & blocksLEDs2x2[colorWheelMeshI+blocksOffset] )); 
+                blocksRender = 1;
+              //  console.log('B colorWheelMeshI+blocksOffset: ' + (colorWheelMeshI+blocksOffset));
+              //  console.log('B blocksLEDs2x2[colorWheelMeshI+blocksOffset]: ' + blocksLEDs2x2[colorWheelMeshI+blocksOffset]);
+              //  console.log('B blocksLEDs2x2[0]: ' + blocksLEDs2x2[0]);
+               
+            }
+        }else if (colorWheelMeshType == 'A'){
+           // console.log('B colorWheelMeshI: ' + colorWheelMeshI);
+           // console.log(' ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI]))' + ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI])));
+            if(blocksLEDs2x2[colorWheelMeshI+blocksOffset] != ( (color << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI+blocksOffset]))){
+                blocksLEDs2x2[colorWheelMeshI+blocksOffset] = ( (color << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI+blocksOffset])); 
+                blocksRender = 1;
+            //    console.log('A colorWheelMeshI+blocksOffset: ' + (colorWheelMeshI+blocksOffset));
+             //   console.log('A blocksLEDs2x2[colorWheelMeshI+blocksOffset]: ' + blocksLEDs2x2[colorWheelMeshI+blocksOffset]);
+            //    console.log('A blocksLEDs2x2[0]: ' + blocksLEDs2x2[0]);
+            }
+        }else if (colorWheelMeshType == 'D'){
+            if(blocksLEDs2x4[colorWheelMeshI+blocksOffset] != ( color | (0xF8 & blocksLEDs2x4[colorWheelMeshI+blocksOffset] ))){
+                blocksLEDs2x4[colorWheelMeshI+blocksOffset] = ( color | (0xF8 & blocksLEDs2x4[colorWheelMeshI+blocksOffset] )); 
+                blocksRender = 1;
+            }
+            
+        }else if (colorWheelMeshType == 'C'){
+            if(blocksLEDs2x4[colorWheelMeshI+blocksOffset] != ( (color << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI+blocksOffset])) ){
+                blocksLEDs2x4[colorWheelMeshI+blocksOffset] = ( (color << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI+blocksOffset])); 
+                blocksRender = 1;
+            }
+            
+        }else if (colorWheelMeshType == 'E'){
+            if(baseLED[colorWheelMeshI] != ( color | (0xF8 & baseLED[colorWheelMeshI]))){
+                baseLED[colorWheelMeshI] = ( color | (0xF8 & baseLED[colorWheelMeshI]));            
+          //  console.log('E colorWheelMeshI: ' + colorWheelMeshI);
+            //console.log(' ( tmpI | (0xF8 & blocksLEDs2x4[colorWheelMeshI]))' + ( tmpI | (0xF8 & blocksLEDs2x4[colorWheelMeshI])));
+            blocksRender = 1;
+            }
+                  
+        }else if (colorWheelMeshType == 'F'){
+            if(baseLED[colorWheelMeshI] != ( (color << 3) | (0xC7 & baseLED[colorWheelMeshI]))){
+                baseLED[colorWheelMeshI] = ( (color << 3) | (0xC7 & baseLED[colorWheelMeshI])); 
+          //  console.log('F colorWheelMeshI: ' + colorWheelMeshI);
+          //  console.log('( (tmpI << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI]))' + ( (tmpI << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI])));
+            blocksRender = 1;
+            }
+        }
+    }        
+
+        
+    });
+}
+
+function guiColorWheelFunctionFull(colorWheel, color) {
+    
+    
+        colorWheel.onPointerMoveObservable.add(function() {
+            //console.log('buttoncolorwheel R: ' + tmpI);
+            //blocksLEDs2x2[colorWheelMeshI] = tmpI;
+            if( colorWheelMeshType == 'B' || colorWheelMeshType == 'A' || colorWheelMeshType == 'D'|| colorWheelMeshType == 'C'){
+              //  console.log('A colorWheelMeshI: ' + colorWheelMeshI);
+              //  console.log(' ( tmpI | (0xF1 & blocksLEDs2x2[colorWheelMeshI] )): ' +  ( tmpI | (0xF8 & blocksLEDs2x2[colorWheelMeshI] )));
+                if(blocksLEDs2x2[colorWheelMeshI+blocksOffset] != ( color | (0xF8 & blocksLEDs2x2[colorWheelMeshI+blocksOffset] )) ||
+                blocksLEDs2x2[colorWheelMeshI+blocksOffset] != ( (color << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI+blocksOffset])) ||
+                blocksLEDs2x4[colorWheelMeshI+blocksOffset] != ( color | (0xF8 & blocksLEDs2x4[colorWheelMeshI+blocksOffset] )) ||
+                blocksLEDs2x4[colorWheelMeshI+blocksOffset] != ( (color << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI+blocksOffset])) 
+                    ){
+                    blocksLEDs2x2[colorWheelMeshI+blocksOffset] = ( color | (0xF8 & blocksLEDs2x2[colorWheelMeshI+blocksOffset] )); 
+                    blocksLEDs2x2[colorWheelMeshI+blocksOffset] = ( (color << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI+blocksOffset]));
+                    blocksLEDs2x4[colorWheelMeshI+blocksOffset] = ( color | (0xF8 & blocksLEDs2x4[colorWheelMeshI+blocksOffset] )); 
+                    blocksLEDs2x4[colorWheelMeshI+blocksOffset] = ( (color << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI+blocksOffset]));
+                    blocksRender = 1;
+                  //  console.log('B colorWheelMeshI+blocksOffset: ' + (colorWheelMeshI+blocksOffset));
+                  //  console.log('B blocksLEDs2x2[colorWheelMeshI+blocksOffset]: ' + blocksLEDs2x2[colorWheelMeshI+blocksOffset]);
+                  //  console.log('B blocksLEDs2x2[0]: ' + blocksLEDs2x2[0]);
+                   
+                }
+            }else if (colorWheelMeshType == 'E' || colorWheelMeshType == 'F'){
+
+                for(let i = blocksOffset; i < blocksCount + blocksOffset; i++){
+                
+                blocksLEDs2x2[i] = ( color | (0xF8 & blocksLEDs2x2[i] )); 
+                blocksLEDs2x2[i] = ( (color << 3) | (0xC7 & blocksLEDs2x2[i]));
+                blocksLEDs2x4[i] = ( color | (0xF8 & blocksLEDs2x4[i] )); 
+                blocksLEDs2x4[i] = ( (color << 3) | (0xC7 & blocksLEDs2x4[i]));
+                }
+                blocksRender = 1;
+               
+            }
+                
+    
+            
+        });
+    }
+
+function guiColorWheelSetSize( guiColorWheelSize) {
 
     
+    
+    guiColorWheelMid.color =  "#000050";
+    guiColorWheelMid.width = "0px";//"160px"
+    guiColorWheelMid.height = "0px";//"160px";    
+    guiColorWheelMid.paddingTop = 0;
+    guiColorWheelMid.paddingBottom = -guiColorWheelSize*0.8;
+    guiColorWheelMid.paddingLeft = 0;
+    guiColorWheelMid.paddingRight = -guiColorWheelSize*0.8;
+    guiColorWheelMid.thickness = 0;
+  //  guiColorWheelMid.background =    "#FF0000";
+
+    guiColorWheelSection.color =  "#101050";
+    guiColorWheelSection.width = "0px";//"160px"
+    guiColorWheelSection.height = "0px";//"160px";
+    guiColorWheelSection.paddingTop = 0;
+    guiColorWheelSection.paddingBottom = -guiColorWheelSize*2;
+    guiColorWheelSection.paddingLeft = 0;
+    guiColorWheelSection.paddingRight = -guiColorWheelSize*2;
+    guiColorWheelSection.thickness = 0;
+    guiColorWheelFunctionSection(guiColorWheelSection, 0) ;
+       // guiColorWheelSection.background =    "#00FF00";
+
+
+
+    guiColorWheelSectionRGB.color =  "#101050";
+    guiColorWheelSectionRGB.width = "0px";//"160px"
+    guiColorWheelSectionRGB.height = "0px";//"160px";  
+    guiColorWheelSectionRGB.paddingTop = 0;
+    guiColorWheelSectionRGB.paddingBottom = -guiColorWheelSize*6;
+    guiColorWheelSectionRGB.paddingLeft = 0;
+    guiColorWheelSectionRGB.paddingRight = -guiColorWheelSize*6;  
+    guiColorWheelSectionRGB.thickness = 0;
+    guiColorWheelFunctionSection(guiColorWheelSectionRGB, 7) ;
+       //   guiColorWheelSectionRGB.background =    "#0000FF";
+
+
+    guiColorWheelSectionR.color =  "#101050";
+    guiColorWheelSectionR.width = "0px";//"160px"
+    guiColorWheelSectionR.height = "0px";//"160px";  
+    guiColorWheelSectionR.paddingTop = -guiColorWheelSize*1.2;
+    guiColorWheelSectionR.paddingBottom = guiColorWheelSize*0.2;
+    guiColorWheelSectionR.paddingLeft = 0;
+    guiColorWheelSectionR.paddingRight = -guiColorWheelSize;  
+    guiColorWheelSectionR.thickness = 3;
+    guiColorWheelFunctionSection(guiColorWheelSectionR, 1) ;
+    guiColorWheelSectionR.background =    "#FF0000";
+
+
+  guiColorWheelSectionG.color =  "#101050";
+  guiColorWheelSectionG.width = "0px";//"160px"
+  guiColorWheelSectionG.height = "0px";//"160px";  
+  guiColorWheelSectionG.paddingTop = guiColorWheelSize*0.6;
+  guiColorWheelSectionG.paddingBottom = -guiColorWheelSize*1.6;
+  guiColorWheelSectionG.paddingLeft = guiColorWheelSize*1.04;  
+  guiColorWheelSectionG.paddingRight = -guiColorWheelSize*2.04;  
+  guiColorWheelSectionG.thickness = 3;
+  guiColorWheelFunctionSection(guiColorWheelSectionG, 2) ;
+  guiColorWheelSectionG.background =    "#00FF00";
+
+
+  guiColorWheelSectionB.color =  "#101050";
+  guiColorWheelSectionB.width = "0px";//"160px"
+  guiColorWheelSectionB.height = "0px";//"160px";  
+  guiColorWheelSectionB.paddingTop = guiColorWheelSize*0.6;
+  guiColorWheelSectionB.paddingBottom = -guiColorWheelSize*1.6;
+  guiColorWheelSectionB.paddingLeft = -guiColorWheelSize*1.04;  
+  guiColorWheelSectionB.paddingRight = guiColorWheelSize*0.04;  
+  guiColorWheelSectionB.thickness = 3;
+  guiColorWheelFunctionSection(guiColorWheelSectionB, 4) ;
+  guiColorWheelSectionB.background =    "#0000FF";
+
+
+  guiColorWheelSectionRG.color =  "#101050";
+  guiColorWheelSectionRG.width = "0px";//"160px"
+  guiColorWheelSectionRG.height = "0px";//"160px";  
+  guiColorWheelSectionRG.paddingTop = -guiColorWheelSize*0.6;
+  guiColorWheelSectionRG.paddingBottom = -guiColorWheelSize*0.4;
+  guiColorWheelSectionRG.paddingLeft = guiColorWheelSize*1.04;  
+  guiColorWheelSectionRG.paddingRight = -guiColorWheelSize*2.04;  
+  guiColorWheelSectionRG.thickness = 3;
+  guiColorWheelFunctionSection(guiColorWheelSectionRG, 3) ;
+  guiColorWheelSectionRG.background =    "#FFFF00";
+
+  
+  guiColorWheelSectionRB.color =  "#101050";
+  guiColorWheelSectionRB.width = "0px";//"160px"
+  guiColorWheelSectionRB.height = "0px";//"160px";  
+  guiColorWheelSectionRB.paddingTop = -guiColorWheelSize*0.6;
+  guiColorWheelSectionRB.paddingBottom = -guiColorWheelSize*0.4;
+  guiColorWheelSectionRB.paddingLeft = -guiColorWheelSize*1.04;  
+  guiColorWheelSectionRB.paddingRight = guiColorWheelSize*0.04;  
+  guiColorWheelSectionRB.thickness = 3;
+  guiColorWheelFunctionSection(guiColorWheelSectionRB, 5) ;
+  guiColorWheelSectionRB.background =    "#FF00FF";
+
+
+
+  guiColorWheelSectionGB.color =  "#101050";
+  guiColorWheelSectionGB.width = "0px";//"160px"
+  guiColorWheelSectionGB.height = "0px";//"160px";  
+  guiColorWheelSectionGB.paddingTop = guiColorWheelSize*1.2;
+  guiColorWheelSectionGB.paddingBottom = -guiColorWheelSize*2.2;
+  guiColorWheelSectionGB.paddingLeft = 0;
+  guiColorWheelSectionGB.paddingRight = -guiColorWheelSize;  
+  guiColorWheelSectionGB.thickness = 3;
+    guiColorWheelFunctionSection(guiColorWheelSectionGB, 6) ;
+    guiColorWheelSectionGB.background =    "#00FFFF";
+
+   //--
+   
+
+   guiColorWheelFull.color =  "#101050";
+   guiColorWheelFull.width = "0px";//"160px"
+   guiColorWheelFull.height = "0px";//"160px";
+  /* guiColorWheelFull.paddingTop = 0;
+   guiColorWheelFull.paddingBottom = -guiColorWheelSize*5.5;
+   guiColorWheelFull.paddingLeft = 0;
+   guiColorWheelFull.paddingRight = -guiColorWheelSize*5.5;*/
+
+  
+
+   guiColorWheelFull.paddingTop = guiColorWheelSize*2.4;
+   guiColorWheelFull.paddingBottom = -guiColorWheelSize*3.4;
+
+   guiColorWheelFull.paddingLeft = -guiColorWheelSize*2.08;  
+   guiColorWheelFull.paddingRight = guiColorWheelSize*1.04 ;
+
+   guiColorWheelFull.thickness = 3;
+   guiColorWheelFunctionFull(guiColorWheelFull, 0) ;
+       //guiColorWheelFull.background =    "#FFFF00";
+
+
+   guiColorWheelFullRGB.color =  "#101050";
+   guiColorWheelFullRGB.width = "0px";//"160px"
+   guiColorWheelFullRGB.height = "0px";//"160px";  
+
+   guiColorWheelFullRGB.paddingTop = guiColorWheelSize*2.4;
+   guiColorWheelFullRGB.paddingBottom = -guiColorWheelSize*3.4;
+   guiColorWheelFullRGB.paddingLeft = guiColorWheelSize*2.08;  
+   guiColorWheelFullRGB.paddingRight = -guiColorWheelSize*3.08;  
+
+   /*guiColorWheelFullRGB.paddingTop = 0;
+   guiColorWheelFullRGB.paddingBottom = -guiColorWheelSize*8;
+   guiColorWheelFullRGB.paddingLeft = 0;
+   guiColorWheelFullRGB.paddingRight = -guiColorWheelSize*8;  */
+
+
+   guiColorWheelFullRGB.thickness = 3;
+   guiColorWheelFunctionFull(guiColorWheelFullRGB, 7) ;
+         guiColorWheelFullRGB.background =    "#FFFFFF";
+
+
+   guiColorWheelFullR.color =  "#101050";
+   guiColorWheelFullR.width = "0px";//"160px"
+   guiColorWheelFullR.height = "0px";//"160px";  
+   guiColorWheelFullR.paddingTop = -guiColorWheelSize*2.4;
+   guiColorWheelFullR.paddingBottom = guiColorWheelSize*1.4;
+   guiColorWheelFullR.paddingLeft = 0;
+   guiColorWheelFullR.paddingRight = -guiColorWheelSize;  
+   guiColorWheelFullR.thickness = 3;
+   guiColorWheelFunctionFull(guiColorWheelFullR, 1) ;
+   guiColorWheelFullR.background =    "#FF0000";
+
+
+
+ guiColorWheelFullG.color =  "#101050";
+ guiColorWheelFullG.width = "0px";//"160px"
+ guiColorWheelFullG.height = "0px";//"160px";  
+ guiColorWheelFullG.paddingTop = guiColorWheelSize*1.2;
+ guiColorWheelFullG.paddingBottom = -guiColorWheelSize*2.2;
+ guiColorWheelFullG.paddingLeft = guiColorWheelSize*2.08;  
+ guiColorWheelFullG.paddingRight = -guiColorWheelSize*3.08;  
+ guiColorWheelFullG.thickness = 3;
+ guiColorWheelFunctionFull(guiColorWheelFullG, 2) ;
+ guiColorWheelFullG.background =    "#00FF00";
+
+
+ guiColorWheelFullB.color =  "#101050";
+ guiColorWheelFullB.width = "0px";//"160px"
+ guiColorWheelFullB.height = "0px";//"160px";  
+ guiColorWheelFullB.paddingTop = guiColorWheelSize*1.2;
+ guiColorWheelFullB.paddingBottom = -guiColorWheelSize*2.2;
+ guiColorWheelFullB.paddingLeft = -guiColorWheelSize*2.08;  
+ guiColorWheelFullB.paddingRight = guiColorWheelSize*1.04 ;
+ guiColorWheelFullB.thickness = 3;
+ guiColorWheelFunctionFull(guiColorWheelFullB, 4) ;
+ guiColorWheelFullB.background =    "#0000FF";
+
+
+ guiColorWheelFullRG.color =  "#101050";
+ guiColorWheelFullRG.width = "0px";//"160px"
+ guiColorWheelFullRG.height = "0px";//"160px";  
+ guiColorWheelFullRG.paddingTop = -guiColorWheelSize*1.2;
+ guiColorWheelFullRG.paddingBottom = guiColorWheelSize*0.2;
+ guiColorWheelFullRG.paddingLeft = guiColorWheelSize*2.04;  
+ guiColorWheelFullRG.paddingRight = -guiColorWheelSize*3.04;  
+ guiColorWheelFullRG.thickness = 3;
+ guiColorWheelFunctionFull(guiColorWheelFullRG, 3) ;
+ guiColorWheelFullRG.background =    "#FFFF00";
+
+ 
+ guiColorWheelFullRB.color =  "#101050";
+ guiColorWheelFullRB.width = "0px";//"160px"
+ guiColorWheelFullRB.height = "0px";//"160px";  
+
+ guiColorWheelFullRB.paddingTop = -guiColorWheelSize*1.2;
+ guiColorWheelFullRB.paddingBottom = guiColorWheelSize*0.2;
+ guiColorWheelFullRB.paddingLeft = -guiColorWheelSize*2.04;  
+ guiColorWheelFullRB.paddingRight = guiColorWheelSize*1.04; 
+ guiColorWheelFullRB.thickness = 3;
+ guiColorWheelFunctionFull(guiColorWheelFullRB, 5) ;
+ guiColorWheelFullRB.background =    "#FF00FF";
+
+
+
+ guiColorWheelFullGB.color =  "#101050";
+ guiColorWheelFullGB.width = "0px";//"160px"
+ guiColorWheelFullGB.height = "0px";//"160px";  
+ /*guiColorWheelFullGB.paddingTop = guiColorWheelSize*1.2;
+ guiColorWheelFullGB.paddingBottom = -guiColorWheelSize*2.2;
+ guiColorWheelFullGB.paddingLeft = 0;
+ guiColorWheelFullGB.paddingRight = -guiColorWheelSize;  
+*/
+ guiColorWheelFullGB.paddingTop = guiColorWheelSize*2.4;
+ guiColorWheelFullGB.paddingBottom = -guiColorWheelSize*3.4;
+ guiColorWheelFullGB.paddingLeft = 0;
+ guiColorWheelFullGB.paddingRight = -guiColorWheelSize;  
+
+ guiColorWheelFullGB.thickness = 3;
+   guiColorWheelFunctionFull(guiColorWheelFullGB, 6) ;
+   guiColorWheelFullGB.background =    "#00FFFF";
+
+}
+
+
+
+function initGui() {
+
+   /* let guiColorWheelSection;
+    let guiColorWheelSectionR;
+    let guiColorWheelSectionG;
+    let guiColorWheelSectionB;
+    let guiColorWheelSectionRG;
+    let guiColorWheelSectionRB;
+    let guiColorWheelSectionGB;
+    let guiColorWheelSectionRGB;
+    */
+
+    
+
+
+    guiColorWheelMid = new BABYLON.GUI.Ellipse();    
+    guiColorWheelSection = new BABYLON.GUI.Ellipse();    
+    guiColorWheelSectionRGB = new BABYLON.GUI.Ellipse();
+    guiColorWheelSectionR = new BABYLON.GUI.Ellipse();
+  guiColorWheelSectionG = new BABYLON.GUI.Ellipse();
+  guiColorWheelSectionB = new BABYLON.GUI.Ellipse();
+  guiColorWheelSectionRG = new BABYLON.GUI.Ellipse();
+  guiColorWheelSectionRB = new BABYLON.GUI.Ellipse();
+  guiColorWheelSectionGB = new BABYLON.GUI.Ellipse();
+
+
+ 
+  guiColorWheelFull = new BABYLON.GUI.Ellipse();    
+  guiColorWheelFullRGB = new BABYLON.GUI.Ellipse();
+  guiColorWheelFullR = new BABYLON.GUI.Ellipse();
+guiColorWheelFullG = new BABYLON.GUI.Ellipse();
+guiColorWheelFullB = new BABYLON.GUI.Ellipse();
+guiColorWheelFullRG = new BABYLON.GUI.Ellipse();
+guiColorWheelFullRB = new BABYLON.GUI.Ellipse();
+guiColorWheelFullGB = new BABYLON.GUI.Ellipse();
+
+
+  guiColorWheelSetSize( 100);
+   
+
+    
+
+
+    //--
     
      cameraAnimate = new BABYLON.Animation("cameraAnimate", "alpha", cameraAnimateFrameRate, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT  );
     
@@ -117,138 +592,6 @@ function initGui() {
 var buttonColorWheelSize = "1px";
 
 
-/*
-  var bCWPSize = 120;
-  var bCWPMax = 100;
-  var bCWPMin = 60;
-  var bCWPOT = 40;
-  var bCWPOR = 40;
-
-
-  var bCWPSize = 60;
-  var bCWPMax = 50;
-  var bCWPMin = 30;
-  var bCWPOT = 20;
-  var bCWPOR = 20;
-  */
-
-  var buttonColorWheelPaddingT = [ bCWPMax +bCWPOT, bCWPMin +bCWPOT,  bCWPOT-(bCWPSize/2) , bCWPOT-(bCWPMin +bCWPSize), bCWPOT-(bCWPMax + bCWPSize), bCWPOT-(bCWPMin + bCWPSize), bCWPOT-(bCWPSize/2) , bCWPMin+bCWPOT];
-  var buttonColorWheelPaddingB = [-(bCWPMax+bCWPSize+bCWPOT),-(bCWPMin + bCWPSize +bCWPOT), -(bCWPSize/2 + bCWPOT) , bCWPMin-bCWPOT, bCWPMax-bCWPOT, bCWPMin-bCWPOT, -(bCWPSize/2 +bCWPOT) , -(bCWPMin + bCWPSize+bCWPOT)];
-  var buttonColorWheelPaddingL = [bCWPOR-(bCWPSize/2), bCWPMin +bCWPOR, bCWPMax+bCWPOR, bCWPMin+bCWPOR, bCWPOR-(bCWPSize/2), bCWPOR-(bCWPMin +bCWPSize), bCWPOR-(bCWPMax +bCWPSize), bCWPOR-(bCWPMin + bCWPSize)];
-  var buttonColorWheelPaddingR = [-(bCWPSize/2 +bCWPOR), -(bCWPMin+bCWPSize +bCWPOR), -(bCWPMax +bCWPSize+bCWPOR), -(bCWPMin + bCWPSize+bCWPOR), -(bCWPSize/2 +bCWPOR), bCWPMin-bCWPOR, bCWPMax-bCWPOR, bCWPMin-bCWPOR];
-
-
-  for(var b = 0; b < 2; b++ ){
-
-      for(var g = 0; g < 2; g++ ){
-          for(var r = 0; r < 2; r++ ){
-              
-              //let tmpI = (4*b)+ (2*g) + r;
-              let tmpI = (4*r)+ (2*g) + b;
-              buttonColorWheel[tmpI] = new BABYLON.GUI.Ellipse();
-
-              buttonColorWheel[tmpI].color =  "#101050";
-
-              buttonColorWheel[tmpI].width = buttonColorWheelSize;//"160px"
-              buttonColorWheel[tmpI].height = buttonColorWheelSize;//"160px";
-              
-              buttonColorWheel[tmpI].paddingTop = buttonColorWheelPaddingT[tmpI];
-              buttonColorWheel[tmpI].paddingBottom = buttonColorWheelPaddingB[tmpI];
-              buttonColorWheel[tmpI].paddingLeft = buttonColorWheelPaddingL[tmpI];
-              buttonColorWheel[tmpI].paddingRight = buttonColorWheelPaddingR[tmpI];
-
-              //buttonColorWheel[tmpI].left -= 200;
-              //buttonColorWheel[tmpI].shadowBlur = 1;
-              //buttonColorWheel[tmpI].shadowOffsetX = 1;
-              //buttonColorWheel[tmpI].shadowOffsetY = 1;
-              //buttonColorWheel[tmpI].shadowColor = "#111";
-              //buttonColorWheel[tmpI].margin = "40px";
-              buttonColorWheel[tmpI].thickness = 3;
-              let colorString = "#"
-              
-              if(b){
-                colorString += "FF"
-            }else{
-                colorString += "00"
-            }
-
-              if(g){
-                  colorString += "FF"
-              }else{
-                  colorString += "00"
-              }
-
-              if(r){
-                colorString += "FF"
-            }else{                    
-                colorString += "00"
-            }
-
-              if(r||g||b){
-              buttonColorWheel[tmpI].background =    colorString;
-              }
-              //buttonColorWheel[tmpI].onPointerEnterObservable.add(function() {
-
-              buttonColorWheel[tmpI].onPointerMoveObservable.add(function() {
-                  //console.log('buttoncolorwheel R: ' + tmpI);
-                  //blocksLEDs2x2[colorWheelMeshI] = tmpI;
-                  if( colorWheelMeshType == 'B'){
-                    //  console.log('A colorWheelMeshI: ' + colorWheelMeshI);
-                    //  console.log(' ( tmpI | (0xF1 & blocksLEDs2x2[colorWheelMeshI] )): ' +  ( tmpI | (0xF8 & blocksLEDs2x2[colorWheelMeshI] )));
-                      if(blocksLEDs2x2[colorWheelMeshI+blocksOffset] != ( tmpI | (0xF8 & blocksLEDs2x2[colorWheelMeshI+blocksOffset] ))){
-                          blocksLEDs2x2[colorWheelMeshI+blocksOffset] = ( tmpI | (0xF8 & blocksLEDs2x2[colorWheelMeshI+blocksOffset] )); 
-                          blocksRender = 1;
-                        //  console.log('B colorWheelMeshI+blocksOffset: ' + (colorWheelMeshI+blocksOffset));
-                        //  console.log('B blocksLEDs2x2[colorWheelMeshI+blocksOffset]: ' + blocksLEDs2x2[colorWheelMeshI+blocksOffset]);
-                        //  console.log('B blocksLEDs2x2[0]: ' + blocksLEDs2x2[0]);
-                         
-                      }
-                  }else if (colorWheelMeshType == 'A'){
-                     // console.log('B colorWheelMeshI: ' + colorWheelMeshI);
-                     // console.log(' ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI]))' + ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI])));
-                      if(blocksLEDs2x2[colorWheelMeshI+blocksOffset] != ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI+blocksOffset]))){
-                          blocksLEDs2x2[colorWheelMeshI+blocksOffset] = ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI+blocksOffset])); 
-                          blocksRender = 1;
-                      //    console.log('A colorWheelMeshI+blocksOffset: ' + (colorWheelMeshI+blocksOffset));
-                       //   console.log('A blocksLEDs2x2[colorWheelMeshI+blocksOffset]: ' + blocksLEDs2x2[colorWheelMeshI+blocksOffset]);
-                      //    console.log('A blocksLEDs2x2[0]: ' + blocksLEDs2x2[0]);
-                      }
-                  }else if (colorWheelMeshType == 'D'){
-                      if(blocksLEDs2x4[colorWheelMeshI+blocksOffset] != ( tmpI | (0xF8 & blocksLEDs2x4[colorWheelMeshI+blocksOffset] ))){
-                          blocksLEDs2x4[colorWheelMeshI+blocksOffset] = ( tmpI | (0xF8 & blocksLEDs2x4[colorWheelMeshI+blocksOffset] )); 
-                          blocksRender = 1;
-                      }
-                      
-                  }else if (colorWheelMeshType == 'C'){
-                      if(blocksLEDs2x4[colorWheelMeshI+blocksOffset] != ( (tmpI << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI+blocksOffset])) ){
-                          blocksLEDs2x4[colorWheelMeshI+blocksOffset] = ( (tmpI << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI+blocksOffset])); 
-                          blocksRender = 1;
-                      }
-                      
-                  }else if (colorWheelMeshType == 'E'){
-                      if(baseLED[colorWheelMeshI] != ( tmpI | (0xF8 & baseLED[colorWheelMeshI]))){
-                          baseLED[colorWheelMeshI] = ( tmpI | (0xF8 & baseLED[colorWheelMeshI]));            
-                    //  console.log('E colorWheelMeshI: ' + colorWheelMeshI);
-                      //console.log(' ( tmpI | (0xF8 & blocksLEDs2x4[colorWheelMeshI]))' + ( tmpI | (0xF8 & blocksLEDs2x4[colorWheelMeshI])));
-                      blocksRender = 1;
-                      }
-                            
-                  }else if (colorWheelMeshType == 'F'){
-                      if(baseLED[colorWheelMeshI] != ( (tmpI << 3) | (0xC7 & baseLED[colorWheelMeshI]))){
-                          baseLED[colorWheelMeshI] = ( (tmpI << 3) | (0xC7 & baseLED[colorWheelMeshI])); 
-                    //  console.log('F colorWheelMeshI: ' + colorWheelMeshI);
-                    //  console.log('( (tmpI << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI]))' + ( (tmpI << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI])));
-                      blocksRender = 1;
-                      }
-                  }
-                      
-
-                  
-              });
-
-          }
-      }
-  }
 
 
 
@@ -380,8 +723,14 @@ function guiPointerUp(pickResult){
                
                                            guiSettingsActive = false;
                                            scene.activeCamera.attachControl(canvas);
+
+                                           if(biloHideBlocks){
+                                           biloHideBlocks = false;
+                                           blocksRender = 1;
+                                           }
                
                                        }
+                  
 
 }
 
@@ -393,77 +742,124 @@ function guiPointerDownd(pickResult){
                                         if (pickResult.hit) {
                                 
                                             colorWheelActive = 1;
-                                            console.log('Pointer down x:' + pickResult.pickedPoint.x);
+                                          //  console.log('Pointer down x:' + pickResult.pickedPoint.x);
                                 
-                                
-                                
+                                                                
                                             advancedTextureColorSelect = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("ColorSelect");
                                         
                                             colorWheelMeshI = Number(pickResult.pickedMesh.name.match(/\d+$/)[0]);
                                             colorWheelMeshType = pickResult.pickedMesh.name.slice(0, 1);
                                 
                                 
-                                            console.log('colorWheelMeshI: X ' + colorWheelMeshI + " X ");
-                                            console.log('colorWheelMeshType: X ' + colorWheelMeshType+ " X ");
+                                           // console.log('colorWheelMeshI: X ' + colorWheelMeshI + " X ");
+                                            //console.log('colorWheelMeshType: X ' + colorWheelMeshType+ " X ");
+
+                                            if(guiColorWheelLimitedFunction){
+                                           
+    
+                                                advancedTextureColorSelect.addControl(guiColorWheelSection);                                         
+                                                guiColorWheelSection.linkWithMesh(pickResult.pickedMesh);
+    
+                          
+                                               
+                                                advancedTextureColorSelect.addControl(guiColorWheelMid);                                         
+                                                guiColorWheelMid.linkWithMesh(pickResult.pickedMesh);
+    
+                                                advancedTextureColorSelect.addControl(guiColorWheelSectionR);                                         
+                                                guiColorWheelSectionR.linkWithMesh(pickResult.pickedMesh);
+    
+                                                advancedTextureColorSelect.addControl(guiColorWheelSectionG);                                         
+                                                guiColorWheelSectionG.linkWithMesh(pickResult.pickedMesh);
+    
+    
+                                                advancedTextureColorSelect.addControl(guiColorWheelSectionB);                                         
+                                                guiColorWheelSectionB.linkWithMesh(pickResult.pickedMesh);
+    
+                                                /*
+                                                advancedTextureColorSelect.addControl(guiColorWheelSectionRG);                                         
+                                                guiColorWheelSectionRG.linkWithMesh(pickResult.pickedMesh);
+    
+                                                advancedTextureColorSelect.addControl(guiColorWheelSectionRB);                                         
+                                                guiColorWheelSectionRB.linkWithMesh(pickResult.pickedMesh);
+    
+                                                advancedTextureColorSelect.addControl(guiColorWheelSectionGB);                                         
+                                                guiColorWheelSectionGB.linkWithMesh(pickResult.pickedMesh);*/
+                                                                    
+                                          
+                                            }else{    
+                                            advancedTextureColorSelect.addControl(guiColorWheelSectionRGB);                                         
+                                            guiColorWheelSectionRGB.linkWithMesh(pickResult.pickedMesh);
+
+                                            advancedTextureColorSelect.addControl(guiColorWheelSection);                                         
+                                            guiColorWheelSection.linkWithMesh(pickResult.pickedMesh);
+
+                      
+                                           
+                                            advancedTextureColorSelect.addControl(guiColorWheelMid);                                         
+                                            guiColorWheelMid.linkWithMesh(pickResult.pickedMesh);
+
+                                            advancedTextureColorSelect.addControl(guiColorWheelSectionR);                                         
+                                            guiColorWheelSectionR.linkWithMesh(pickResult.pickedMesh);
+
+                                            advancedTextureColorSelect.addControl(guiColorWheelSectionG);                                         
+                                            guiColorWheelSectionG.linkWithMesh(pickResult.pickedMesh);
+
+
+                                            advancedTextureColorSelect.addControl(guiColorWheelSectionB);                                         
+                                            guiColorWheelSectionB.linkWithMesh(pickResult.pickedMesh);
+
                                             
-                                             for(let i = 0; i < 8; i++){
-                                                advancedTextureColorSelect.addControl(buttonColorWheel[i]);
-                                                
-                                
-                                                buttonColorWheel[i].linkWithMesh(pickResult.pickedMesh);
-                                               // scene.pick(scene.pointerX, scene.pointerY)
-                                                //buttonColorWheel[i].linkWithMesh(renderBlocksPart1[0]);
+                                            advancedTextureColorSelect.addControl(guiColorWheelSectionRG);                                         
+                                            guiColorWheelSectionRG.linkWithMesh(pickResult.pickedMesh);
+
+                                            advancedTextureColorSelect.addControl(guiColorWheelSectionRB);                                         
+                                            guiColorWheelSectionRB.linkWithMesh(pickResult.pickedMesh);
+
+                                            advancedTextureColorSelect.addControl(guiColorWheelSectionGB);                                         
+                                            guiColorWheelSectionGB.linkWithMesh(pickResult.pickedMesh);
+
+                                            //--
                                               
+                                             
+
+                                                                    advancedTextureColorSelect.addControl(guiColorWheelFullRGB);                                         
+                                                                    guiColorWheelFullRGB.linkWithMesh(pickResult.pickedMesh);
+                        
+                                                                    advancedTextureColorSelect.addControl(guiColorWheelFull);                                         
+                                                                    guiColorWheelFull.linkWithMesh(pickResult.pickedMesh);
+                        
+                                                                    //--
+                                           
+                  
+
+                                            advancedTextureColorSelect.addControl(guiColorWheelFullR);                                         
+                                            guiColorWheelFullR.linkWithMesh(pickResult.pickedMesh);
+
+                                            advancedTextureColorSelect.addControl(guiColorWheelFullG);                                         
+                                            guiColorWheelFullG.linkWithMesh(pickResult.pickedMesh);
+
+
+                                            advancedTextureColorSelect.addControl(guiColorWheelFullB);                                         
+                                            guiColorWheelFullB.linkWithMesh(pickResult.pickedMesh);
+
+                                            
+                                            advancedTextureColorSelect.addControl(guiColorWheelFullRG);                                         
+                                            guiColorWheelFullRG.linkWithMesh(pickResult.pickedMesh);
+
+                                            advancedTextureColorSelect.addControl(guiColorWheelFullRB);                                         
+                                            guiColorWheelFullRB.linkWithMesh(pickResult.pickedMesh);
+
+                                            advancedTextureColorSelect.addControl(guiColorWheelFullGB);                                         
+                                            guiColorWheelFullGB.linkWithMesh(pickResult.pickedMesh);
+
+
                                             }
-                                
-                                              //advancedTextureColorSelect.addControl(buttonR); 
-                                              //advancedTextureColorSelect.addControl(buttonRG); 
-                                
-                                              //buttonR.linkWithMesh(renderBlocksPart1[0]);
-                                              //buttonRG.linkWithMesh(renderBlocksPart1[0]);
-                                
                                               scene.activeCamera.detachControl(canvas);
                                              
-                                     //   advancedTextureColorSelect.dispose();
-                                
-                                            /*buttonR.isVisible = true;
-                                            buttonR.top = "100px";
-                                            buttonR.y = pickResult.pickedPoint.y;
-                                
-                                            buttonR.linkWithMesh(sphere1);
-                                */
-                                           // buttonColorSelect.isVisible = true;
-                                
-                                
-                                
-                                         /*   var plane = BABYLON.Mesh.CreatePlane("plane", 2);
-                                            //plane.parent = sphere;
-                                        plane.position.y = pickResult.pickedPoint.y;
-                                plane.position.x = pickResult.pickedPoint.x;
-                                
-                                plane.position = camera.getFrontPosition(12);
-                                
-                                var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane);
-                                
-                                var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Click Me");
-                                button1.width = 1;
-                                button1.height = 0.4;
-                                button1.color = "white";
-                                button1.fontSize = 50;
-                                button1.background = "green";
-                                button1.onPointerUpObservable.add(function() {
-                                    alert("you did it!");
-                                });
-                                advancedTexture.addControl(button1);*/
+                                            
                                 
                                         }
-                                        // if the click hits the ground object, we change the impact position
-                                        /*
-                                
-                                        if (pickResult.hit) {
-                                            impact.position.x = pickResult.pickedPoint.x;
-                                            impact.position.y = pickResult.pickedPoint.y;
-                                        }*/
+
                                     }
 
 
@@ -542,48 +938,72 @@ function guiSettingsFocusChange(){
     
 }
 
-function guiSettingsSizeChange (button, size, paddingLeft, paddingTop){
+function guiSettingsSizeChange (button, size, paddingLeft, paddingTop, plus){
 
     button.width = size + "px";
     button.height = size + "px";
     button.left = paddingLeft + "px";
+
+    if(plus){
+        button.top = paddingTop + "px";
+
+    }else{
+
     button.top = "-" + paddingTop + "px";
+    }
 
 
 }
 
 
-function guiInitButtonEllipseImage(ellipse, image, paddingLeft, paddingTop){
+function guiInitButtonEllipseImage(ellipse, image, paddingLeft, paddingTop, center, top, plus){
 
-    let guiSettingsSizeM = 100;
-    let guiSettingsPaddingBottom = 10;
-    let guiSettingsPaddingTop = 5;    
-    let guiSettingsColor = "#606060";
-    let guiSettingsLineThickness = 0;    
-   // let guiSettingsClickColor = "black";
-   let guiSettingsClickColor = "#606060";
+  
 
 
-   guiSettingsSizeChange(image, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM * paddingLeft, guiSettingsPaddingBottom + guiSettingsSizeM * paddingTop); 
+   guiSettingsSizeChange(image, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM * paddingLeft, guiSettingsPaddingBottom + guiSettingsSizeM * paddingTop, plus); 
    
    image.paddingTop = guiSettingsPaddingTop;              
    image.paddingRight = guiSettingsPaddingTop;
+    if(top){
+        if(center){
+            image.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+            image.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+        }else{
+           image.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+           image.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        }
 
-   image.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
-   image.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
-
+    }else{
+        image.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+        image.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+    }
     
 ellipse.color = guiSettingsColor;
 ellipse.thickness = guiSettingsLineThickness;
-    guiSettingsSizeChange(ellipse, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM * paddingLeft, guiSettingsPaddingBottom + guiSettingsSizeM * paddingTop);
+    guiSettingsSizeChange(ellipse, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM * paddingLeft, guiSettingsPaddingBottom + guiSettingsSizeM * paddingTop, plus);
     //guiSettingsSnap.width = guiSettingsSizeM + "px";
     //guiSettingsSnap.height = guiSettingsSizeM + "px";
     //guiSettingsSnap.left =(guiSettingsPaddingBottom) + "px";
     //guiSettingsSnap.top = "-" + (guiSettingsPaddingBottom + guiSettingsSizeM) + "px";
     ellipse.paddingTop = guiSettingsPaddingTop;              
     ellipse.paddingRight = guiSettingsPaddingTop;
+
+    if(top){
+        if(center){
+            ellipse.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+            ellipse.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+        }else {
+        ellipse.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+        ellipse.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+        }
+
+
+    }else{
     ellipse.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
     ellipse.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+    }
+
     ellipse.background = guiSettingsClickColor;
     ellipse.alpha = guiSettingsNoClickTransparancy;
 
@@ -613,13 +1033,7 @@ function guiInitSettingsMenu(){
 
 
 
-    let guiSettingsSizeM = 100;
-    let guiSettingsPaddingBottom = 10;
-    let guiSettingsPaddingTop = 5;    
-    let guiSettingsColor = "#606060";
-    let guiSettingsLineThickness = 0;    
-   // let guiSettingsClickColor = "black";
-   let guiSettingsClickColor = "#606060";
+
    
     //let guiSettingsNoClickColor = "black";
     
@@ -649,10 +1063,7 @@ function guiInitSettingsMenu(){
     guiSettingsSize.thickness = guiSettingsLineThickness;
     guiSettingsSizeChange(guiSettingsSize, guiSettingsSizeM, guiSettingsPaddingBottom, guiSettingsPaddingBottom);
     
- //   guiSettingsSize.width = guiSettingsSizeM + "px";
-  //  guiSettingsSize.height = guiSettingsSizeM + "px";
-   // guiSettingsSize.left = guiSettingsPaddingBottom + "px";
-   // guiSettingsSize.top = "-" + guiSettingsPaddingBottom + "px";
+
     guiSettingsSize.paddingTop = guiSettingsPaddingTop;              
     guiSettingsSize.paddingRight = guiSettingsPaddingTop;
     guiSettingsSize.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
@@ -661,39 +1072,30 @@ function guiInitSettingsMenu(){
     guiSettingsSize.alpha = guiSettingsNoClickTransparancy;
     guiSettingsSizeImage.onPointerDownObservable.add(function() {
 
-        if(guiSettingsSizeM == 50){
+        if(guiSettingsSizeM == 60){
             guiSettingsSizeM = 100;
 
-            bCWPSize = 120;
-            bCWPMax = 100;
-            bCWPMin = 60;
-            bCWPOT = 40;
-            bCWPOR = 40;
                         
         }else if(guiSettingsSizeM == 100){
-            guiSettingsSizeM = 200;
+            guiSettingsSizeM = 150;
 
-            bCWPSize = 240;
-            bCWPMax = 200;
-            bCWPMin = 120;
-            bCWPOT = 80;
-            bCWPOR = 80;
-        }else if(guiSettingsSizeM == 200){
-            guiSettingsSizeM = 50;
-            bCWPSize = 60;
-            bCWPMax = 50;
-            bCWPMin = 30;
-            bCWPOT = 20;
-            bCWPOR = 20;
+  
+        }else if(guiSettingsSizeM == 150){
+            guiSettingsSizeM = 60;
+
         }
 
-        if(guiSettingsSizeM == 50){
+        if(guiSettingsSizeM == 60){
             guiSettingsSizeChange(guiSettingsSize, 100, guiSettingsPaddingBottom, guiSettingsPaddingBottom);
             guiSettingsSizeChange(guiSettingsSizeImage, 100, guiSettingsPaddingBottom, guiSettingsPaddingBottom);
         }else{
             guiSettingsSizeChange(guiSettingsSize, guiSettingsSizeM, guiSettingsPaddingBottom, guiSettingsPaddingBottom);
             guiSettingsSizeChange(guiSettingsSizeImage, guiSettingsSizeM, guiSettingsPaddingBottom, guiSettingsPaddingBottom);
         }
+
+        
+
+        guiColorWheelSetSize( guiSettingsSizeM);
         
 
         guiSettingsSizeChange(guiSettingsHide, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM, guiSettingsPaddingBottom);
@@ -735,6 +1137,41 @@ function guiInitSettingsMenu(){
         guiSettingsSizeChange(guiSettingsCompassOff, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*3);
         guiSettingsSizeChange(guiSettingsCompassOn, guiSettingsSizeM, guiSettingsPaddingBottom + guiSettingsSizeM*2, guiSettingsPaddingBottom + guiSettingsSizeM*3);
         
+       // guiSettingsSizeChange(guiGameSelectBuilder, guiSettingsSizeM, guiSettingsPaddingBottom, guiSettingsPaddingBottom);
+      // guiGameSelectBuilderImage.width = guiSettingsSizeM + "px";
+       //guiGameSelectBuilderImage.height = guiSettingsSizeM + "px";
+
+      // guiGameSelectTangramImage.width = guiSettingsSizeM + "px";
+       //guiGameSelectTangramImage.height = guiSettingsSizeM + "px";
+       guiSettingsSizeChange(guiGameSelectBuilder, guiSettingsSizeM, -guiSettingsSizeM, 0);
+        guiSettingsSizeChange(guiGameSelectBuilderImage, guiSettingsSizeM, -guiSettingsSizeM, 0);
+        guiSettingsSizeChange(guiGameSelectTangram, guiSettingsSizeM, 0, 0);
+        guiSettingsSizeChange(guiGameSelectTangramImage, guiSettingsSizeM, 0, 0);
+ 
+        guiSettingsSizeChange(guiGameSelectMemo, guiSettingsSizeM, guiSettingsSizeM, 0);
+        guiSettingsSizeChange(guiGameSelectMemoImage, guiSettingsSizeM, guiSettingsSizeM, 0);
+
+        
+
+        guiSettingsSizeChange(guiGameSelectFindShape, guiSettingsSizeM, -guiSettingsSizeM, guiSettingsSizeM);
+        guiSettingsSizeChange(guiGameSelectFindShapeImage, guiSettingsSizeM, -guiSettingsSizeM, guiSettingsSizeM);
+
+        guiSettingsSizeChange(guiGameSelectFree, guiSettingsSizeM, 0, guiSettingsSizeM);
+        guiSettingsSizeChange(guiGameSelectFreeImage, guiSettingsSizeM, 0, guiSettingsSizeM);
+ 
+        guiSettingsSizeChange(guiGameSelectProgram, guiSettingsSizeM, guiSettingsSizeM, guiSettingsSizeM);
+        guiSettingsSizeChange(guiGameSelectProgramImage, guiSettingsSizeM, guiSettingsSizeM, guiSettingsSizeM);
+
+        //--
+
+        guiLevelButtonSize(guiSettingsSizeM);
+
+        //--
+
+     //   guiSettingsSizeChange(guiLevelNext, guiSettingsSizeM, guiSettingsPaddingBottom, guiSettingsPaddingBottom+guiSettingsSizeM, true);
+     //   guiSettingsSizeChange(guiLevelNextImage, guiSettingsSizeM, guiSettingsPaddingBottom, guiSettingsPaddingBottom+guiSettingsSizeM, true);
+
+
     });
 
     
@@ -805,6 +1242,9 @@ function guiInitSettingsMenu(){
 
             guiSettingsHide.alpha = guiSettingsClickTransparancy;
 
+            biloHideBlocks = true;
+            blocksRender =1;
+
        // }
     });
 
@@ -823,6 +1263,19 @@ function guiInitSettingsMenu(){
 
 
             camera.radius = 20;
+
+
+
+            camera.setTarget(new BABYLON.Vector3(4.5,0 ,4.5));
+          //  camera = new BABYLON.ArcRotateCamera("Camera", 0,0, 10, new BABYLON.Vector3(4.5,0 ,4.5), scene);
+            
+           // camera.rotation = new BABYLON.Vector3(0, 1, 1);
+            //camera.setTarget(BABYLON.Vector3.Zero());
+      //  camera.upVector =  new BABYLON.Vector3(0, 0, 1);
+       // camera.setPosition(new BABYLON.Vector3(15, 4.5,15));
+    
+       //camera.setPosition(new BABYLON.Vector3(15,15,15));
+           
             guiSettingsZoom.alpha = guiSettingsClickTransparancy;
 
        // }
@@ -951,7 +1404,7 @@ function guiInitSettingsMenu(){
 
     guiSettingsSnap8Image = new BABYLON.GUI.Image("guiSettingsSnap8Image", "http://rawgit.com/AlexanderssonErik/web/master/ic_rotate_90_degrees_ccw_white_48px.svg");
     guiSettingsSnap8 = new BABYLON.GUI.Ellipse();
-    guiInitButtonEllipseImage(guiSettingsSnap8, guiSettingsSnap8Image, 3, 1);
+    guiInitButtonEllipseImage(guiSettingsSnap8, guiSettingsSnap8Image, 4, 1);
    
     guiSettingsSnap8Image.onPointerMoveObservable.add(function() {
         guiSettingsFocusChange();
@@ -1183,7 +1636,6 @@ function guiInitSettingsMenu(){
     guiAdvancedTextureSettings.addControl(guiSettingsSnap4HorizontalImage);
     guiSettingsSnap4HorizontalImage.isVisible = false;
 
-
     guiAdvancedTextureSettings.addControl(guiSettingsSnap8);
     guiSettingsSnap8.isVisible = false;
     guiAdvancedTextureSettings.addControl(guiSettingsSnap8Image);
@@ -1236,14 +1688,50 @@ function guiInitSettingsMenu(){
 
 
 
-function guiRender(pointerIsDown){
+function guiRender(pointerIsDown, compassRender, compassCameraAlpha){
 
    //let sss = shapesStar.clone("A" );
 
-    if(snapDiagonalA && !pointerIsDown){
+ 
+
+   if(compassRender){
+    
+                   // guiRenderCompass(compassRender);
+    
+    
+                   //camera.alpha =  -compassCameraAlpha;
+        if(snapDiagonalA == 0){
+            camera.alpha =  -compassCameraAlpha + guiCompassCameraAlphaDiff;
+        }else{
+            if(!cameraAnimatable.animationStarted){
+
+
+                //let snapDiagonalA = 0; //0 for off, 1 for 8pos, -1 for diagonal, 1 for horizontal 
+                //let snapDiagonalB = 2; //1 for 8pos, 2 4pos
+                
+                //let snapDistance = (Math.PI/4); 
+                if(Math.abs((-compassCameraAlpha + guiCompassCameraAlphaDiff) - camera.alpha) > (snapDiagonalB*snapDistance)/2){
+                    camera.alpha =  -compassCameraAlpha + guiCompassCameraAlphaDiff;
+
+                }
+
+                
+            }
+
+        }
+
+
+                    
+    }else if(snapDiagonalA == 0){
+    
+        guiCompassCameraAlphaDiff = camera.alpha + compassCameraAlpha;
+    }
+
+    if(snapDiagonalA && !pointerIsDown ){
         
         
-                            if(camera.alpha%snapDistance > 0.05 && ! cameraAnimatable.animationStarted){                            
+                            if(camera.alpha%snapDistance > 0.05 && ! cameraAnimatable.animationStarted){  
+                                                        
                                     if(snapDiagonalA*(camera.alpha%(snapDistance*snapDiagonalB) - (snapDiagonalB*snapDistance)/2) > 0){
                                         cameraAnimateKeyFrames.pop();
                                         cameraAnimateKeyFrames.pop();
@@ -1271,9 +1759,12 @@ function guiRender(pointerIsDown){
                                         cameraAnimate.setKeys(cameraAnimateKeyFrames);                                
                                         cameraAnimatable = scene.beginDirectAnimation(camera, [cameraAnimate], 0, 2 * cameraAnimateFrameRate, false);
                                     }
+
+                                    
                                 }
         
-                                if(camera.alpha%snapDistance < -0.05 && ! cameraAnimatable.animationStarted){                            
+                                if(camera.alpha%snapDistance < -0.05 && ! cameraAnimatable.animationStarted){         
+                                                            
                                     if(snapDiagonalA*(camera.alpha%(snapDistance*snapDiagonalB) + (snapDiagonalB*snapDistance)/2) > 0){
                                         cameraAnimateKeyFrames.pop();
                                         cameraAnimateKeyFrames.pop();
@@ -1304,3 +1795,305 @@ function guiRender(pointerIsDown){
                                 }
                             }
 }
+
+function guiInitGameSelectMenu(){
+ 
+
+
+
+   
+    //let guiSettingsNoClickColor = "black";
+    
+        //alpha
+    //background
+    //focusedBackground
+    //let paddingPitch = "110px"
+
+    guiAdvancedTextureGameSelect = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("GameSelect");
+
+   
+    guiGameSelectBuilderImage = new BABYLON.GUI.Image("Builder", "http://rawgit.com/AlexanderssonErik/web/master/ic_aspect_ratio_white_48px.svg");
+    //guiSettingsStartImage.width = 0.2;
+    //guiSettingsStartImage.height = "40px";
+    guiSettingsSizeChange(guiGameSelectBuilderImage, guiSettingsSizeM, -guiSettingsSizeM, 0);
+    
+    guiGameSelectBuilderImage.paddingTop = guiSettingsPaddingTop;              
+    guiGameSelectBuilderImage.paddingRight = guiSettingsPaddingTop;
+    
+    guiGameSelectBuilderImage.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+    guiGameSelectBuilderImage.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+
+    guiGameSelectBuilder = new BABYLON.GUI.Ellipse();
+    guiGameSelectBuilder.color = guiSettingsColor;
+    guiGameSelectBuilder.thickness = guiSettingsLineThickness;
+    guiSettingsSizeChange(guiGameSelectBuilder, guiSettingsSizeM, -guiSettingsSizeM, 0);
+    
+ //   guiSettingsSize.width = guiSettingsSizeM + "px";
+  //  guiSettingsSize.height = guiSettingsSizeM + "px";
+   // guiSettingsSize.left = guiSettingsPaddingBottom + "px";
+   // guiSettingsSize.top = "-" + guiSettingsPaddingBottom + "px";
+   guiGameSelectBuilder.paddingTop = guiSettingsPaddingTop;              
+   guiGameSelectBuilder.paddingRight = guiSettingsPaddingTop;
+   guiGameSelectBuilder.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+   guiGameSelectBuilder.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+   guiGameSelectBuilder.background = guiSettingsClickColor;
+   guiGameSelectBuilder.alpha = guiSettingsNoClickTransparancy;
+
+
+
+   guiGameSelectBuilderImage.onPointerDownObservable.add(function() {
+
+    biloGame = 1;
+    biloLevel = 0;
+
+    guiGameSelectBuilder.isVisible = false;
+    guiGameSelectBuilderImage.isVisible = false;
+   
+    guiGameSelectTangram.isVisible = false;
+    guiGameSelectTangramImage.isVisible = false;
+   
+    guiGameSelectMemo.isVisible = false;
+    guiGameSelectMemoImage.isVisible = false;
+   
+    guiGameSelectFindShape.isVisible = false;
+    guiGameSelectFindShapeImage.isVisible = false;
+   
+    guiGameSelectFree.isVisible = false;
+    guiGameSelectFreeImage.isVisible = false;
+   
+    guiGameSelectProgram.isVisible = false;
+    guiGameSelectProgramImage.isVisible = false;
+
+    guiLevelInit(0, 2);
+
+    });
+
+//---
+
+
+
+guiGameSelectTangramImage = new BABYLON.GUI.Image("Tangram", "http://rawgit.com/AlexanderssonErik/web/master/ic_aspect_ratio_white_48px.svg");
+//guiSettingsStartImage.width = 0.2;
+//guiSettingsStartImage.height = "40px";
+guiSettingsSizeChange(guiGameSelectTangramImage, guiSettingsSizeM, 0, 0);
+
+guiGameSelectTangramImage.paddingTop = guiSettingsPaddingTop;              
+guiGameSelectTangramImage.paddingRight = guiSettingsPaddingTop;
+
+guiGameSelectTangramImage.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+guiGameSelectTangramImage.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+guiGameSelectTangram = new BABYLON.GUI.Ellipse();
+guiGameSelectTangram.color = guiSettingsColor;
+guiGameSelectTangram.thickness = guiSettingsLineThickness;
+guiSettingsSizeChange(guiGameSelectTangram, guiSettingsSizeM, 0, 0);
+
+//   guiSettingsSize.width = guiSettingsSizeM + "px";
+//  guiSettingsSize.height = guiSettingsSizeM + "px";
+// guiSettingsSize.left = guiSettingsPaddingBottom + "px";
+// guiSettingsSize.top = "-" + guiSettingsPaddingBottom + "px";
+guiGameSelectTangram.paddingTop = guiSettingsPaddingTop;              
+guiGameSelectTangram.paddingRight = guiSettingsPaddingTop;
+guiGameSelectTangram.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+guiGameSelectTangram.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+guiGameSelectTangram.background = guiSettingsClickColor;
+guiGameSelectTangram.alpha = guiSettingsNoClickTransparancy;
+
+guiGameSelectTangramImage.onPointerDownObservable.add(function() {
+
+    biloGame = 2;
+    biloLevel = 0;
+
+     guiGameSelectBuilder.isVisible = false;
+     guiGameSelectBuilderImage.isVisible = false;
+    
+     guiGameSelectTangram.isVisible = false;
+     guiGameSelectTangramImage.isVisible = false;
+    
+     guiGameSelectMemo.isVisible = false;
+     guiGameSelectMemoImage.isVisible = false;
+    
+     guiGameSelectFindShape.isVisible = false;
+     guiGameSelectFindShapeImage.isVisible = false;
+    
+     guiGameSelectFree.isVisible = false;
+     guiGameSelectFreeImage.isVisible = false;
+    
+     guiGameSelectProgram.isVisible = false;
+     guiGameSelectProgramImage.isVisible = false;
+
+     guiLevelInit(5, 4);
+     //guiInitTangramLevelMenu();
+
+});
+
+//--
+
+
+
+//--
+
+guiGameSelectMemoImage = new BABYLON.GUI.Image("Tangram", "http://rawgit.com/AlexanderssonErik/web/master/ic_aspect_ratio_white_48px.svg");
+guiSettingsSizeChange(guiGameSelectMemoImage, guiSettingsSizeM, guiSettingsSizeM, 0);
+
+guiGameSelectMemoImage.paddingTop = guiSettingsPaddingTop;              
+guiGameSelectMemoImage.paddingRight = guiSettingsPaddingTop;
+
+guiGameSelectMemoImage.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+guiGameSelectMemoImage.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+guiGameSelectMemo = new BABYLON.GUI.Ellipse();
+guiGameSelectMemo.color = guiSettingsColor;
+guiGameSelectMemo.thickness = guiSettingsLineThickness;
+guiSettingsSizeChange(guiGameSelectMemo, guiSettingsSizeM, guiSettingsSizeM, 0);
+
+guiGameSelectMemo.paddingTop = guiSettingsPaddingTop;              
+guiGameSelectMemo.paddingRight = guiSettingsPaddingTop;
+guiGameSelectMemo.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+guiGameSelectMemo.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+guiGameSelectMemo.background = guiSettingsClickColor;
+guiGameSelectMemo.alpha = guiSettingsNoClickTransparancy;
+
+guiGameSelectMemoImage.onPointerDownObservable.add(function() {
+
+});
+
+//--
+
+
+guiGameSelectFindShapeImage = new BABYLON.GUI.Image("Tangram", "http://rawgit.com/AlexanderssonErik/web/master/ic_aspect_ratio_white_48px.svg");
+guiSettingsSizeChange(guiGameSelectFindShapeImage, guiSettingsSizeM, -guiSettingsSizeM, guiSettingsSizeM);
+
+guiGameSelectFindShapeImage.paddingTop = guiSettingsPaddingTop;              
+guiGameSelectFindShapeImage.paddingRight = guiSettingsPaddingTop;
+
+guiGameSelectFindShapeImage.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+guiGameSelectFindShapeImage.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+guiGameSelectFindShape = new BABYLON.GUI.Ellipse();
+guiGameSelectFindShape.color = guiSettingsColor;
+guiGameSelectFindShape.thickness = guiSettingsLineThickness;
+guiSettingsSizeChange(guiGameSelectFindShape, guiSettingsSizeM, -guiSettingsSizeM, guiSettingsSizeM);
+
+guiGameSelectFindShape.paddingTop = guiSettingsPaddingTop;              
+guiGameSelectFindShape.paddingRight = guiSettingsPaddingTop;
+guiGameSelectFindShape.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+guiGameSelectFindShape.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+guiGameSelectFindShape.background = guiSettingsClickColor;
+guiGameSelectFindShape.alpha = guiSettingsNoClickTransparancy;
+
+guiGameSelectFindShapeImage.onPointerDownObservable.add(function() {
+
+});
+//--
+
+
+
+
+guiGameSelectFreeImage = new BABYLON.GUI.Image("Tangram", "http://rawgit.com/AlexanderssonErik/web/master/ic_aspect_ratio_white_48px.svg");
+guiSettingsSizeChange(guiGameSelectFreeImage, guiSettingsSizeM, 0, guiSettingsSizeM);
+
+guiGameSelectFreeImage.paddingTop = guiSettingsPaddingTop;              
+guiGameSelectFreeImage.paddingRight = guiSettingsPaddingTop;
+
+guiGameSelectFreeImage.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+guiGameSelectFreeImage.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+guiGameSelectFree = new BABYLON.GUI.Ellipse();
+guiGameSelectFree.color = guiSettingsColor;
+guiGameSelectFree.thickness = guiSettingsLineThickness;
+guiSettingsSizeChange(guiGameSelectFree, guiSettingsSizeM, 0, guiSettingsSizeM);
+
+guiGameSelectFree.paddingTop = guiSettingsPaddingTop;              
+guiGameSelectFree.paddingRight = guiSettingsPaddingTop;
+guiGameSelectFree.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+guiGameSelectFree.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+guiGameSelectFree.background = guiSettingsClickColor;
+guiGameSelectFree.alpha = guiSettingsNoClickTransparancy;
+
+guiGameSelectFreeImage.onPointerDownObservable.add(function() {
+
+});
+
+
+//--
+
+guiGameSelectProgramImage = new BABYLON.GUI.Image("Tangram", "http://rawgit.com/AlexanderssonErik/web/master/ic_aspect_ratio_white_48px.svg");
+guiSettingsSizeChange(guiGameSelectProgramImage, guiSettingsSizeM, guiSettingsSizeM, guiSettingsSizeM);
+
+guiGameSelectProgramImage.paddingTop = guiSettingsPaddingTop;              
+guiGameSelectProgramImage.paddingRight = guiSettingsPaddingTop;
+
+guiGameSelectProgramImage.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+guiGameSelectProgramImage.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+guiGameSelectProgram = new BABYLON.GUI.Ellipse();
+guiGameSelectProgram.color = guiSettingsColor;
+guiGameSelectProgram.thickness = guiSettingsLineThickness;
+guiSettingsSizeChange(guiGameSelectProgram, guiSettingsSizeM, guiSettingsSizeM, guiSettingsSizeM);
+
+guiGameSelectProgram.paddingTop = guiSettingsPaddingTop;              
+guiGameSelectProgram.paddingRight = guiSettingsPaddingTop;
+guiGameSelectProgram.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+guiGameSelectProgram.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+guiGameSelectProgram.background = guiSettingsClickColor;
+guiGameSelectProgram.alpha = guiSettingsNoClickTransparancy;
+
+guiGameSelectProgramImage.onPointerDownObservable.add(function() {
+
+});
+
+
+
+    //guiAdvancedTextureSettings
+
+  //  guiAdvancedTextureSettings.addControl(guiGameSelectBuilder);
+   // guiAdvancedTextureSettings.addControl(guiGameSelectBuilderImage);
+
+  /* var guiPanelGameSelect = new BABYLON.GUI.StackPanel();
+   guiPanelGameSelect.width = "1000px";
+   guiPanelGameSelect.height = "1000px";
+   guiPanelGameSelect.fontSize = "14px";
+   guiPanelGameSelect.isVertical = false;
+   guiPanelGameSelect.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+   guiPanelGameSelect.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+   guiAdvancedTextureGameSelect.addControl(guiPanelGameSelect);
+
+   
+   guiPanelGameSelect.addControl(guiGameSelectBuilderImage);
+
+   
+   guiPanelGameSelect.addControl(guiGameSelectTangramImage);
+*/
+    guiAdvancedTextureGameSelect.addControl(guiGameSelectBuilder);
+    guiAdvancedTextureGameSelect.addControl(guiGameSelectBuilderImage);
+
+    guiAdvancedTextureGameSelect.addControl(guiGameSelectTangram);
+    guiAdvancedTextureGameSelect.addControl(guiGameSelectTangramImage);
+
+    guiAdvancedTextureGameSelect.addControl(guiGameSelectMemo);
+    guiAdvancedTextureGameSelect.addControl(guiGameSelectMemoImage);
+    
+    guiAdvancedTextureGameSelect.addControl(guiGameSelectFindShape);
+    guiAdvancedTextureGameSelect.addControl(guiGameSelectFindShapeImage);
+    
+
+    guiAdvancedTextureGameSelect.addControl(guiGameSelectFree);
+    guiAdvancedTextureGameSelect.addControl(guiGameSelectFreeImage);
+
+    guiAdvancedTextureGameSelect.addControl(guiGameSelectProgram);
+    guiAdvancedTextureGameSelect.addControl(guiGameSelectProgramImage);
+    
+}
+
+
+
+ 
+
+
+
+
+function guiWinningAndNext(wins){
+    guiAnimateWin(wins);
+    
+    guiLevelNext.isVisible = true;
+    guiLevelNextImage.isVisible = true;
+
+
+}
+
