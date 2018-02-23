@@ -1176,7 +1176,7 @@ function guiInitSettingsMenu(){
 
     
 
-    var guiSettingsStartImage = new BABYLON.GUI.Image("Start", "http://rawgit.com/AlexanderssonErik/web/master/ic_settings_white_48px.svg");
+    var guiSettingsStartImage = new BABYLON.GUI.Image("Start", "http://rawgit.com/AlexanderssonErik/web/master/settings.svg");
     guiSettingsStart = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsStart, guiSettingsStartImage, 0, 0);
 
