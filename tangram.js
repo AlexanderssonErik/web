@@ -155,15 +155,15 @@ let blockPixelBottom;
 let blockPixelMapToBlock = [];
 
 
-let levelBlockX = [];
+/*let levelBlockX = [];
 let levelBlockY = [];
 let levelBlockZ = [];
 let levelBlockRT = [];
-let levelBlocksLEDs2x2 = [];
-let levelBlocksLEDs2x4 = [];
+let levelBlockLED2x2 = [];
+let levelBlockLED2x4 = [];
 
 let levelBlockCount = [];
-let levelBlockNumberStages = [];
+let levelBlockNumberStages = [];*/
 
 let tangramRemoveShadowEnabled = true;
 let tangramErrorColorEnabled = true;
@@ -182,7 +182,7 @@ let tangramLastStage =[];
 
 
 function tangramCreateGame(level){
-    console.log("-------------------------- " );
+   
 
 
     let stage = Math.floor(Math.random()*levelBlockNumberStages[level -1]) ;
@@ -203,7 +203,7 @@ function tangramCreateGame(level){
     tangramIncludeSideC = true;
     
 
-    defineBlockPixels(levelBlockCount[level-1][stage],  levelBlockX[level-1][stage], levelBlockY[level - 1][stage], levelBlockZ[level - 1][stage], levelBlockRT[level-1][stage], levelBlocksLEDs2x2[level -1][stage], levelBlocksLEDs2x4[level -1][stage], 0);
+    defineBlockPixels(levelBlockCount[level-1][stage],  levelBlockX[level-1][stage], levelBlockY[level - 1][stage], levelBlockZ[level - 1][stage], levelBlockRT[level-1][stage], levelBlockLED2x2[level -1][stage], levelBlockLED2x4[level -1][stage], 0);
     
     if(level == 1){
         let side = Math.floor(Math.random()*3) ;
@@ -248,10 +248,10 @@ function tangramCreateGame(level){
 
     }
 
-   // defineBlockPixels(levelBlockCount,  levelBlockX[0][0], levelBlockY, levelBlockZ, levelBlockRT, levelBlocksLEDs2x2, levelBlocksLEDs2x4, 0);
+   // defineBlockPixels(levelBlockCount,  levelBlockX[0][0], levelBlockY, levelBlockZ, levelBlockRT, levelBlockLED2x2, levelBlockLED2x4, 0);
     
 
-     // defineBlockPixels(levelBlockCount,  levelBlockX, levelBlockY, levelBlockZ, levelBlockRT, levelBlocksLEDs2x2, levelBlocksLEDs2x4, 0);
+     // defineBlockPixels(levelBlockCount,  levelBlockX, levelBlockY, levelBlockZ, levelBlockRT, levelBlockLED2x2, levelBlockLED2x4, 0);
 
     defineLevelPlanes();
 
@@ -452,24 +452,24 @@ function initTangram(scene, pitchY){
       levelBlockY[0] = 0;
       levelBlockZ[0] = 2;
       levelBlockRT[0] = 0;
-      levelBlocksLEDs2x2[0] = 0x00;
-      levelBlocksLEDs2x4[0] = 0x00;
+      levelBlockLED2x2[0] = 0x00;
+      levelBlockLED2x4[0] = 0x00;
 
       levelBlockX[0][0][1] = 3;
   //    levelBlockX[1] = 3;
       levelBlockY[1] = 1;
       levelBlockZ[1] = 2;
       levelBlockRT[1] = 2;
-      levelBlocksLEDs2x2[1] = 0x00;
-      levelBlocksLEDs2x4[1] = 0x00;
+      levelBlockLED2x2[1] = 0x00;
+      levelBlockLED2x4[1] = 0x00;
 
       levelBlockX[0][0][2] = 5;
     //  levelBlockX[2] = 5;
       levelBlockY[2] = 0;
       levelBlockZ[2] = 5;
       levelBlockRT[2] = 4;
-      levelBlocksLEDs2x2[2] = 0x00;
-      levelBlocksLEDs2x4[2] = 0x00;
+      levelBlockLED2x2[2] = 0x00;
+      levelBlockLED2x4[2] = 0x00;
 
 
 
@@ -477,14 +477,14 @@ function initTangram(scene, pitchY){
 
       levelBlockCount = 3;*/
 
-    for(let i = 0; i < 10; i++){
+    /*for(let i = 0; i < 10; i++){
         levelBlockX[i] = [];
         levelBlockX[i] = [];
         levelBlockY[i] = [];
         levelBlockZ[i] = [];
         levelBlockRT[i] = [];
-        levelBlocksLEDs2x2[i] = [];
-        levelBlocksLEDs2x4[i] = [];
+        levelBlockLED2x2[i] = [];
+        levelBlockLED2x4[i] = [];
         levelBlockCount[i] = [];
         for(let a = 0; a < 100; a++){
             levelBlockX[i][a] = [];
@@ -492,12 +492,12 @@ function initTangram(scene, pitchY){
             levelBlockY[i][a] = [];
             levelBlockZ[i][a] = [];
             levelBlockRT[i][a] = [];
-            levelBlocksLEDs2x2[i][a] = [];
-            levelBlocksLEDs2x4[i][a] = [];
+            levelBlockLED2x2[i][a] = [];
+            levelBlockLED2x4[i][a] = [];
             //levelBlockCount[i][a] = [];
 
         }
-    }
+    }*/
 
 
    //1
@@ -511,15 +511,15 @@ function initTangram(scene, pitchY){
       levelBlockY[0][0][0] = 0;
       levelBlockZ[0][0][0] = 3;
       levelBlockRT[0][0][0] = 2;
-      levelBlocksLEDs2x2[0][0][0] = 0;
-      levelBlocksLEDs2x4[0][0][0] = 0;
+      levelBlockLED2x2[0][0][0] = 0;
+      levelBlockLED2x4[0][0][0] = 0;
 
       levelBlockX[0][0][1] = 3;
       levelBlockY[0][0][1] = 1;
       levelBlockZ[0][0][1] = 3;
       levelBlockRT[0][0][1] = 2;
-      levelBlocksLEDs2x2[0][0][1] = 0;
-      levelBlocksLEDs2x4[0][0][1] = 0;
+      levelBlockLED2x2[0][0][1] = 0;
+      levelBlockLED2x4[0][0][1] = 0;
 
       levelBlockCount[0][0] = 2;
 
@@ -528,8 +528,8 @@ function initTangram(scene, pitchY){
        levelBlockY[0][1][0] = 0;
        levelBlockZ[0][1][0] = 3;
        levelBlockRT[0][1][0] = 4;
-       levelBlocksLEDs2x2[0][1][0] = 0;
-       levelBlocksLEDs2x4[0][1][0] = 0;
+       levelBlockLED2x2[0][1][0] = 0;
+       levelBlockLED2x4[0][1][0] = 0;
        levelBlockCount[0][1] = 1;
 
       //0-2
@@ -537,8 +537,8 @@ function initTangram(scene, pitchY){
       levelBlockY[0][2][0] = 0;
       levelBlockZ[0][2][0] = 6;
       levelBlockRT[0][2][0] = 4;
-      levelBlocksLEDs2x2[0][2][0] = 0;
-      levelBlocksLEDs2x4[0][2][0] = 0;
+      levelBlockLED2x2[0][2][0] = 0;
+      levelBlockLED2x4[0][2][0] = 0;
       levelBlockCount[0][2] = 1;
 
 
@@ -553,15 +553,15 @@ function initTangram(scene, pitchY){
             levelBlockY[1][0][0] = 0;
             levelBlockZ[1][0][0] = 3;
             levelBlockRT[1][0][0] = 2;
-            levelBlocksLEDs2x2[1][0][0] = 0;
-            levelBlocksLEDs2x4[1][0][0] = 0;
+            levelBlockLED2x2[1][0][0] = 0;
+            levelBlockLED2x4[1][0][0] = 0;
       
             levelBlockX[1][0][1] = 3;
             levelBlockY[1][0][1] = 1;
             levelBlockZ[1][0][1] = 3;
             levelBlockRT[1][0][1] = 2;
-            levelBlocksLEDs2x2[1][0][1] = 0;
-            levelBlocksLEDs2x4[1][0][1] = 0;
+            levelBlockLED2x2[1][0][1] = 0;
+            levelBlockLED2x4[1][0][1] = 0;
       
             levelBlockCount[1][0] = 2;
       
@@ -570,8 +570,8 @@ function initTangram(scene, pitchY){
              levelBlockY[1][1][0] = 0;
              levelBlockZ[1][1][0] = 3;
              levelBlockRT[1][1][0] = 4;
-             levelBlocksLEDs2x2[1][1][0] = 0;
-             levelBlocksLEDs2x4[1][1][0] = 0;
+             levelBlockLED2x2[1][1][0] = 0;
+             levelBlockLED2x4[1][1][0] = 0;
              levelBlockCount[1][1] = 1;
       
             //1-2
@@ -579,8 +579,8 @@ function initTangram(scene, pitchY){
             levelBlockY[1][2][0] = 0;
             levelBlockZ[1][2][0] = 6;
             levelBlockRT[1][2][0] = 4;
-            levelBlocksLEDs2x2[1][2][0] = 0;
-            levelBlocksLEDs2x4[1][2][0] = 0;
+            levelBlockLED2x2[1][2][0] = 0;
+            levelBlockLED2x4[1][2][0] = 0;
             levelBlockCount[1][2] = 1;
       
       
@@ -598,22 +598,22 @@ function initTangram(scene, pitchY){
             levelBlockY[2][0][0] = 0;
             levelBlockZ[2][0][0] = 3;
             levelBlockRT[2][0][0] = 2;
-            levelBlocksLEDs2x2[2][0][0] = 0;
-            levelBlocksLEDs2x4[2][0][0] = 0;
+            levelBlockLED2x2[2][0][0] = 0;
+            levelBlockLED2x4[2][0][0] = 0;
       
             levelBlockX[2][0][1] = 3;
             levelBlockY[2][0][1] = 1;
             levelBlockZ[2][0][1] = 3;
             levelBlockRT[2][0][1] = 2;
-            levelBlocksLEDs2x2[2][0][1] = 0;
-            levelBlocksLEDs2x4[2][0][1] = 0;
+            levelBlockLED2x2[2][0][1] = 0;
+            levelBlockLED2x4[2][0][1] = 0;
 
             levelBlockX[2][0][2] = 3;
             levelBlockY[2][0][2] = 0;
             levelBlockZ[2][0][2] = 6;
             levelBlockRT[2][0][2] = 4;
-            levelBlocksLEDs2x2[2][0][2] = 0;
-            levelBlocksLEDs2x4[2][0][2] = 0;
+            levelBlockLED2x2[2][0][2] = 0;
+            levelBlockLED2x4[2][0][2] = 0;
       
             levelBlockCount[2][0] = 3;
       
@@ -622,16 +622,16 @@ function initTangram(scene, pitchY){
              levelBlockY[2][1][0] = 0;
              levelBlockZ[2][1][0] = 3;
              levelBlockRT[2][1][0] = 4;
-             levelBlocksLEDs2x2[2][1][0] = 0;
-             levelBlocksLEDs2x4[2][1][0] = 0;
+             levelBlockLED2x2[2][1][0] = 0;
+             levelBlockLED2x4[2][1][0] = 0;
            
 
              levelBlockX[2][1][1] = 6;
              levelBlockY[2][1][1] = 0;
              levelBlockZ[2][1][1] = 6;
              levelBlockRT[2][1][1] = 4;
-             levelBlocksLEDs2x2[2][1][1] = 0;
-             levelBlocksLEDs2x4[2][1][1] = 0;
+             levelBlockLED2x2[2][1][1] = 0;
+             levelBlockLED2x4[2][1][1] = 0;
 
              levelBlockCount[2][1] = 2;
       
@@ -640,15 +640,15 @@ function initTangram(scene, pitchY){
             levelBlockY[2][2][0] = 0;
             levelBlockZ[2][2][0] = 6;
             levelBlockRT[2][2][0] = 4;
-            levelBlocksLEDs2x2[2][2][0] = 0;
-            levelBlocksLEDs2x4[2][2][0] = 0;
+            levelBlockLED2x2[2][2][0] = 0;
+            levelBlockLED2x4[2][2][0] = 0;
 
             levelBlockX[2][2][1] = 5;
             levelBlockY[2][2][1] = 0;
             levelBlockZ[2][2][1] = 9;
             levelBlockRT[2][2][1] = 4;
-            levelBlocksLEDs2x2[2][2][1] = 0;
-            levelBlocksLEDs2x4[2][2][1] = 0;
+            levelBlockLED2x2[2][2][1] = 0;
+            levelBlockLED2x4[2][2][1] = 0;
 
             levelBlockCount[2][2] = 2;
       
@@ -668,22 +668,22 @@ function initTangram(scene, pitchY){
             levelBlockY[3][0][0] = 0;
             levelBlockZ[3][0][0] = 3;
             levelBlockRT[3][0][0] = 2;
-            levelBlocksLEDs2x2[3][0][0] = 0x09;
-            levelBlocksLEDs2x4[3][0][0] = 0x09;
+            levelBlockLED2x2[3][0][0] = 0x09;
+            levelBlockLED2x4[3][0][0] = 0x09;
       
             levelBlockX[3][0][1] = 3;
             levelBlockY[3][0][1] = 1;
             levelBlockZ[3][0][1] = 3;
             levelBlockRT[3][0][1] = 2;
-            levelBlocksLEDs2x2[3][0][1] = 0x12;
-            levelBlocksLEDs2x4[3][0][1] = 0x12;
+            levelBlockLED2x2[3][0][1] = 0x12;
+            levelBlockLED2x4[3][0][1] = 0x12;
 
             levelBlockX[3][0][2] = 3;
             levelBlockY[3][0][2] = 0;
             levelBlockZ[3][0][2] = 5;
             levelBlockRT[3][0][2] = 2;
-            levelBlocksLEDs2x2[3][0][2] = 0x12;
-            levelBlocksLEDs2x4[3][0][2] = 0x12;
+            levelBlockLED2x2[3][0][2] = 0x12;
+            levelBlockLED2x4[3][0][2] = 0x12;
       
             levelBlockCount[3][0] = 3;
       
@@ -692,8 +692,8 @@ function initTangram(scene, pitchY){
              levelBlockY[3][1][0] = 0;
              levelBlockZ[3][1][0] = 3;
              levelBlockRT[3][1][0] = 4;
-             levelBlocksLEDs2x2[3][1][0] = 0x12;
-             levelBlocksLEDs2x4[3][1][0] = 0x12;
+             levelBlockLED2x2[3][1][0] = 0x12;
+             levelBlockLED2x4[3][1][0] = 0x12;
              levelBlockCount[3][1] = 1;
       
             //3-2
@@ -701,8 +701,8 @@ function initTangram(scene, pitchY){
             levelBlockY[3][2][0] = 0;
             levelBlockZ[3][2][0] = 6;
             levelBlockRT[3][2][0] = 4;
-            levelBlocksLEDs2x2[3][2][0] = 0x24;
-            levelBlocksLEDs2x4[3][2][0] = 0x24;
+            levelBlockLED2x2[3][2][0] = 0x24;
+            levelBlockLED2x4[3][2][0] = 0x24;
             levelBlockCount[3][2] = 1;
       
       
@@ -727,36 +727,36 @@ function initTangram(scene, pitchY){
         levelBlockY[4][0][0] = 0;
         levelBlockZ[4][0][0] = 3;
         levelBlockRT[4][0][0] = 4;
-        levelBlocksLEDs2x2[4][0][0] = 0x09;
-        levelBlocksLEDs2x4[4][0][0] = 0x09;
+        levelBlockLED2x2[4][0][0] = 0x09;
+        levelBlockLED2x4[4][0][0] = 0x09;
 
         levelBlockX[4][0][1] = 5;
         levelBlockY[4][0][1] = 0;
         levelBlockZ[4][0][1] = 7;
         levelBlockRT[4][0][1] = 4;
-        levelBlocksLEDs2x2[4][0][1] = 0x12;
-        levelBlocksLEDs2x4[4][0][1] = 0x12;
+        levelBlockLED2x2[4][0][1] = 0x12;
+        levelBlockLED2x4[4][0][1] = 0x12;
 
         levelBlockX[4][0][2] = 3;
         levelBlockY[4][0][2] = 0;
         levelBlockZ[4][0][2] = 5;
         levelBlockRT[4][0][2] = 4;
-        levelBlocksLEDs2x2[4][0][2] = 0x09;
-        levelBlocksLEDs2x4[4][0][2] = 0x09;
+        levelBlockLED2x2[4][0][2] = 0x09;
+        levelBlockLED2x4[4][0][2] = 0x09;
 
         levelBlockX[4][0][3] = 7;
         levelBlockY[4][0][3] = 0;
         levelBlockZ[4][0][3] = 5;
         levelBlockRT[4][0][3] = 4;
-        levelBlocksLEDs2x2[4][0][3] = 0x12;
-        levelBlocksLEDs2x4[4][0][3] = 0x12;
+        levelBlockLED2x2[4][0][3] = 0x12;
+        levelBlockLED2x4[4][0][3] = 0x12;
 
         levelBlockX[4][0][4] = 7;
         levelBlockY[4][0][4] = 1;
         levelBlockZ[4][0][4] = 6;
         levelBlockRT[4][0][4] = 2;
-        levelBlocksLEDs2x2[4][0][4] = 0x12;
-        levelBlocksLEDs2x4[4][0][4] = 0x12;
+        levelBlockLED2x2[4][0][4] = 0x12;
+        levelBlockLED2x4[4][0][4] = 0x12;
         
 
 
@@ -767,36 +767,36 @@ function initTangram(scene, pitchY){
          levelBlockY[4][1][0] = 0;
          levelBlockZ[4][1][0] = 3;
          levelBlockRT[4][1][0] = 4;
-         levelBlocksLEDs2x2[4][1][0] = 0x09;
-         levelBlocksLEDs2x4[4][1][0] = 0x09;
+         levelBlockLED2x2[4][1][0] = 0x09;
+         levelBlockLED2x4[4][1][0] = 0x09;
 
          levelBlockX[4][1][1] = 5;
          levelBlockY[4][1][1] = 0;
          levelBlockZ[4][1][1] = 7;
          levelBlockRT[4][1][1] = 4;
-         levelBlocksLEDs2x2[4][1][1] = 0x12;
-         levelBlocksLEDs2x4[4][1][1] = 0x12;
+         levelBlockLED2x2[4][1][1] = 0x12;
+         levelBlockLED2x4[4][1][1] = 0x12;
 
          levelBlockX[4][1][2] = 3;
          levelBlockY[4][1][2] = 0;
          levelBlockZ[4][1][2] = 5;
          levelBlockRT[4][1][2] = 4;
-         levelBlocksLEDs2x2[4][1][2] = 0x09;
-         levelBlocksLEDs2x4[4][1][2] = 0x09;
+         levelBlockLED2x2[4][1][2] = 0x09;
+         levelBlockLED2x4[4][1][2] = 0x09;
 
          levelBlockX[4][1][3] = 7;
          levelBlockY[4][1][3] = 0;
          levelBlockZ[4][1][3] = 5;
          levelBlockRT[4][1][3] = 4;
-         levelBlocksLEDs2x2[4][1][3] = 0x12;
-         levelBlocksLEDs2x4[4][1][3] = 0x12;
+         levelBlockLED2x2[4][1][3] = 0x12;
+         levelBlockLED2x4[4][1][3] = 0x12;
 
          levelBlockX[4][1][4] = 7;
          levelBlockY[4][1][4] = 1;
          levelBlockZ[4][1][4] = 6;
          levelBlockRT[4][1][4] = 2;
-         levelBlocksLEDs2x2[4][1][4] = 0x12;
-         levelBlocksLEDs2x4[4][1][4] = 0x12;
+         levelBlockLED2x2[4][1][4] = 0x12;
+         levelBlockLED2x4[4][1][4] = 0x12;
          
 
 
@@ -813,22 +813,22 @@ function initTangram(scene, pitchY){
    levelBlockY[5][0][0] = 0;
    levelBlockZ[5][0][0] = 3;
    levelBlockRT[5][0][0] = 2;
-   levelBlocksLEDs2x2[5][0][0] = 0x09;
-   levelBlocksLEDs2x4[5][0][0] = 0x09;
+   levelBlockLED2x2[5][0][0] = 0x09;
+   levelBlockLED2x4[5][0][0] = 0x09;
 
    levelBlockX[5][0][1] = 3;
    levelBlockY[5][0][1] = 1;
    levelBlockZ[5][0][1] = 3;
    levelBlockRT[5][0][1] = 2;
-   levelBlocksLEDs2x2[5][0][1] = 0x12;
-   levelBlocksLEDs2x4[5][0][1] = 0x12;
+   levelBlockLED2x2[5][0][1] = 0x12;
+   levelBlockLED2x4[5][0][1] = 0x12;
 
    levelBlockX[5][0][2] = 3;
    levelBlockY[5][0][2] = 0;
    levelBlockZ[5][0][2] = 5;
    levelBlockRT[5][0][2] = 2;
-   levelBlocksLEDs2x2[5][0][2] = 0x12;
-   levelBlocksLEDs2x4[5][0][2] = 0x12;
+   levelBlockLED2x2[5][0][2] = 0x12;
+   levelBlockLED2x4[5][0][2] = 0x12;
 
    levelBlockCount[5][0] = 3;
 
@@ -837,8 +837,8 @@ function initTangram(scene, pitchY){
     levelBlockY[5][1][0] = 0;
     levelBlockZ[5][1][0] = 3;
     levelBlockRT[5][1][0] = 4;
-    levelBlocksLEDs2x2[5][1][0] = 0x12;
-    levelBlocksLEDs2x4[5][1][0] = 0x12;
+    levelBlockLED2x2[5][1][0] = 0x12;
+    levelBlockLED2x4[5][1][0] = 0x12;
     levelBlockCount[5][1] = 1;
 
    //5-2
@@ -846,8 +846,8 @@ function initTangram(scene, pitchY){
    levelBlockY[5][2][0] = 0;
    levelBlockZ[5][2][0] = 6;
    levelBlockRT[5][2][0] = 4;
-   levelBlocksLEDs2x2[5][2][0] = 0x24;
-   levelBlocksLEDs2x4[5][2][0] = 0x24;
+   levelBlockLED2x2[5][2][0] = 0x24;
+   levelBlockLED2x4[5][2][0] = 0x24;
    levelBlockCount[5][2] = 1;
 
 
@@ -863,22 +863,22 @@ function initTangram(scene, pitchY){
   levelBlockY[6][0][0] = 0;
   levelBlockZ[6][0][0] = 3;
   levelBlockRT[6][0][0] = 2;
-  levelBlocksLEDs2x2[6][0][0] = 0x09;
-  levelBlocksLEDs2x4[6][0][0] = 0x09;
+  levelBlockLED2x2[6][0][0] = 0x09;
+  levelBlockLED2x4[6][0][0] = 0x09;
 
   levelBlockX[6][0][1] = 3;
   levelBlockY[6][0][1] = 1;
   levelBlockZ[6][0][1] = 3;
   levelBlockRT[6][0][1] = 2;
-  levelBlocksLEDs2x2[6][0][1] = 0x12;
-  levelBlocksLEDs2x4[6][0][1] = 0x12;
+  levelBlockLED2x2[6][0][1] = 0x12;
+  levelBlockLED2x4[6][0][1] = 0x12;
 
   levelBlockX[6][0][2] = 3;
   levelBlockY[6][0][2] = 0;
   levelBlockZ[6][0][2] = 5;
   levelBlockRT[6][0][2] = 2;
-  levelBlocksLEDs2x2[6][0][2] = 0x12;
-  levelBlocksLEDs2x4[6][0][2] = 0x12;
+  levelBlockLED2x2[6][0][2] = 0x12;
+  levelBlockLED2x4[6][0][2] = 0x12;
 
   levelBlockCount[6][0] = 3;
 
@@ -887,8 +887,8 @@ function initTangram(scene, pitchY){
    levelBlockY[6][1][0] = 0;
    levelBlockZ[6][1][0] = 3;
    levelBlockRT[6][1][0] = 4;
-   levelBlocksLEDs2x2[6][1][0] = 0x12;
-   levelBlocksLEDs2x4[6][1][0] = 0x12;
+   levelBlockLED2x2[6][1][0] = 0x12;
+   levelBlockLED2x4[6][1][0] = 0x12;
    levelBlockCount[6][1] = 1;
 
   //6-2
@@ -896,8 +896,8 @@ function initTangram(scene, pitchY){
   levelBlockY[6][2][0] = 0;
   levelBlockZ[6][2][0] = 6;
   levelBlockRT[6][2][0] = 4;
-  levelBlocksLEDs2x2[6][2][0] = 0x24;
-  levelBlocksLEDs2x4[6][2][0] = 0x24;
+  levelBlockLED2x2[6][2][0] = 0x24;
+  levelBlockLED2x4[6][2][0] = 0x24;
   levelBlockCount[6][2] = 1;
 
 
@@ -911,22 +911,22 @@ function initTangram(scene, pitchY){
  levelBlockY[7][0][0] = 0;
  levelBlockZ[7][0][0] = 3;
  levelBlockRT[7][0][0] = 2;
- levelBlocksLEDs2x2[7][0][0] = 0x00;
- levelBlocksLEDs2x4[7][0][0] = 0x00;
+ levelBlockLED2x2[7][0][0] = 0x00;
+ levelBlockLED2x4[7][0][0] = 0x00;
 
  levelBlockX[7][0][1] = 3;
  levelBlockY[7][0][1] = 1;
  levelBlockZ[7][0][1] = 3;
  levelBlockRT[7][0][1] = 2;
- levelBlocksLEDs2x2[7][0][1] = 0x00;
- levelBlocksLEDs2x4[7][0][1] = 0x00;
+ levelBlockLED2x2[7][0][1] = 0x00;
+ levelBlockLED2x4[7][0][1] = 0x00;
 
  levelBlockX[7][0][2] = 3;
  levelBlockY[7][0][2] = 0;
  levelBlockZ[7][0][2] = 5;
  levelBlockRT[7][0][2] = 2;
- levelBlocksLEDs2x2[7][0][2] = 0x00;
- levelBlocksLEDs2x4[7][0][2] = 0x00;
+ levelBlockLED2x2[7][0][2] = 0x00;
+ levelBlockLED2x4[7][0][2] = 0x00;
 
  levelBlockCount[7][0] = 3;
 
@@ -935,8 +935,8 @@ function initTangram(scene, pitchY){
   levelBlockY[7][1][0] = 0;
   levelBlockZ[7][1][0] = 3;
   levelBlockRT[7][1][0] = 4;
-  levelBlocksLEDs2x2[7][1][0] = 0x00;
-  levelBlocksLEDs2x4[7][1][0] = 0x00;
+  levelBlockLED2x2[7][1][0] = 0x00;
+  levelBlockLED2x4[7][1][0] = 0x00;
   levelBlockCount[7][1] = 1;
 
  //7-2
@@ -944,8 +944,8 @@ function initTangram(scene, pitchY){
  levelBlockY[7][2][0] = 0;
  levelBlockZ[7][2][0] = 6;
  levelBlockRT[7][2][0] = 4;
- levelBlocksLEDs2x2[7][2][0] = 0x00;
- levelBlocksLEDs2x4[7][2][0] = 0x00;
+ levelBlockLED2x2[7][2][0] = 0x00;
+ levelBlockLED2x4[7][2][0] = 0x00;
  levelBlockCount[7][2] = 1;
 
 
@@ -960,22 +960,22 @@ function initTangram(scene, pitchY){
  levelBlockY[8][0][0] = 0;
  levelBlockZ[8][0][0] = 3;
  levelBlockRT[8][0][0] = 2;
- levelBlocksLEDs2x2[8][0][0] = 0x09;
- levelBlocksLEDs2x4[8][0][0] = 0x09;
+ levelBlockLED2x2[8][0][0] = 0x09;
+ levelBlockLED2x4[8][0][0] = 0x09;
 
  levelBlockX[8][0][1] = 3;
  levelBlockY[8][0][1] = 1;
  levelBlockZ[8][0][1] = 3;
  levelBlockRT[8][0][1] = 2;
- levelBlocksLEDs2x2[8][0][1] = 0x12;
- levelBlocksLEDs2x4[8][0][1] = 0x12;
+ levelBlockLED2x2[8][0][1] = 0x12;
+ levelBlockLED2x4[8][0][1] = 0x12;
 
  levelBlockX[8][0][2] = 3;
  levelBlockY[8][0][2] = 0;
  levelBlockZ[8][0][2] = 5;
  levelBlockRT[8][0][2] = 2;
- levelBlocksLEDs2x2[8][0][2] = 0x12;
- levelBlocksLEDs2x4[8][0][2] = 0x12;
+ levelBlockLED2x2[8][0][2] = 0x12;
+ levelBlockLED2x4[8][0][2] = 0x12;
 
  levelBlockCount[8][0] = 3;
 
@@ -984,8 +984,8 @@ function initTangram(scene, pitchY){
   levelBlockY[8][1][0] = 0;
   levelBlockZ[8][1][0] = 3;
   levelBlockRT[8][1][0] = 4;
-  levelBlocksLEDs2x2[8][1][0] = 0x12;
-  levelBlocksLEDs2x4[8][1][0] = 0x12;
+  levelBlockLED2x2[8][1][0] = 0x12;
+  levelBlockLED2x4[8][1][0] = 0x12;
   levelBlockCount[8][1] = 1;
 
  //7-2
@@ -993,8 +993,8 @@ function initTangram(scene, pitchY){
  levelBlockY[8][2][0] = 0;
  levelBlockZ[8][2][0] = 6;
  levelBlockRT[8][2][0] = 4;
- levelBlocksLEDs2x2[8][2][0] = 0x24;
- levelBlocksLEDs2x4[8][2][0] = 0x24;
+ levelBlockLED2x2[8][2][0] = 0x24;
+ levelBlockLED2x4[8][2][0] = 0x24;
  levelBlockCount[8][2] = 1;
 
 
@@ -1005,13 +1005,13 @@ function initTangram(scene, pitchY){
 
 
 /*
-      defineBlockPixels(levelBlockCount[0][0],  levelBlockX[0][0], levelBlockY[0][0], levelBlockZ[0][0], levelBlockRT[0][0], levelBlocksLEDs2x2[0][0], levelBlocksLEDs2x4[0][0], 0);
+      defineBlockPixels(levelBlockCount[0][0],  levelBlockX[0][0], levelBlockY[0][0], levelBlockZ[0][0], levelBlockRT[0][0], levelBlockLED2x2[0][0], levelBlockLED2x4[0][0], 0);
       
 
-     // defineBlockPixels(levelBlockCount,  levelBlockX[0][0], levelBlockY, levelBlockZ, levelBlockRT, levelBlocksLEDs2x2, levelBlocksLEDs2x4, 0);
+     // defineBlockPixels(levelBlockCount,  levelBlockX[0][0], levelBlockY, levelBlockZ, levelBlockRT, levelBlockLED2x2, levelBlockLED2x4, 0);
       
 
-       // defineBlockPixels(levelBlockCount,  levelBlockX, levelBlockY, levelBlockZ, levelBlockRT, levelBlocksLEDs2x2, levelBlocksLEDs2x4, 0);
+       // defineBlockPixels(levelBlockCount,  levelBlockX, levelBlockY, levelBlockZ, levelBlockRT, levelBlockLED2x2, levelBlockLED2x4, 0);
 
       defineLevelPlanes();
 
@@ -1681,7 +1681,7 @@ function tangramRender(blocksCount){
     
         //Define Plane
 
-        defineBlockPixels(blocksCount, blocksX, blocksY, blocksZ, blocksRT, blocksLEDs2x2, blocksLEDs2x4, blocksOffset);
+        defineBlockPixels(blocksCount, blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blockLED2x4, blocksOffset);
        
     
         defineGamePlanes();
@@ -1757,12 +1757,12 @@ function tangramRender(blocksCount){
                 if(l == renderCountSideA && tangramErrorColorEnabled){
                     
                     if(!errorBlinkTimeOutRunning){
-                        if(blocksLEDs2x2[renderGameSideAMapToBlock[i]]  == 0x09){
-                            blocksLEDs2x2[renderGameSideAMapToBlock[i]] = 0x00; 
-                            blocksLEDs2x4[renderGameSideAMapToBlock[i]] = 0x00;                        
+                        if(blockLED2x2[renderGameSideAMapToBlock[i]]  == 0x09){
+                            blockLED2x2[renderGameSideAMapToBlock[i]] = 0x00; 
+                            blockLED2x4[renderGameSideAMapToBlock[i]] = 0x00;                        
                         }else{
-                            blocksLEDs2x2[renderGameSideAMapToBlock[i]] = 0x09; 
-                            blocksLEDs2x4[renderGameSideAMapToBlock[i]] = 0x09; 
+                            blockLED2x2[renderGameSideAMapToBlock[i]] = 0x09; 
+                            blockLED2x4[renderGameSideAMapToBlock[i]] = 0x09; 
                         }
                         errorBlinkTimeOutRunning= true;
                        
@@ -1883,12 +1883,12 @@ function tangramRender(blocksCount){
     
                 if(l == renderCountSideB && tangramErrorColorEnabled){    
                     if(!errorBlinkTimeOutRunning){
-                        if(blocksLEDs2x2[renderGameSideBMapToBlock[i]]  == 0x09){
-                            blocksLEDs2x2[renderGameSideBMapToBlock[i]] = 0x00; 
-                            blocksLEDs2x4[renderGameSideBMapToBlock[i]] = 0x00;                        
+                        if(blockLED2x2[renderGameSideBMapToBlock[i]]  == 0x09){
+                            blockLED2x2[renderGameSideBMapToBlock[i]] = 0x00; 
+                            blockLED2x4[renderGameSideBMapToBlock[i]] = 0x00;                        
                         }else{
-                            blocksLEDs2x2[renderGameSideBMapToBlock[i]] = 0x09; 
-                            blocksLEDs2x4[renderGameSideBMapToBlock[i]] = 0x09; 
+                            blockLED2x2[renderGameSideBMapToBlock[i]] = 0x09; 
+                            blockLED2x4[renderGameSideBMapToBlock[i]] = 0x09; 
                         }
                         errorBlinkTimeOutRunning = true;
                        
@@ -2006,12 +2006,12 @@ function tangramRender(blocksCount){
     
                 if(l == renderCountSideC && tangramErrorColorEnabled){
                     if(!errorBlinkTimeOutRunning){
-                        if(blocksLEDs2x2[renderGameSideCMapToBlock[i]]  == 0x09){
-                            blocksLEDs2x2[renderGameSideCMapToBlock[i]] = 0x00; 
-                            blocksLEDs2x4[renderGameSideCMapToBlock[i]] = 0x00;                        
+                        if(blockLED2x2[renderGameSideCMapToBlock[i]]  == 0x09){
+                            blockLED2x2[renderGameSideCMapToBlock[i]] = 0x00; 
+                            blockLED2x4[renderGameSideCMapToBlock[i]] = 0x00;                        
                         }else{
-                            blocksLEDs2x2[renderGameSideCMapToBlock[i]] = 0x09; 
-                            blocksLEDs2x4[renderGameSideCMapToBlock[i]] = 0x09; 
+                            blockLED2x2[renderGameSideCMapToBlock[i]] = 0x09; 
+                            blockLED2x4[renderGameSideCMapToBlock[i]] = 0x09; 
                         }
                         errorBlinkTimeOutRunning= true;
                         

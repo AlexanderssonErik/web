@@ -132,7 +132,7 @@ function guiColorWheelFunctionSection(colorWheel, color) {
 
     colorWheel.onPointerMoveObservable.add(function() {
         //console.log('buttoncolorwheel R: ' + tmpI);
-        //blocksLEDs2x2[colorWheelMeshI] = tmpI;
+        //blockLED2x2[colorWheelMeshI] = tmpI;
 
     if(guiColorWheelLimitedFunction){
 
@@ -140,20 +140,20 @@ function guiColorWheelFunctionSection(colorWheel, color) {
 
             if( colorWheelMeshType == 'B' || colorWheelMeshType == 'A' || colorWheelMeshType == 'D'|| colorWheelMeshType == 'C'){
                 //  console.log('A colorWheelMeshI: ' + colorWheelMeshI);
-                //  console.log(' ( tmpI | (0xF1 & blocksLEDs2x2[colorWheelMeshI] )): ' +  ( tmpI | (0xF8 & blocksLEDs2x2[colorWheelMeshI] )));
-                  if(blocksLEDs2x2[colorWheelMeshI+blocksOffset] != ( color | (0xF8 & blocksLEDs2x2[colorWheelMeshI+blocksOffset] )) ||
-                  blocksLEDs2x2[colorWheelMeshI+blocksOffset] != ( (color << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI+blocksOffset])) ||
-                  blocksLEDs2x4[colorWheelMeshI+blocksOffset] != ( color | (0xF8 & blocksLEDs2x4[colorWheelMeshI+blocksOffset] )) ||
-                  blocksLEDs2x4[colorWheelMeshI+blocksOffset] != ( (color << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI+blocksOffset])) 
+                //  console.log(' ( tmpI | (0xF1 & blockLED2x2[colorWheelMeshI] )): ' +  ( tmpI | (0xF8 & blockLED2x2[colorWheelMeshI] )));
+                  if(blockLED2x2[colorWheelMeshI+blocksOffset] != ( color | (0xF8 & blockLED2x2[colorWheelMeshI+blocksOffset] )) ||
+                  blockLED2x2[colorWheelMeshI+blocksOffset] != ( (color << 3) | (0xC7 & blockLED2x2[colorWheelMeshI+blocksOffset])) ||
+                  blockLED2x4[colorWheelMeshI+blocksOffset] != ( color | (0xF8 & blockLED2x4[colorWheelMeshI+blocksOffset] )) ||
+                  blockLED2x4[colorWheelMeshI+blocksOffset] != ( (color << 3) | (0xC7 & blockLED2x4[colorWheelMeshI+blocksOffset])) 
                       ){
-                      blocksLEDs2x2[colorWheelMeshI+blocksOffset] = ( color | (0xF8 & blocksLEDs2x2[colorWheelMeshI+blocksOffset] )); 
-                      blocksLEDs2x2[colorWheelMeshI+blocksOffset] = ( (color << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI+blocksOffset]));
-                      blocksLEDs2x4[colorWheelMeshI+blocksOffset] = ( color | (0xF8 & blocksLEDs2x4[colorWheelMeshI+blocksOffset] )); 
-                      blocksLEDs2x4[colorWheelMeshI+blocksOffset] = ( (color << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI+blocksOffset]));
+                      blockLED2x2[colorWheelMeshI+blocksOffset] = ( color | (0xF8 & blockLED2x2[colorWheelMeshI+blocksOffset] )); 
+                      blockLED2x2[colorWheelMeshI+blocksOffset] = ( (color << 3) | (0xC7 & blockLED2x2[colorWheelMeshI+blocksOffset]));
+                      blockLED2x4[colorWheelMeshI+blocksOffset] = ( color | (0xF8 & blockLED2x4[colorWheelMeshI+blocksOffset] )); 
+                      blockLED2x4[colorWheelMeshI+blocksOffset] = ( (color << 3) | (0xC7 & blockLED2x4[colorWheelMeshI+blocksOffset]));
                       blocksRender = 1;
                     //  console.log('B colorWheelMeshI+blocksOffset: ' + (colorWheelMeshI+blocksOffset));
-                    //  console.log('B blocksLEDs2x2[colorWheelMeshI+blocksOffset]: ' + blocksLEDs2x2[colorWheelMeshI+blocksOffset]);
-                    //  console.log('B blocksLEDs2x2[0]: ' + blocksLEDs2x2[0]);
+                    //  console.log('B blockLED2x2[colorWheelMeshI+blocksOffset]: ' + blockLED2x2[colorWheelMeshI+blocksOffset]);
+                    //  console.log('B blockLED2x2[0]: ' + blockLED2x2[0]);
                      
                   }
               }
@@ -163,34 +163,34 @@ function guiColorWheelFunctionSection(colorWheel, color) {
 
         if( colorWheelMeshType == 'B'){
           //  console.log('A colorWheelMeshI: ' + colorWheelMeshI);
-          //  console.log(' ( tmpI | (0xF1 & blocksLEDs2x2[colorWheelMeshI] )): ' +  ( tmpI | (0xF8 & blocksLEDs2x2[colorWheelMeshI] )));
-            if(blocksLEDs2x2[colorWheelMeshI+blocksOffset] != ( color | (0xF8 & blocksLEDs2x2[colorWheelMeshI+blocksOffset] ))){
-                blocksLEDs2x2[colorWheelMeshI+blocksOffset] = ( color | (0xF8 & blocksLEDs2x2[colorWheelMeshI+blocksOffset] )); 
+          //  console.log(' ( tmpI | (0xF1 & blockLED2x2[colorWheelMeshI] )): ' +  ( tmpI | (0xF8 & blockLED2x2[colorWheelMeshI] )));
+            if(blockLED2x2[colorWheelMeshI+blocksOffset] != ( color | (0xF8 & blockLED2x2[colorWheelMeshI+blocksOffset] ))){
+                blockLED2x2[colorWheelMeshI+blocksOffset] = ( color | (0xF8 & blockLED2x2[colorWheelMeshI+blocksOffset] )); 
                 blocksRender = 1;
               //  console.log('B colorWheelMeshI+blocksOffset: ' + (colorWheelMeshI+blocksOffset));
-              //  console.log('B blocksLEDs2x2[colorWheelMeshI+blocksOffset]: ' + blocksLEDs2x2[colorWheelMeshI+blocksOffset]);
-              //  console.log('B blocksLEDs2x2[0]: ' + blocksLEDs2x2[0]);
+              //  console.log('B blockLED2x2[colorWheelMeshI+blocksOffset]: ' + blockLED2x2[colorWheelMeshI+blocksOffset]);
+              //  console.log('B blockLED2x2[0]: ' + blockLED2x2[0]);
                
             }
         }else if (colorWheelMeshType == 'A'){
            // console.log('B colorWheelMeshI: ' + colorWheelMeshI);
-           // console.log(' ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI]))' + ( (tmpI << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI])));
-            if(blocksLEDs2x2[colorWheelMeshI+blocksOffset] != ( (color << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI+blocksOffset]))){
-                blocksLEDs2x2[colorWheelMeshI+blocksOffset] = ( (color << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI+blocksOffset])); 
+           // console.log(' ( (tmpI << 3) | (0xC7 & blockLED2x2[colorWheelMeshI]))' + ( (tmpI << 3) | (0xC7 & blockLED2x2[colorWheelMeshI])));
+            if(blockLED2x2[colorWheelMeshI+blocksOffset] != ( (color << 3) | (0xC7 & blockLED2x2[colorWheelMeshI+blocksOffset]))){
+                blockLED2x2[colorWheelMeshI+blocksOffset] = ( (color << 3) | (0xC7 & blockLED2x2[colorWheelMeshI+blocksOffset])); 
                 blocksRender = 1;
             //    console.log('A colorWheelMeshI+blocksOffset: ' + (colorWheelMeshI+blocksOffset));
-             //   console.log('A blocksLEDs2x2[colorWheelMeshI+blocksOffset]: ' + blocksLEDs2x2[colorWheelMeshI+blocksOffset]);
-            //    console.log('A blocksLEDs2x2[0]: ' + blocksLEDs2x2[0]);
+             //   console.log('A blockLED2x2[colorWheelMeshI+blocksOffset]: ' + blockLED2x2[colorWheelMeshI+blocksOffset]);
+            //    console.log('A blockLED2x2[0]: ' + blockLED2x2[0]);
             }
         }else if (colorWheelMeshType == 'D'){
-            if(blocksLEDs2x4[colorWheelMeshI+blocksOffset] != ( color | (0xF8 & blocksLEDs2x4[colorWheelMeshI+blocksOffset] ))){
-                blocksLEDs2x4[colorWheelMeshI+blocksOffset] = ( color | (0xF8 & blocksLEDs2x4[colorWheelMeshI+blocksOffset] )); 
+            if(blockLED2x4[colorWheelMeshI+blocksOffset] != ( color | (0xF8 & blockLED2x4[colorWheelMeshI+blocksOffset] ))){
+                blockLED2x4[colorWheelMeshI+blocksOffset] = ( color | (0xF8 & blockLED2x4[colorWheelMeshI+blocksOffset] )); 
                 blocksRender = 1;
             }
             
         }else if (colorWheelMeshType == 'C'){
-            if(blocksLEDs2x4[colorWheelMeshI+blocksOffset] != ( (color << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI+blocksOffset])) ){
-                blocksLEDs2x4[colorWheelMeshI+blocksOffset] = ( (color << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI+blocksOffset])); 
+            if(blockLED2x4[colorWheelMeshI+blocksOffset] != ( (color << 3) | (0xC7 & blockLED2x4[colorWheelMeshI+blocksOffset])) ){
+                blockLED2x4[colorWheelMeshI+blocksOffset] = ( (color << 3) | (0xC7 & blockLED2x4[colorWheelMeshI+blocksOffset])); 
                 blocksRender = 1;
             }
             
@@ -198,7 +198,7 @@ function guiColorWheelFunctionSection(colorWheel, color) {
             if(baseLED[colorWheelMeshI] != ( color | (0xF8 & baseLED[colorWheelMeshI]))){
                 baseLED[colorWheelMeshI] = ( color | (0xF8 & baseLED[colorWheelMeshI]));            
           //  console.log('E colorWheelMeshI: ' + colorWheelMeshI);
-            //console.log(' ( tmpI | (0xF8 & blocksLEDs2x4[colorWheelMeshI]))' + ( tmpI | (0xF8 & blocksLEDs2x4[colorWheelMeshI])));
+            //console.log(' ( tmpI | (0xF8 & blockLED2x4[colorWheelMeshI]))' + ( tmpI | (0xF8 & blockLED2x4[colorWheelMeshI])));
             blocksRender = 1;
             }
                   
@@ -206,7 +206,7 @@ function guiColorWheelFunctionSection(colorWheel, color) {
             if(baseLED[colorWheelMeshI] != ( (color << 3) | (0xC7 & baseLED[colorWheelMeshI]))){
                 baseLED[colorWheelMeshI] = ( (color << 3) | (0xC7 & baseLED[colorWheelMeshI])); 
           //  console.log('F colorWheelMeshI: ' + colorWheelMeshI);
-          //  console.log('( (tmpI << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI]))' + ( (tmpI << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI])));
+          //  console.log('( (tmpI << 3) | (0xC7 & blockLED2x4[colorWheelMeshI]))' + ( (tmpI << 3) | (0xC7 & blockLED2x4[colorWheelMeshI])));
             blocksRender = 1;
             }
         }
@@ -221,33 +221,33 @@ function guiColorWheelFunctionFull(colorWheel, color) {
     
         colorWheel.onPointerMoveObservable.add(function() {
             //console.log('buttoncolorwheel R: ' + tmpI);
-            //blocksLEDs2x2[colorWheelMeshI] = tmpI;
+            //blockLED2x2[colorWheelMeshI] = tmpI;
             if( colorWheelMeshType == 'B' || colorWheelMeshType == 'A' || colorWheelMeshType == 'D'|| colorWheelMeshType == 'C'){
               //  console.log('A colorWheelMeshI: ' + colorWheelMeshI);
-              //  console.log(' ( tmpI | (0xF1 & blocksLEDs2x2[colorWheelMeshI] )): ' +  ( tmpI | (0xF8 & blocksLEDs2x2[colorWheelMeshI] )));
-                if(blocksLEDs2x2[colorWheelMeshI+blocksOffset] != ( color | (0xF8 & blocksLEDs2x2[colorWheelMeshI+blocksOffset] )) ||
-                blocksLEDs2x2[colorWheelMeshI+blocksOffset] != ( (color << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI+blocksOffset])) ||
-                blocksLEDs2x4[colorWheelMeshI+blocksOffset] != ( color | (0xF8 & blocksLEDs2x4[colorWheelMeshI+blocksOffset] )) ||
-                blocksLEDs2x4[colorWheelMeshI+blocksOffset] != ( (color << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI+blocksOffset])) 
+              //  console.log(' ( tmpI | (0xF1 & blockLED2x2[colorWheelMeshI] )): ' +  ( tmpI | (0xF8 & blockLED2x2[colorWheelMeshI] )));
+                if(blockLED2x2[colorWheelMeshI+blocksOffset] != ( color | (0xF8 & blockLED2x2[colorWheelMeshI+blocksOffset] )) ||
+                blockLED2x2[colorWheelMeshI+blocksOffset] != ( (color << 3) | (0xC7 & blockLED2x2[colorWheelMeshI+blocksOffset])) ||
+                blockLED2x4[colorWheelMeshI+blocksOffset] != ( color | (0xF8 & blockLED2x4[colorWheelMeshI+blocksOffset] )) ||
+                blockLED2x4[colorWheelMeshI+blocksOffset] != ( (color << 3) | (0xC7 & blockLED2x4[colorWheelMeshI+blocksOffset])) 
                     ){
-                    blocksLEDs2x2[colorWheelMeshI+blocksOffset] = ( color | (0xF8 & blocksLEDs2x2[colorWheelMeshI+blocksOffset] )); 
-                    blocksLEDs2x2[colorWheelMeshI+blocksOffset] = ( (color << 3) | (0xC7 & blocksLEDs2x2[colorWheelMeshI+blocksOffset]));
-                    blocksLEDs2x4[colorWheelMeshI+blocksOffset] = ( color | (0xF8 & blocksLEDs2x4[colorWheelMeshI+blocksOffset] )); 
-                    blocksLEDs2x4[colorWheelMeshI+blocksOffset] = ( (color << 3) | (0xC7 & blocksLEDs2x4[colorWheelMeshI+blocksOffset]));
+                    blockLED2x2[colorWheelMeshI+blocksOffset] = ( color | (0xF8 & blockLED2x2[colorWheelMeshI+blocksOffset] )); 
+                    blockLED2x2[colorWheelMeshI+blocksOffset] = ( (color << 3) | (0xC7 & blockLED2x2[colorWheelMeshI+blocksOffset]));
+                    blockLED2x4[colorWheelMeshI+blocksOffset] = ( color | (0xF8 & blockLED2x4[colorWheelMeshI+blocksOffset] )); 
+                    blockLED2x4[colorWheelMeshI+blocksOffset] = ( (color << 3) | (0xC7 & blockLED2x4[colorWheelMeshI+blocksOffset]));
                     blocksRender = 1;
                   //  console.log('B colorWheelMeshI+blocksOffset: ' + (colorWheelMeshI+blocksOffset));
-                  //  console.log('B blocksLEDs2x2[colorWheelMeshI+blocksOffset]: ' + blocksLEDs2x2[colorWheelMeshI+blocksOffset]);
-                  //  console.log('B blocksLEDs2x2[0]: ' + blocksLEDs2x2[0]);
+                  //  console.log('B blockLED2x2[colorWheelMeshI+blocksOffset]: ' + blockLED2x2[colorWheelMeshI+blocksOffset]);
+                  //  console.log('B blockLED2x2[0]: ' + blockLED2x2[0]);
                    
                 }
             }else if (colorWheelMeshType == 'E' || colorWheelMeshType == 'F'){
 
                 for(let i = blocksOffset; i < blocksCount + blocksOffset; i++){
                 
-                blocksLEDs2x2[i] = ( color | (0xF8 & blocksLEDs2x2[i] )); 
-                blocksLEDs2x2[i] = ( (color << 3) | (0xC7 & blocksLEDs2x2[i]));
-                blocksLEDs2x4[i] = ( color | (0xF8 & blocksLEDs2x4[i] )); 
-                blocksLEDs2x4[i] = ( (color << 3) | (0xC7 & blocksLEDs2x4[i]));
+                blockLED2x2[i] = ( color | (0xF8 & blockLED2x2[i] )); 
+                blockLED2x2[i] = ( (color << 3) | (0xC7 & blockLED2x2[i]));
+                blockLED2x4[i] = ( color | (0xF8 & blockLED2x4[i] )); 
+                blockLED2x4[i] = ( (color << 3) | (0xC7 & blockLED2x4[i]));
                 }
                 blocksRender = 1;
                
@@ -1046,7 +1046,7 @@ function guiInitSettingsMenu(){
 
 
 
-    var guiSettingsSizeImage = new BABYLON.GUI.Image("Start", "http://rawgit.com/AlexanderssonErik/web/master/ic_aspect_ratio_white_48px.svg");
+    var guiSettingsSizeImage = new BABYLON.GUI.Image("Start", "http://rawgit.com/AlexanderssonErik/web/master/scale icon updated main.png");
     //guiSettingsStartImage.width = 0.2;
     //guiSettingsStartImage.height = "40px";
     guiSettingsSizeChange(guiSettingsSizeImage, guiSettingsSizeM, guiSettingsPaddingBottom, guiSettingsPaddingBottom);
@@ -1176,7 +1176,7 @@ function guiInitSettingsMenu(){
 
     
 
-    var guiSettingsStartImage = new BABYLON.GUI.Image("Start", "http://rawgit.com/AlexanderssonErik/web/master/settings.svg");
+    var guiSettingsStartImage = new BABYLON.GUI.Image("Start", "http://rawgit.com/AlexanderssonErik/web/master/settings largex.png");
     guiSettingsStart = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsStart, guiSettingsStartImage, 0, 0);
 
@@ -1227,7 +1227,7 @@ function guiInitSettingsMenu(){
 
 
 
-    guiSettingsHideImage = new BABYLON.GUI.Image("guiSettingsSnapImage", "http://rawgit.com/AlexanderssonErik/web/master/ic_flip_to_front_white_48px.svg");
+    guiSettingsHideImage = new BABYLON.GUI.Image("guiSettingsSnapImage", "http://rawgit.com/AlexanderssonErik/web/master/hide block updated.png");
     guiSettingsHide = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsHide, guiSettingsHideImage, 1, 0);
   
@@ -1315,7 +1315,7 @@ function guiInitSettingsMenu(){
     });
 
 
-    guiSettingsSnapOffImage = new BABYLON.GUI.Image("guiSettingsSnapOffImage", "http://rawgit.com/AlexanderssonErik/web/master/ic_rotate_90_degrees_ccw_white_48px.svg");
+    guiSettingsSnapOffImage = new BABYLON.GUI.Image("guiSettingsSnapOffImage", "http://rawgit.com/AlexanderssonErik/web/master/rotate no arrows.png");
     guiSettingsSnapOff = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsSnapOff, guiSettingsSnapOffImage, 1, 1);
 
@@ -1343,7 +1343,7 @@ function guiInitSettingsMenu(){
        // }
     });
 
-    guiSettingsSnap4DiagonalImage = new BABYLON.GUI.Image("guiSettingsSnap4DiagonalImage", "http://rawgit.com/AlexanderssonErik/web/master/ic_rotate_90_degrees_ccw_white_48px.svg");
+    guiSettingsSnap4DiagonalImage = new BABYLON.GUI.Image("guiSettingsSnap4DiagonalImage", "http://rawgit.com/AlexanderssonErik/web/master/rotate icon twisited.png");
     guiSettingsSnap4Diagonal = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsSnap4Diagonal, guiSettingsSnap4DiagonalImage, 2, 1);
   
@@ -1372,7 +1372,7 @@ function guiInitSettingsMenu(){
     });
 
 
-    guiSettingsSnap4HorizontalImage = new BABYLON.GUI.Image("guiSettingsSnap4HorizontalImage", "http://rawgit.com/AlexanderssonErik/web/master/ic_rotate_90_degrees_ccw_white_48px.svg");
+    guiSettingsSnap4HorizontalImage = new BABYLON.GUI.Image("guiSettingsSnap4HorizontalImage", "http://rawgit.com/AlexanderssonErik/web/master/rotate  arrows.png");
     guiSettingsSnap4Horizontal = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsSnap4Horizontal, guiSettingsSnap4HorizontalImage, 3, 1);
   
@@ -1524,7 +1524,7 @@ function guiInitSettingsMenu(){
         guiSettingsRenderHigh.alpha = guiSettingsClickTransparancy;
     });
 
-    guiSettingsCompassImage = new BABYLON.GUI.Image("guiSettingsCompassImage", "http://rawgit.com/AlexanderssonErik/web/master/ic_3d_rotation_white_48px.svg");
+    guiSettingsCompassImage = new BABYLON.GUI.Image("guiSettingsCompassImage", "http://rawgit.com/AlexanderssonErik/web/master/compass.png");
     guiSettingsCompass = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsCompass, guiSettingsCompassImage, 0, 3);
    
@@ -1547,7 +1547,7 @@ function guiInitSettingsMenu(){
         guiSettingsCompass.alpha = guiSettingsClickTransparancy;
     });
 
-    guiSettingsCompassOffImage = new BABYLON.GUI.Image("guiSettingsCompassImage", "http://rawgit.com/AlexanderssonErik/web/master/ic_explore_white_48px.svg");
+    guiSettingsCompassOffImage = new BABYLON.GUI.Image("guiSettingsCompassImage", "http://rawgit.com/AlexanderssonErik/web/master/compass 2 thicker.png");
     guiSettingsCompassOff = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsCompassOff, guiSettingsCompassOffImage, 1, 3);
    
@@ -1812,7 +1812,7 @@ function guiInitGameSelectMenu(){
     guiAdvancedTextureGameSelect = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("GameSelect");
 
    
-    guiGameSelectBuilderImage = new BABYLON.GUI.Image("Builder", "http://rawgit.com/AlexanderssonErik/web/master/ic_aspect_ratio_white_48px.svg");
+    guiGameSelectBuilderImage = new BABYLON.GUI.Image("Builder", "http://rawgit.com/AlexanderssonErik/web/master/compass1.svg");
     //guiSettingsStartImage.width = 0.2;
     //guiSettingsStartImage.height = "40px";
     guiSettingsSizeChange(guiGameSelectBuilderImage, guiSettingsSizeM, -guiSettingsSizeM, 0);
@@ -1872,7 +1872,7 @@ function guiInitGameSelectMenu(){
 
 
 
-guiGameSelectTangramImage = new BABYLON.GUI.Image("Tangram", "http://rawgit.com/AlexanderssonErik/web/master/ic_aspect_ratio_white_48px.svg");
+guiGameSelectTangramImage = new BABYLON.GUI.Image("Tangram", "http://rawgit.com/AlexanderssonErik/web/master/compass2.svg");
 //guiSettingsStartImage.width = 0.2;
 //guiSettingsStartImage.height = "40px";
 guiSettingsSizeChange(guiGameSelectTangramImage, guiSettingsSizeM, 0, 0);
@@ -1932,7 +1932,7 @@ guiGameSelectTangramImage.onPointerDownObservable.add(function() {
 
 //--
 
-guiGameSelectMemoImage = new BABYLON.GUI.Image("Tangram", "http://rawgit.com/AlexanderssonErik/web/master/ic_aspect_ratio_white_48px.svg");
+guiGameSelectMemoImage = new BABYLON.GUI.Image("Tangram", "http://rawgit.com/AlexanderssonErik/web/master/compass3.svg");
 guiSettingsSizeChange(guiGameSelectMemoImage, guiSettingsSizeM, guiSettingsSizeM, 0);
 
 guiGameSelectMemoImage.paddingTop = guiSettingsPaddingTop;              

@@ -9,6 +9,7 @@
     <script src="gui.js"></script>
     <script src="guiAnimate.js"></script>
     <script src="guiLevel.js"></script>
+    <script src="game.js"></script>
     <script src="tangram.js"></script>
     <script src="guidedBuild.js"></script>
 
@@ -87,8 +88,8 @@ html,body, can {
         var blocksY = new Array(200);
         var blocksZ = new Array(200);
         var blocksRT = new Array(200); //rotation and type (2x2 / 2x4)
-        var blocksLEDs2x2 = new Array(200);
-        var blocksLEDs2x4 =new Array(200);
+        var blockLED2x2 = new Array(200);
+        var blockLED2x4 =new Array(200);
         var blocksUseAlpha = new Array(200);
         var baseLED = [0x00,0x11];
         var baseCompass = [-90,0,0];
@@ -154,8 +155,8 @@ html,body, can {
       //  blocksRT[0] = 0x04;
         
         for(var i = 0; i < 200; i++){
-            blocksLEDs2x2[i] = 0x00;
-            blocksLEDs2x4[i] = 0x00;
+            blockLED2x2[i] = 0x00;
+            blockLED2x4[i] = 0x00;
             blocksUseAlpha[i] = 0;
          }
   
@@ -165,16 +166,16 @@ html,body, can {
       blocksY[100] = 0;
       blocksZ[100] = 3;
       blocksRT[100] = 0;
-      blocksLEDs2x2[100] = 0x04;
-      blocksLEDs2x4[100] = 0x04;
+      blockLED2x2[100] = 0x04;
+      blockLED2x4[100] = 0x04;
       blocksCount = 1;*/
 /*
       blocksX[0] = 3;
       blocksY[0] = 0;
       blocksZ[0] = 3;
       blocksRT[0] = 0;
-      blocksLEDs2x2[0] = 0x04;
-      blocksLEDs2x4[0] = 0x04;
+      blockLED2x2[0] = 0x04;
+      blockLED2x4[0] = 0x04;
       blocksCount = 1;
 */
     /*
@@ -183,15 +184,15 @@ html,body, can {
       blocksY[1] = 1;
       blocksZ[1] = 2;
       blocksRT[1] = 2;
-      blocksLEDs2x2[1] = 0x02;
-      blocksLEDs2x4[1] = 0x04;*/
+      blockLED2x2[1] = 0x02;
+      blockLED2x4[1] = 0x04;*/
 
     /*  blocksX[0] = 5;
       blocksY[0] = 1;
       blocksZ[0] = 2;
       blocksRT[0] = 2;
-      blocksLEDs2x2[0] = 0x02;
-      blocksLEDs2x4[0] = 0x04;
+      blockLED2x2[0] = 0x02;
+      blockLED2x4[0] = 0x04;
      
       blocksCount = 1;
 */
@@ -229,9 +230,11 @@ html,body, can {
 initShapes(scene);
 initGui();
 
+
 guiInitSettingsMenu();
 guiInitGameSelectMenu();
 guiAnimateInit();
+gameInit();
 //!!1initTangram(scene, pitchY);
 
       
@@ -283,12 +286,12 @@ let cmd_pos = 3;
             for(let i =0; i < blocksCount; i++){
                 //console.log('EAEA sendCommand() 2 ');
                 //cmd_tmp[cmd_pos] = 0x00;
-                cmd_tmp[cmd_pos] = blocksLEDs2x2[i+blocksOffset];
+                cmd_tmp[cmd_pos] = blockLED2x2[i+blocksOffset];
                 cmd_pos++;
 
                 if((blocksRT[i+blocksOffset] & 0x0C) == 0){
                   //  console.log('EAEA sendCommand() 2x ');
-                    cmd_tmp[cmd_pos] = blocksLEDs2x4[i+blocksOffset];
+                    cmd_tmp[cmd_pos] = blockLED2x4[i+blocksOffset];
                     cmd_pos++;
                 }
                // console.log('EAEA sendCommand() 3 ');
@@ -572,14 +575,14 @@ for(let i = 0; i < cmd_pos; i++ ){
                                 //console.log('EAEA HIT: ');
                                 //console.log('EAEA z: ' + z);
                                 //console.log('EAEA i: ' + i);
-                                //console.log('EAEA blocksLEDs2x2[z]: ' + blocksLEDs2x2[z]);
-                                //console.log('EAEA blocksLEDs2x2[i]: ' + blocksLEDs2x2[i]);
-                                blocksLEDs2x2[z] = blocksLEDs2x2[i];
+                                //console.log('EAEA blockLED2x2[z]: ' + blockLED2x2[z]);
+                                //console.log('EAEA blockLED2x2[i]: ' + blockLED2x2[i]);
+                                blockLED2x2[z] = blockLED2x2[i];
                                 break;
                             }else{
                                 //console.log('EAEA HIT2: ');
-                                blocksLEDs2x2[z] = blocksLEDs2x2[i];
-                                blocksLEDs2x4[z] = blocksLEDs2x4[i];
+                                blockLED2x2[z] = blockLED2x2[i];
+                                blockLED2x4[z] = blockLED2x4[i];
                                 break;
                             }
 
@@ -587,8 +590,8 @@ for(let i = 0; i < cmd_pos; i++ ){
                         }
 
                     }
-                    blocksLEDs2x2[i] = 0x00;
-                    blocksLEDs2x4[i] = 0x00;
+                    blockLED2x2[i] = 0x00;
+                    blockLED2x4[i] = 0x00;
                 }
 
                 /*if(debugCount){
@@ -714,9 +717,9 @@ console.log(tmpString);
        tmpString = "let gameRT = [";
        consolePrintBlocks(tmpString, blocksRT);
        tmpString = "let gameLEDs2x2 = [";
-       consolePrintBlocks(tmpString, blocksLEDs2x2);
+       consolePrintBlocks(tmpString, blockLED2x2);
        tmpString = "let gameLEDs2x4 = [";
-       consolePrintBlocks(tmpString, blocksLEDs2x4);
+       consolePrintBlocks(tmpString, blockLED2x4);
 
 
 
@@ -730,8 +733,8 @@ console.log(tmpString);
       levelBlockY[0] = 0;
       levelBlockZ[0] = 2;
       levelBlockRT[0] = 0;
-      levelBlocksLEDs2x2[0] = 0x04;
-      levelBlocksLEDs2x4[0] = 0x04;*/
+      levelblockLED2x2[0] = 0x04;
+      levelblockLED2x4[0] = 0x04;*/
 
     });
 
@@ -970,7 +973,7 @@ var url = "http://upload.wikimedia.org/wikipedia/en/8/86/Einstein_tongue.jpg";
             if(lastBiloGame != biloGame){
 
                 if(biloGame == 1){
-
+                    initGuidedBuild();
                 }else if(biloGame == 2){
                     initTangram(scene, pitchY);
 
@@ -982,7 +985,15 @@ var url = "http://upload.wikimedia.org/wikipedia/en/8/86/Einstein_tongue.jpg";
 
 
             if(lastBiloLevel != biloLevel){
-                if(biloGame == 2 && biloLevel !=0){
+                console.log("biloLevel" + biloLevel)
+                if(biloGame == 0 && biloLevel !=0){
+                    guiAnimateStopWinningAndNext();
+                    //guiStopWinningAndNext();
+                    biloAwaitNextLevel = true;
+                    biloWinning = false;
+                    guidedBuildCreateGame(biloLevel);
+
+                }else if(biloGame == 2 && biloLevel !=0){
                     guiAnimateStopWinningAndNext();
                     //guiStopWinningAndNext();
                     biloAwaitNextLevel = true;
@@ -1148,13 +1159,14 @@ var url = "http://upload.wikimedia.org/wikipedia/en/8/86/Einstein_tongue.jpg";
                 }
              
                 if(biloGame == 1 && biloLevel != 0){
-                renderGuidedBuild(blocksX, blocksY, blocksZ, blocksRT, blocksLEDs2x2, blocksLEDs2x4, blocksUseAlpha, blocksOffset );
+                //renderGuidedBuild(blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blockLED2x4, blocksUseAlpha, blocksOffset );
+                guidedBuildRender(blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blockLED2x4, blocksUseAlpha, blocksOffset );
                 }
                // console.log("A0:" + blocksCount);
                
                 shapesAllocateBlocks(blocksCount);
                // console.log("A:" + blocksCount);
-                render(blocksX, blocksY, blocksZ, blocksRT, blocksLEDs2x2, blocksLEDs2x4, blocksUseAlpha, blocksOffset, blocksCount, blocksCountFromWorld);
+                render(blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blockLED2x4, blocksUseAlpha, blocksOffset, blocksCount, blocksCountFromWorld);
                 //console.log("A1:" + blocksCount);
 
                 if(biloGame == 2 && biloLevel != 0){
