@@ -1504,7 +1504,7 @@ function guiInitSettingsMenu(){
     });
 
 
-    guiSettingsRenderHighImage = new BABYLON.GUI.Image("guiSettingsRenderHighImage", "http://rawgit.com/AlexanderssonErik/web/master/ic_high_quality_white_48px.svg");
+    guiSettingsRenderHighImage = new BABYLON.GUI.Image("guiSettingsRenderHighImage", "http://rawgit.com/AlexanderssonErik/web/master/c.svg");
     guiSettingsRenderHigh = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsRenderHigh, guiSettingsRenderHighImage, 3, 2);
    
@@ -1524,7 +1524,7 @@ function guiInitSettingsMenu(){
         guiSettingsRenderHigh.alpha = guiSettingsClickTransparancy;
     });
 
-    guiSettingsCompassImage = new BABYLON.GUI.Image("guiSettingsCompassImage", "http://rawgit.com/AlexanderssonErik/web/master/compass.png");
+    guiSettingsCompassImage = new BABYLON.GUI.Image("guiSettingsCompassImage", "http://rawgit.com/AlexanderssonErik/web/master/b.svg");
     guiSettingsCompass = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsCompass, guiSettingsCompassImage, 0, 3);
    
@@ -1812,7 +1812,7 @@ function guiInitGameSelectMenu(){
     guiAdvancedTextureGameSelect = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("GameSelect");
 
    
-    guiGameSelectBuilderImage = new BABYLON.GUI.Image("Builder", "http://rawgit.com/AlexanderssonErik/web/master/compass1.svg");
+    guiGameSelectBuilderImage = new BABYLON.GUI.Image("Builder", "http://rawgit.com/AlexanderssonErik/web/master/ic_aspect_ratio_white_48px.svg");
     //guiSettingsStartImage.width = 0.2;
     //guiSettingsStartImage.height = "40px";
     guiSettingsSizeChange(guiGameSelectBuilderImage, guiSettingsSizeM, -guiSettingsSizeM, 0);
@@ -1872,7 +1872,7 @@ function guiInitGameSelectMenu(){
 
 
 
-guiGameSelectTangramImage = new BABYLON.GUI.Image("Tangram", "http://rawgit.com/AlexanderssonErik/web/master/compass2.svg");
+guiGameSelectTangramImage = new BABYLON.GUI.Image("Tangram", "http://rawgit.com/AlexanderssonErik/web/master/ic_aspect_ratio_white_48px.svg");
 //guiSettingsStartImage.width = 0.2;
 //guiSettingsStartImage.height = "40px";
 guiSettingsSizeChange(guiGameSelectTangramImage, guiSettingsSizeM, 0, 0);
@@ -1932,7 +1932,7 @@ guiGameSelectTangramImage.onPointerDownObservable.add(function() {
 
 //--
 
-guiGameSelectMemoImage = new BABYLON.GUI.Image("Tangram", "http://rawgit.com/AlexanderssonErik/web/master/compass3.svg");
+guiGameSelectMemoImage = new BABYLON.GUI.Image("Tangram", "http://rawgit.com/AlexanderssonErik/web/master/ic_aspect_ratio_white_48px.svg");
 guiSettingsSizeChange(guiGameSelectMemoImage, guiSettingsSizeM, guiSettingsSizeM, 0);
 
 guiGameSelectMemoImage.paddingTop = guiSettingsPaddingTop;              
