@@ -9,6 +9,7 @@
     <script src="gui.js"></script>
     <script src="guiAnimate.js"></script>
     <script src="guiLevel.js"></script>
+    <script src="guiColorWheel.js"></script>
     <script src="game.js"></script>
     <script src="tangram.js"></script>
     <script src="guidedBuild.js"></script>
@@ -35,7 +36,7 @@ html,body, can {
 
     </style>
 
- <script src="https://cdn.babylonjs.com/babylon.js"></script> 
+ <!-- <script src="https://cdn.babylonjs.com/babylon.js"></script>  -->
  <script src="https://code.jquery.com/pep/0.4.1/pep.js"></script>
 
  </head>
@@ -124,13 +125,13 @@ html,body, can {
       //  blocksOffset = 100;// (0/100)
       //  blocksOngoingOffset = 0;
 
-      blocksCount = 3;
+      blocksCount = 1;
 
       blocksX[0] = 0;
         blocksY[0] = 0;
         blocksZ[0] = 2;
         blocksRT[0] = 0x00;
-
+/*
         blocksX[1] = 0;
         blocksY[1] = 0;
         blocksZ[1] = 4;
@@ -141,7 +142,7 @@ html,body, can {
         blocksY[2] = 1;
         blocksZ[2] = 2;
         blocksRT[2] = 0x00;
-
+*/
        /* blocksCount = 2;
 
         for(var g = 0; g < 2; g++){
@@ -229,11 +230,14 @@ html,body, can {
 
 initShapes(scene);
 initGui();
+guiColorWheelLimitedFunction = false;
 
 
 guiInitSettingsMenu();
 guiInitGameSelectMenu();
 guiAnimateInit();
+guiColorWheelInit();
+
 gameInit();
 //!!1initTangram(scene, pitchY);
 
@@ -470,6 +474,7 @@ for(let i = 0; i < cmd_pos; i++ ){
                     blocksX[blocksOngoingCount + blocksOngoingOffset] = receivedData[0]; 
                     blocksY[blocksOngoingCount + blocksOngoingOffset] = receivedData[2]; 
                     blocksRT[blocksOngoingCount + blocksOngoingOffset] = receivedData[3]; 
+                    blocksUseAlpha[blocksOngoingCount + blocksOngoingOffset] = 0; 
 
                     if ( blocksZ[blocksOngoingCount + blocksOngoingOffset] > 127){
                         blocksZ[blocksOngoingCount + blocksOngoingOffset] -= 256;                             
@@ -750,7 +755,8 @@ console.log(tmpString);
 
    // let snapCameraLastAlpha = 0;
     scene.onPointerDown = function (evt, pickResult) {
-        guiPointerDownd(pickResult);
+       // guiPointerDownd(pickResult);
+       guiColorWheelPointerDownd(pickResult);
         pointerIsDown = true;
     };
 
@@ -758,215 +764,15 @@ console.log(tmpString);
                 scene.onPointerUp = function (evt, pickResult) {
                 
                 guiPointerUp(pickResult);
+                guiColorWheelPointerUp(pickResult);
                 guiLevelPointerUp();
                 pointerIsDown = false;
                 
                     };
 
     //camera .alpha snapper 
-//--------------
-//guiWinningAndNext(1);
-//guiAnimateWin(1);
-//guiAnimateWin(0);
-//guiAnimateWin(2);
-//guiAnimateWin(3);
-//guiAnimateWin(5);
-//guiAnimateWin(6);
-//guiAnimateWin(8);
-//guiAnimateWin(9);
-//guiAnimateWin(11);
-//guiAnimateWin(12);
-//guiAnimateWin(14);
-//guiAnimateWin(15);
-//guiAnimateWin(17);
-
-/*
-    var starAnimateFrameRate = 10;
-//var starAnimateFrameTime = 2; //speed
-var starAnimateYR;
-var starAnimateYR2;
-var starAnimateYR3;
-var starAnimateScale;
-var starAnimateKeyFrames = []; 
-var starAnimateScaleKeyFrames = []; 
-var starAnimateScaleKeyFrames2 = []; 
-let starAnimatableYR;
-//let starAnimatableXR;
-let starAnimatableScale;
-let starAnimatableScale2;
-let starAnimatableScale3;
 
 
-
-shapesStar.position.x =4.5; 
-shapesStar.position.y =2; 
-shapesStar.position.z =4.5;
-
-let shapesStar2 =  shapesStar.createInstance("shapesStar2");
-let shapesStar3 =  shapesStar.createInstance("shapesStar3");
-
-shapesStar2.position.x =4.5; 
-shapesStar2.position.y =2; 
-shapesStar2.position.z =6.5;
-
-shapesStar3.position.x =4.5; 
-shapesStar3.position.y =2; 
-shapesStar3.position.z =2.5;
-
-//shapesStar.rotation.x = 1;
-//shapesStar.rotation.y = 1;
-
-//starAnimateScale2 = new BABYLON.Animation("starAnimateScale", "scaling", starAnimateFrameRate, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE );
-
-
-starAnimateYR = new BABYLON.Animation("starAnimateYR", "rotation.y", starAnimateFrameRate, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE );
-//starAnimateXR = new BABYLON.Animation("starAnimateXR", "rotation.z", starAnimateFrameRate, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE );
-starAnimateScale = new BABYLON.Animation("starAnimateScale", "scaling", starAnimateFrameRate, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE );
-starAnimateScale2 = new BABYLON.Animation("starAnimateScale", "scaling", starAnimateFrameRate, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT );
-
-
-
-//.scaling = new BABYLON.Vector3(3, 3, 3);
-starAnimateKeyFrames.push({
-    frame: 0,
-    value: 0
-});
-
-starAnimateKeyFrames.push({
-    frame: cameraAnimateFrameRate,
-    value: Math.PI
-});
-
-starAnimateKeyFrames.push({
-    frame: cameraAnimateFrameRate*2,
-    value: Math.PI*2
-});
-
-
-starAnimateScaleKeyFrames.push({
-    frame: 0,
-    value: new BABYLON.Vector3(1, 1, 1)
-});
-
-starAnimateScaleKeyFrames.push({
-    frame: cameraAnimateFrameRate,
-    value: new BABYLON.Vector3(1.5, 1.5, 1.5)
-});
-
-starAnimateScaleKeyFrames.push({
-    frame: cameraAnimateFrameRate*2,
-    value: new BABYLON.Vector3(1, 1, 1)
-});
-
-starAnimateScaleKeyFrames2.push({
-    frame: 0,
-    value: new BABYLON.Vector3(1, 1, 1)
-});
-
-starAnimateScaleKeyFrames2.push({
-    frame: cameraAnimateFrameRate,
-    value: new BABYLON.Vector3(0.6, 0.6, 0.6)
-});
-
-starAnimateScaleKeyFrames2.push({
-    frame: cameraAnimateFrameRate*2,
-    value: new BABYLON.Vector3(0, 0, 0)
-});
-
-
-
-
-// scene.beginDirectAnimation(camera, [cameraAnimate], 0, 2 * cameraAnimateFrameRate, false);
-//var cameraAnimatable = scene.beginDirectAnimation(camera, [cameraAnimate], 0, 2 * cameraAnimateFrameRate, false);
-starAnimatableYR = scene.beginDirectAnimation(shapesStar, [starAnimateYR], 0, 2 * starAnimateFrameRate, true);
-starAnimatableYR2 = scene.beginDirectAnimation(shapesStar2, [starAnimateYR], 0, 2 * starAnimateFrameRate, true);
-starAnimatableYR3 = scene.beginDirectAnimation(shapesStar3, [starAnimateYR], 0, 2 * starAnimateFrameRate, true);
-starAnimatableScale = scene.beginDirectAnimation(shapesStar, [starAnimateScale], 0, 2 *   starAnimateFrameRate, true);
-starAnimatableScale2 = scene.beginDirectAnimation(shapesStar2, [starAnimateScale2], 0, 2 *   starAnimateFrameRate, false);
-//starAnimatableScale2 = scene.beginDirectAnimation(shapesStar3, [starAnimateScale2], 0, 2 *   starAnimateFrameRate, true);
-starAnimatableScale3 = scene.beginDirectAnimation(shapesStar3, [starAnimateScale2], 0, 2 *   starAnimateFrameRate, false, 1, function (){shapesStar.material = shapesMaterialsStar[1];;});
-//tarAnimatableXR = scene.beginDirectAnimation(shapesStar, [starAnimateXR], 0, 2 * starAnimateFrameRate, true);
-//starAnimatable.animationStarted = false;
-  
-starAnimateYR.setKeys(starAnimateKeyFrames);
-starAnimateScale.setKeys(starAnimateScaleKeyFrames);
-
-starAnimateScale2.setKeys(starAnimateScaleKeyFrames2);
-//starAnimateXR.setKeys(starAnimateKeyFrames);
-
-
-
-var url = "http://upload.wikimedia.org/wikipedia/en/8/86/Einstein_tongue.jpg";
-    
-
-  
-
-    // Create a particle system
-    var particleSystem = new BABYLON.ParticleSystem("particles", 1000, scene);
-
-    //Texture of each particle
-    particleSystem.particleTexture = new BABYLON.Texture(url, scene);
-
-    // Where the particles come from
-    particleSystem.emitter = shapesStar; // the starting object, the emitter
-    particleSystem.minEmitBox = new BABYLON.Vector3(-1, 0, 0); // Starting all from
-    particleSystem.maxEmitBox = new BABYLON.Vector3(1, 0, 0); // To...
-
-    // Colors of all particles
-    //particleSystem.color1 = new BABYLON.Color4(0.7, 0.8, 1.0, 1.0);
-    particleSystem.color1 = new BABYLON.Color4(0.9, 1, 0, 1.0);
-    //particleSystem.color2 = new BABYLON.Color4(0.2, 0.5, 1.0, 1.0);
-    particleSystem.color2 = new BABYLON.Color4(0.8, 0.9, 0, 1.0);
-    particleSystem.colorDead = new BABYLON.Color4(0.7, 0.8, 0, 0.5);
-
-    // Size of each particle (random between...
-    //particleSystem.minSize = 0.1;
-    //particleSystem.maxSize = 0.5;
-    particleSystem.minSize = 0.05;
-    particleSystem.maxSize = 0.3;
-
-    // Life time of each particle (random between...
-    particleSystem.minLifeTime = 0.3;
-    //particleSystem.maxLifeTime = 1.5;
-    particleSystem.maxLifeTime = 1;
-
-    // Emission rate
-    particleSystem.emitRate = 200;
-
-    // Blend mode : BLENDMODE_ONEONE, or BLENDMODE_STANDARD
-    particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
-
-    // Set the gravity of all particles
-    particleSystem.gravity = new BABYLON.Vector3(0, -9.81, 0);
-
-    // Direction of each particle after it has been emitted
-   // particleSystem.direction1 = new BABYLON.Vector3(-7, 8, 3);
-   // particleSystem.direction2 = new BABYLON.Vector3(7, 8, -3);
-
-    particleSystem.direction1 = new BABYLON.Vector3(-7, 8, 3);
-    particleSystem.direction2 = new BABYLON.Vector3(7, 8, -3);
-
-    // Angular speed, in radians
-    particleSystem.minAngularSpeed = 0;
-    particleSystem.maxAngularSpeed = Math.PI;
-
-    // Speed
-    particleSystem.minEmitPower = 1;
-    particleSystem.maxEmitPower = 3;
-    particleSystem.updateSpeed = 0.005;
-
-    // Start the particle system
-    particleSystem.start();
-
-*/
-    //----
-    //camera.di
-
-    //camera.inputs.attached.mouse.detachControl();
-
-    //camera.detachControl();
-
-    //camera.inputs.remove(camera.inputs.attached.mouse);
 
         engine.runRenderLoop(function () {
 
@@ -986,7 +792,7 @@ var url = "http://upload.wikimedia.org/wikipedia/en/8/86/Einstein_tongue.jpg";
 
             if(lastBiloLevel != biloLevel){
                 console.log("biloLevel" + biloLevel)
-                if(biloGame == 0 && biloLevel !=0){
+                if(biloGame == 1 && biloLevel !=0){
                     guiAnimateStopWinningAndNext();
                     //guiStopWinningAndNext();
                     biloAwaitNextLevel = true;
@@ -1069,73 +875,7 @@ var url = "http://upload.wikimedia.org/wikipedia/en/8/86/Einstein_tongue.jpg";
 
             guiRender(pointerIsDown, compassRender, compassCameraAlpha);
             compassRender = 0;
-            //if()
-            //if(camera.alpha > Math.PI/2){
-
-               // snapCameraLastAlpha
-            
-               
-
-
-                    /*if(camera.alpha%snapDistance > 0.05 && ! cameraAnimatable.animationStarted){                            
-                            if(camera.alpha%snapDistance - snapDistance/2 > 0){
-                                cameraAnimateKeyFrames.pop();
-                                cameraAnimateKeyFrames.pop();
-                                cameraAnimateKeyFrames.push({
-                                    frame: 0,
-                                    value: camera.alpha
-                                });
-                                cameraAnimateKeyFrames.push({
-                                    frame: cameraAnimateFrameTime,
-                                    value: camera.alpha += snapDistance - camera.alpha%snapDistance 
-                                });
-                                cameraAnimate.setKeys(cameraAnimateKeyFrames);                                
-                                cameraAnimatable = scene.beginDirectAnimation(camera, [cameraAnimate], 0, 2 * cameraAnimateFrameRate, false);
-                            }else if(camera.alpha%snapDistance - snapDistance/2 <  0 ){
-                                cameraAnimateKeyFrames.pop();
-                                cameraAnimateKeyFrames.pop();
-                                cameraAnimateKeyFrames.push({
-                                    frame: 0,
-                                    value: camera.alpha
-                                });
-                                cameraAnimateKeyFrames.push({
-                                    frame: cameraAnimateFrameTime,
-                                    value: camera.alpha -= camera.alpha%snapDistance 
-                                });
-                                cameraAnimate.setKeys(cameraAnimateKeyFrames);                                
-                                cameraAnimatable = scene.beginDirectAnimation(camera, [cameraAnimate], 0, 2 * cameraAnimateFrameRate, false);
-                            }
-                        }*/
-
-                    /*   if(camera.alpha%(Math.PI/4) > 0.05 && ! cameraAnimatable.animationStarted){                            
-                            if(camera.alpha%(Math.PI/4) - Math.PI/8 > 0){
-                                cameraAnimateKeyFrames.pop();
-                                cameraAnimateKeyFrames.pop();
-                                cameraAnimateKeyFrames.push({
-                                    frame: 0,
-                                    value: camera.alpha
-                                });
-                                cameraAnimateKeyFrames.push({
-                                    frame: cameraAnimateFrameTime,
-                                    value: camera.alpha += Math.PI/4 - camera.alpha%(Math.PI/4)
-                                });
-                                cameraAnimate.setKeys(cameraAnimateKeyFrames);                                
-                                cameraAnimatable = scene.beginDirectAnimation(camera, [cameraAnimate], 0, 2 * cameraAnimateFrameRate, false);
-                            }else if(camera.alpha%(Math.PI/4) - Math.PI/8 <  0 ){
-                                cameraAnimateKeyFrames.pop();
-                                cameraAnimateKeyFrames.pop();
-                                cameraAnimateKeyFrames.push({
-                                    frame: 0,
-                                    value: camera.alpha
-                                });
-                                cameraAnimateKeyFrames.push({
-                                    frame: cameraAnimateFrameTime,
-                                    value: camera.alpha -= camera.alpha%(Math.PI/4)
-                                });
-                                cameraAnimate.setKeys(cameraAnimateKeyFrames);                                
-                                cameraAnimatable = scene.beginDirectAnimation(camera, [cameraAnimate], 0, 2 * cameraAnimateFrameRate, false);
-                            }
-                        }*/
+           
                   
     
                 
@@ -1143,27 +883,59 @@ var url = "http://upload.wikimedia.org/wikipedia/en/8/86/Einstein_tongue.jpg";
 
 
             if(blocksRender){
-              
+              console.log("----------------");
                blocksRender = 0;
 
-               
+
+               //FIX TRANSPARENT COLOR PROBLEM render??
+               blocksCount = 2;
+
+      blocksX[0] = 0;
+        blocksY[0] = 0;
+        blocksZ[0] = 2;
+        blocksRT[0] = 0x00;
+        blocksUseAlpha[0] = 0; 
+
+        blocksX[1] = 0;
+        blocksY[1] = 1;
+        blocksZ[1] = 2;
+        blocksRT[1] = 0x00;
+        blocksUseAlpha[1] = 0; 
+
+      /*  blocksX[1] = 0;
+        blocksY[1] = 0;
+        blocksZ[1] = 4;
+        blocksRT[1] = 0x00;
+        blocksUseAlpha[1] = 0; 
+*/
+      /*  blocksX[0] = 3;
+        blocksY[0] = 0;
+        blocksZ[0] = 3;
+        blocksRT[0] = 0x02;
+        blocksUseAlpha[0] = 0;
+*/
                 
               // var tmpBlockX = [0,1];
                
                 //use when games are chaning the number of blocks rendered compared to the real world
+
+                
+
                 let blocksCountFromWorld = blocksCount;
+               // console.log("blocksCountFromWorld: " +blocksCountFromWorld);
 
                 //used when hiding blocks from world
                 if(biloHideBlocks){
                     blocksCount = 0;
                 }
              
+               // console.log("blocksCount A : " +blocksCount);
                 if(biloGame == 1 && biloLevel != 0){
                 //renderGuidedBuild(blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blockLED2x4, blocksUseAlpha, blocksOffset );
                 guidedBuildRender(blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blockLED2x4, blocksUseAlpha, blocksOffset );
                 }
                // console.log("A0:" + blocksCount);
-               
+              // console.log("blocksCount B : " +blocksCount);
                 shapesAllocateBlocks(blocksCount);
                // console.log("A:" + blocksCount);
                 render(blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blockLED2x4, blocksUseAlpha, blocksOffset, blocksCount, blocksCountFromWorld);

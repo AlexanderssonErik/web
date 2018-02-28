@@ -200,13 +200,108 @@ function guidedBuildRender(blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blo
     let iGB;
     let noOfBlocksFound = 0;
     let gBNoOfBlocksShown = 1;
+    let blocksFound = [];
 
-
-    console.log("guidedBuildLevel: " +guidedBuildLevel);
-    console.log("guidedBuildStage: " +guidedBuildStage);
+   // console.log("blocksCount 1 : " +blocksCount);
+  //  console.log("guidedBuildLevel: " +guidedBuildLevel);
+  //  console.log("guidedBuildStage: " +guidedBuildStage);
 
     for(iGB = 0; iGB < levelBlockCount[guidedBuildLevel][guidedBuildStage]; iGB++ ){
+    //    console.log("iGB: " + iGB);
+    //    console.log("levelBlockCount[guidedBuildLevel][guidedBuildStage]: " + levelBlockCount[guidedBuildLevel][guidedBuildStage] );
+        
         for(i = blocksOffset; i < initialblocksCount; i++ ){
+            
+
+            if( blocksY[i] == levelBlockY[guidedBuildLevel][guidedBuildStage][iGB] &&
+                blockLED2x2[i] == levelBlockLED2x2[guidedBuildLevel][guidedBuildStage][iGB] &&
+                blockLED2x4[i] == levelBlockLED2x4[guidedBuildLevel][guidedBuildStage][iGB]){
+                
+                //console.log("blocksRT[i]: " + blocksRT[i] );
+            /*    console.log("levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB]: " + levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] );
+                console.log("levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB]: " + levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB] );
+                console.log("levelBlockX[guidedBuildLevel][guidedBuildStage][iGB]: " + levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] );
+               // console.log("1------------------ " );
+                console.log("blocksRT[i]: " + blocksRT[i] );
+                console.log("blocksZ[i]: " + blocksZ[i] );
+                console.log("blocksX[i]: " + blocksX[i]  );
+                console.log("2------------------ " );*/
+
+                if(blocksX[i] == levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] &&
+                    blocksZ[i] == levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB] &&
+                    blocksRT[i] == levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] 
+                    ){
+                        blocksFound[i] = 1;
+                        break;
+                //2x4  
+                }else if((blocksRT[i] & 0x04) == 0 && (levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x04) == 0 )
+                {
+                 //   console.log("AAAAAAAA"  )
+                   if((blocksRT[i] & 0x03) == 0 && 
+                        (levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) == 2 &&
+                        blocksX[i] +3 == levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] &&
+                        blocksZ[i] +1 == levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB] )
+                    {
+                      //  console.log("XXXXXXXXXX"  );
+                        blocksFound[i] = 1;
+                        break;
+                    }else if((blocksRT[i] & 0x03) == 1 && 
+                        (levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) == 3 &&
+                        blocksX[i] +1 == levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] &&
+                        blocksZ[i] -3 == levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB] ){
+                            blocksFound[i] = 1;
+                            break;
+                    }else if((blocksRT[i] & 0x03) == 2 && 
+                        (levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) == 4 &&
+                        blocksX[i] -3 == levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] &&
+                        blocksZ[i] -1 == levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB] ){
+                            blocksFound[i] = 1;
+                            break;
+                    }else if((blocksRT[i] & 0x03) == 3 && 
+                        (levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) == 1 &&
+                        blocksX[i] -1 == levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] &&
+                        blocksZ[i] +3 == levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB] ){
+                            blocksFound[i] = 1;
+                            break;
+                    }
+                  /*  if((blocksRT[i] & 0x03)%2 == (levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03)%2 )
+                    {
+                        
+                    }
+*/
+                    
+                //2x2    
+                }else if((blocksRT[i] & 0x04) == 0x04 && (levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x04) == 0x04 )
+                {
+                    if((blocksRT[i] & 0x03) == 0 && 
+                        (levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) == 2 &&
+                        blocksX[i] +3 == levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] &&
+                        blocksZ[i] +1 == levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB] )
+                        {
+                            blocksFound[i] = 1;
+                            break;
+                    }else if((blocksRT[i] & 0x03) == 1 && 
+                        (levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) == 3 &&
+                        blocksX[i] +1 == levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] &&
+                        blocksZ[i] -3 == levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB] ){
+                            blocksFound[i] = 1;
+                            break;
+                    }else if((blocksRT[i] & 0x03) == 2 && 
+                        (levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) == 4 &&
+                        blocksX[i] -3 == levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] &&
+                        blocksZ[i] -1 == levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB] ){
+                            blocksFound[i] = 1;
+                            break;
+                    }else if((blocksRT[i] & 0x03) == 3 && 
+                        (levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) == 1 &&
+                        blocksX[i] -1 == levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] &&
+                        blocksZ[i] +3 == levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB] ){
+                            blocksFound[i] = 1;
+                            break;
+                    }
+                }
+            }
+            /*
             if(blocksX[i] == levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] &&
                 blocksY[i] == levelBlockY[guidedBuildLevel][guidedBuildStage][iGB] &&
                 blocksZ[i] == levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB] &&
@@ -215,14 +310,16 @@ function guidedBuildRender(blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blo
                 blockLED2x4[i] == levelBlockLED2x4[guidedBuildLevel][guidedBuildStage][iGB]
                 ){
                     break;
-            }
+                  
+            }*/
+        
         }
 
         
         if(i == initialblocksCount && noOfBlocksFound < gBNoOfBlocksShown){
             
             
-            
+         //   console.log("blocksCount 2 : " +blocksCount);
             blocksX[blocksCount + blocksOffset] = levelBlockX[guidedBuildLevel][guidedBuildStage][iGB];
             blocksY[blocksCount+ blocksOffset] = levelBlockY[guidedBuildLevel][guidedBuildStage][iGB];
             blocksZ[blocksCount + blocksOffset] = levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB];
@@ -232,12 +329,24 @@ function guidedBuildRender(blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blo
             blocksUseAlpha[blocksCount + blocksOffset] = 1;
             blocksCount++;
             noOfBlocksFound++;
-            
+          //  console.log("blocksCount 3 : " +blocksCount);
 
 
         }
     }
 
+    for(i = blocksOffset; i < initialblocksCount; i++ ){
+       
+        if(!blocksFound[i]){
+         
+            gameErrorBlink(i);
+            break;
+        }
+
+    }
+
+         
+            
 
 
 }

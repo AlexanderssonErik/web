@@ -1,4 +1,3 @@
-
 let levelBlockX = [];
 let levelBlockY = [];
 let levelBlockZ = [];
@@ -8,6 +7,10 @@ let levelBlockLED2x4 = [];
 
 let levelBlockCount = [];
 let levelBlockNumberStages = [];
+
+
+let errorBlinkTimeOut;
+let errorBlinkTimeOutRunning = false;
 
 function gameInit(){
 
@@ -34,3 +37,31 @@ function gameInit(){
     }
 
 }
+function gameErrorBlink(i) {
+
+    if(!errorBlinkTimeOutRunning){
+        if(blockLED2x2[i]  == 0x09){
+            blockLED2x2[i] = 0x00; 
+            blockLED2x4[i] = 0x00;                        
+        }else{
+            blockLED2x2[i] = 0x09; 
+            blockLED2x4[i] = 0x09; 
+        }
+        errorBlinkTimeOutRunning = true;
+       
+        errorBlinkTimeOut = setTimeout(errorBlinkTimeOutFunction, 1000);
+        blocksRender = 1;
+    }  
+}
+
+
+function errorBlinkTimeOutFunction() {
+    
+
+        clearTimeout(errorBlinkTimeOutFunction);
+        errorBlinkTimeOutRunning = false;
+
+    }
+
+
+

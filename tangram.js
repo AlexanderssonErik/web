@@ -35,10 +35,6 @@
 //all sides difficult color no indication
 
 
-let errorBlinkTimeOut;
-let errorBlinkTimeOutRunning = false;
-
-
 let tile;
 let tangramPitchY;
 let tangramOffsetY;
@@ -1660,14 +1656,6 @@ function tangramLevelRender(){
 
 }
 
-function errorBlinkTimeOutFunction() {
-    
-
-        clearTimeout(errorBlinkTimeOutFunction);
-        errorBlinkTimeOutRunning = false;
-
-    }
-
 
 function tangramRender(blocksCount){
     
@@ -1755,20 +1743,8 @@ function tangramRender(blocksCount){
                }
     
                 if(l == renderCountSideA && tangramErrorColorEnabled){
-                    
-                    if(!errorBlinkTimeOutRunning){
-                        if(blockLED2x2[renderGameSideAMapToBlock[i]]  == 0x09){
-                            blockLED2x2[renderGameSideAMapToBlock[i]] = 0x00; 
-                            blockLED2x4[renderGameSideAMapToBlock[i]] = 0x00;                        
-                        }else{
-                            blockLED2x2[renderGameSideAMapToBlock[i]] = 0x09; 
-                            blockLED2x4[renderGameSideAMapToBlock[i]] = 0x09; 
-                        }
-                        errorBlinkTimeOutRunning= true;
-                       
-                        errorBlinkTimeOut = setTimeout(errorBlinkTimeOutFunction, 1000);
-                        blocksRender = 1;
-                    }
+                    gameErrorBlink(renderGameSideAMapToBlock[i]);
+               
 
 
                     /*do not render red
@@ -1881,21 +1857,10 @@ function tangramRender(blocksCount){
                 errorBlock = true;
                }
     
-                if(l == renderCountSideB && tangramErrorColorEnabled){    
-                    if(!errorBlinkTimeOutRunning){
-                        if(blockLED2x2[renderGameSideBMapToBlock[i]]  == 0x09){
-                            blockLED2x2[renderGameSideBMapToBlock[i]] = 0x00; 
-                            blockLED2x4[renderGameSideBMapToBlock[i]] = 0x00;                        
-                        }else{
-                            blockLED2x2[renderGameSideBMapToBlock[i]] = 0x09; 
-                            blockLED2x4[renderGameSideBMapToBlock[i]] = 0x09; 
-                        }
-                        errorBlinkTimeOutRunning = true;
-                       
-                        errorBlinkTimeOut = setTimeout(errorBlinkTimeOutFunction, 1000);
-                        blocksRender = 1;
-                    }           
-    
+                if(l == renderCountSideB && tangramErrorColorEnabled){  
+                    
+                    gameErrorBlink(renderGameSideBMapToBlock[i]);
+
                     /*do not render red
                     if(renderCountB >=  renderAllocatedCountSideB){                       
                           renderSideB[renderCountB] = blockPixel.clone("blockPixelB" +i);
@@ -2005,20 +1970,8 @@ function tangramRender(blocksCount){
                }
     
                 if(l == renderCountSideC && tangramErrorColorEnabled){
-                    if(!errorBlinkTimeOutRunning){
-                        if(blockLED2x2[renderGameSideCMapToBlock[i]]  == 0x09){
-                            blockLED2x2[renderGameSideCMapToBlock[i]] = 0x00; 
-                            blockLED2x4[renderGameSideCMapToBlock[i]] = 0x00;                        
-                        }else{
-                            blockLED2x2[renderGameSideCMapToBlock[i]] = 0x09; 
-                            blockLED2x4[renderGameSideCMapToBlock[i]] = 0x09; 
-                        }
-                        errorBlinkTimeOutRunning= true;
-                        
-                        errorBlinkTimeOut = setTimeout(errorBlinkTimeOutFunction, 1000);
-                        blocksRender = 1;
-                    }
-    
+                    gameErrorBlink(renderGameSideCMapToBlock[i]);
+               
                     /*do not render red
                     if(renderCountC >=  renderAllocatedCountSideC){
                      

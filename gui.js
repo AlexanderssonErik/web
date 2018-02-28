@@ -11,8 +11,6 @@ let guiSettingsClickColor = "#606060";
 
 
 
-
-
 //--
 let guiAdvancedTextureGameSelect;
 let guiGameSelectBuilder;
@@ -79,8 +77,8 @@ let guiSettingsCompassOnImage;
 
 let guiFps = 60;
 
-
-let guiColorWheelLimitedFunction = true;
+/*
+let guiColorWheelLimitedFunction = false;
 let guiColorWheelMid;
 let guiColorWheelSection;
 let guiColorWheelSectionR;
@@ -101,7 +99,7 @@ let guiColorWheelFullRG;
 let guiColorWheelFullRB;
 let guiColorWheelFullGB;
 let guiColorWheelFullRGB;
-
+*/
 
 
 /*
@@ -121,7 +119,7 @@ let cameraAnimatable;
 
 let snapDiagonalA = 0; //0 for off, 1 for 8pos, -1 for diagonal, 1 for horizontal 
 let snapDiagonalB = 2; //1 for 8pos, 2 4pos
-
+/*
 
 //color wheel
 var buttonColorWheel = [];
@@ -375,10 +373,7 @@ function guiColorWheelSetSize( guiColorWheelSize) {
    guiColorWheelFull.color =  "#101050";
    guiColorWheelFull.width = "0px";//"160px"
    guiColorWheelFull.height = "0px";//"160px";
-  /* guiColorWheelFull.paddingTop = 0;
-   guiColorWheelFull.paddingBottom = -guiColorWheelSize*5.5;
-   guiColorWheelFull.paddingLeft = 0;
-   guiColorWheelFull.paddingRight = -guiColorWheelSize*5.5;*/
+
 
   
 
@@ -402,10 +397,6 @@ function guiColorWheelSetSize( guiColorWheelSize) {
    guiColorWheelFullRGB.paddingLeft = guiColorWheelSize*2.08;  
    guiColorWheelFullRGB.paddingRight = -guiColorWheelSize*3.08;  
 
-   /*guiColorWheelFullRGB.paddingTop = 0;
-   guiColorWheelFullRGB.paddingBottom = -guiColorWheelSize*8;
-   guiColorWheelFullRGB.paddingLeft = 0;
-   guiColorWheelFullRGB.paddingRight = -guiColorWheelSize*8;  */
 
 
    guiColorWheelFullRGB.thickness = 3;
@@ -479,11 +470,7 @@ function guiColorWheelSetSize( guiColorWheelSize) {
  guiColorWheelFullGB.color =  "#101050";
  guiColorWheelFullGB.width = "0px";//"160px"
  guiColorWheelFullGB.height = "0px";//"160px";  
- /*guiColorWheelFullGB.paddingTop = guiColorWheelSize*1.2;
- guiColorWheelFullGB.paddingBottom = -guiColorWheelSize*2.2;
- guiColorWheelFullGB.paddingLeft = 0;
- guiColorWheelFullGB.paddingRight = -guiColorWheelSize;  
-*/
+
  guiColorWheelFullGB.paddingTop = guiColorWheelSize*2.4;
  guiColorWheelFullGB.paddingBottom = -guiColorWheelSize*3.4;
  guiColorWheelFullGB.paddingLeft = 0;
@@ -495,7 +482,7 @@ function guiColorWheelSetSize( guiColorWheelSize) {
 
 }
 
-
+*/
 
 function initGui() {
 
@@ -510,7 +497,7 @@ function initGui() {
     */
 
     
-
+/*
 
     guiColorWheelMid = new BABYLON.GUI.Ellipse();    
     guiColorWheelSection = new BABYLON.GUI.Ellipse();    
@@ -535,7 +522,7 @@ guiColorWheelFullGB = new BABYLON.GUI.Ellipse();
 
 
   guiColorWheelSetSize( 100);
-   
+   */
 
     
 
@@ -587,9 +574,6 @@ guiColorWheelFullGB = new BABYLON.GUI.Ellipse();
 
  
 
-  
-
-var buttonColorWheelSize = "1px";
 
 
 
@@ -704,9 +688,9 @@ function guiPointerUp(pickResult){
                                    
                            
                
-                                       console.log('Pointer up ');
+                                      // console.log('Pointer up ');
                                      
-                                       if(colorWheelActive){
+                                   /*    if(colorWheelActive){
                                            
                                
                                            
@@ -716,7 +700,7 @@ function guiPointerUp(pickResult){
                                            
                                            scene.activeCamera.attachControl(canvas);
                                         
-                                       }
+                                       }*/
                
                                    
                                        if(guiSettingsActive){
@@ -736,7 +720,7 @@ function guiPointerUp(pickResult){
 
 
                               //When pointer down event is raised
-    
+    /*
 function guiPointerDownd(pickResult){
                                 
                                         if (pickResult.hit) {
@@ -775,15 +759,7 @@ function guiPointerDownd(pickResult){
                                                 advancedTextureColorSelect.addControl(guiColorWheelSectionB);                                         
                                                 guiColorWheelSectionB.linkWithMesh(pickResult.pickedMesh);
     
-                                                /*
-                                                advancedTextureColorSelect.addControl(guiColorWheelSectionRG);                                         
-                                                guiColorWheelSectionRG.linkWithMesh(pickResult.pickedMesh);
-    
-                                                advancedTextureColorSelect.addControl(guiColorWheelSectionRB);                                         
-                                                guiColorWheelSectionRB.linkWithMesh(pickResult.pickedMesh);
-    
-                                                advancedTextureColorSelect.addControl(guiColorWheelSectionGB);                                         
-                                                guiColorWheelSectionGB.linkWithMesh(pickResult.pickedMesh);*/
+
                                                                     
                                           
                                             }else{    
@@ -862,7 +838,7 @@ function guiPointerDownd(pickResult){
 
                                     }
 
-
+*/
 function guiFpsFunction() {
     
         //textFps.text = fpsCounter;
@@ -1504,7 +1480,7 @@ function guiInitSettingsMenu(){
     });
 
 
-    guiSettingsRenderHighImage = new BABYLON.GUI.Image("guiSettingsRenderHighImage", "http://rawgit.com/AlexanderssonErik/web/master/c.svg");
+    guiSettingsRenderHighImage = new BABYLON.GUI.Image("guiSettingsRenderHighImage", "http://rawgit.com/AlexanderssonErik/web/master/compass.svg");
     guiSettingsRenderHigh = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsRenderHigh, guiSettingsRenderHighImage, 3, 2);
    
@@ -1524,7 +1500,7 @@ function guiInitSettingsMenu(){
         guiSettingsRenderHigh.alpha = guiSettingsClickTransparancy;
     });
 
-    guiSettingsCompassImage = new BABYLON.GUI.Image("guiSettingsCompassImage", "http://rawgit.com/AlexanderssonErik/web/master/b.svg");
+    guiSettingsCompassImage = new BABYLON.GUI.Image("guiSettingsCompassImage", "http://rawgit.com/AlexanderssonErik/web/master/compass.svg");
     guiSettingsCompass = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsCompass, guiSettingsCompassImage, 0, 3);
    
