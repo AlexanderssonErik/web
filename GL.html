@@ -13,6 +13,10 @@
     <script src="game.js"></script>
     <script src="tangram.js"></script>
     <script src="guidedBuild.js"></script>
+    <script src="findShape.js"></script>    
+    <script src="memo.js"></script>
+    <script src="math.js"></script>
+
 
 
     <style>
@@ -125,12 +129,89 @@ html,body, can {
       //  blocksOffset = 100;// (0/100)
       //  blocksOngoingOffset = 0;
 
-      blocksCount = 1;
+      blocksCount = 0;
 
-      blocksX[0] = 0;
+      blocksX[0] = 8;
         blocksY[0] = 0;
-        blocksZ[0] = 2;
-        blocksRT[0] = 0x00;
+        blocksZ[0] = 0;
+        blocksRT[0] = 0x04;
+
+        blocksX[1] = 2;
+        blocksY[1] = 0;
+        blocksZ[1] = 4;
+        blocksRT[1] = 0x04;
+
+
+        blocksX[2] = 5;
+        blocksY[2] = 0;
+        blocksZ[2] = 3;
+        blocksRT[2] = 0x04;
+
+        blocksX[3] = 5;
+        blocksY[3] = 0;
+        blocksZ[3] = 5;
+        blocksRT[3] = 0x04;
+
+
+ blocksX[0] = 2;
+ blocksY[0] = 0;
+ blocksZ[0] = 5;
+ blocksRT[0] = 5;
+ 
+ blocksX[1] = 2;
+ blocksY[1] = 0;
+ blocksZ[1] = 1;
+ blocksRT[1] = 7;
+
+ blocksX[2] = 6;
+ blocksY[2] = 0;
+ blocksZ[2] = 2;
+ blocksRT[2] = 2;
+ 
+
+
+  //console.log("(-1)%4: " + ((-1)%4));
+
+//---------------------
+
+/* 
+blocksX[0] = 1;
+blocksY[0] = 0;
+blocksZ[0] = 4;
+blocksRT[0] = 5;
+
+blocksX[1] = 2;
+blocksY[1] = 0;
+blocksZ[1] = 1;
+blocksRT[1] = 7;
+
+blocksX[2] = 4;
+blocksY[2] = 1;
+blocksZ[2] = 3;
+blocksRT[2] = 2;
+
+
+blocksX[3] = 3;
+blocksY[3] = 2;
+blocksZ[3] = 1;
+blocksRT[3] = 3;
+
+blocksX[4] = 4;
+blocksY[4] = 2;
+blocksZ[4] = 3;
+blocksRT[4] = 5;
+
+blocksX[5] = 6;
+blocksY[5] = 3;
+blocksZ[5] = 2;
+blocksRT[5] = 7;
+
+
+
+blocksCount = 6;
+*/
+//------------
+        
 /*
         blocksX[1] = 0;
         blocksY[1] = 0;
@@ -161,7 +242,7 @@ html,body, can {
             blocksUseAlpha[i] = 0;
          }
   
-
+  
 
    /*    blocksX[100] = 3;
       blocksY[100] = 0;
@@ -213,7 +294,7 @@ html,body, can {
         scene.clearColor  = new BABYLON.Color3(0.7, 0.8, 0.9);
 
         //Color Wheel
-        var colorWheelActive = 0;
+        //var colorWheelActive = 0;
         var colorWheelMeshI;
         var colorWheelMeshType;
         
@@ -238,10 +319,158 @@ guiInitGameSelectMenu();
 guiAnimateInit();
 guiColorWheelInit();
 
+
 gameInit();
 //!!1initTangram(scene, pitchY);
 
-      
+         //------------------------------
+      //------------
+    /*  let mathPlane1 = BABYLON.Mesh.CreatePlane("plane", 15);
+   // plane.parent = sphere4;
+   mathPlane1.position.y = 3;
+   mathPlane1.position.x = 1.5;
+   mathPlane1.position.z = 2;
+   mathPlane1.rotation.x = Math.PI/8;
+
+      let mathAdvancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(mathPlane1);
+
+
+      let mathtextblock1 = new BABYLON.GUI.TextBlock();
+      mathtextblock1.height = "150px";
+      mathtextblock1.fontSize = 100;
+      mathtextblock1.text = "1";
+      mathtextblock1.color= "#A020A0";
+
+    mathAdvancedTexture.addControl(mathtextblock1);  
+
+    //------------
+
+    let mathPlane2 = BABYLON.Mesh.CreatePlane("plane", 15);
+   // plane.parent = sphere4;
+   mathPlane2.position.y = 3;
+   mathPlane2.position.z = 2;
+   mathPlane2.position.x = 3;
+   mathPlane2.rotation.x = Math.PI/8;
+
+      //var mathAdvancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(mathPlane2);
+      mathAdvancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(mathPlane2);
+
+
+      let mathtextblock2 = new BABYLON.GUI.TextBlock();
+      mathtextblock2.height = "150px";
+      mathtextblock2.fontSize = 100;
+      mathtextblock2.text = "+";
+      mathtextblock2.color = "#801080";
+
+    mathAdvancedTexture.addControl(mathtextblock2);  
+
+    //--------------
+
+    let mathPlane3 = BABYLON.Mesh.CreatePlane("plane", 15);
+   // plane.parent = sphere4;
+   mathPlane3.position.y = 3;
+   mathPlane3.position.x = 4.5;
+   mathPlane3.position.z = 2;
+   mathPlane3.rotation.x = Math.PI/8;
+
+      //var mathAdvancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(mathPlane2);
+      mathAdvancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(mathPlane3);
+
+
+      let mathtextblock3 = new BABYLON.GUI.TextBlock();
+      mathtextblock3.height = "150px";
+      mathtextblock3.fontSize = 100;
+      mathtextblock3.text = "2";
+      mathtextblock3.color = "#801080";
+
+    mathAdvancedTexture.addControl(mathtextblock3);  
+
+        //--------------
+
+        let mathPlane4 = BABYLON.Mesh.CreatePlane("plane", 15);
+   // plane.parent = sphere4;
+   mathPlane4.position.y = 3;
+   mathPlane4.position.x = 6;
+   mathPlane4.position.z = 2;
+   mathPlane4.rotation.x = Math.PI/8;
+
+      //var mathAdvancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(mathPlane2);
+      mathAdvancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(mathPlane4);
+
+
+      let mathtextblock4 = new BABYLON.GUI.TextBlock();
+      mathtextblock4.height = "150px";
+      mathtextblock4.fontSize = 100;
+      mathtextblock4.text = "=";
+      mathtextblock4.color ="#801080";
+
+    mathAdvancedTexture.addControl(mathtextblock4);  
+
+            //--------------
+
+            let mathPlane5 = BABYLON.Mesh.CreatePlane("plane", 15);
+   // plane.parent = sphere4;
+   mathPlane5.position.y = 3;
+   mathPlane5.position.x = 7.5;
+   mathPlane5.position.z = 2;
+   mathPlane5.rotation.x = Math.PI/8;
+
+      //var mathAdvancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(mathPlane2);
+      mathAdvancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(mathPlane5);
+
+
+      let mathtextblock5 = new BABYLON.GUI.TextBlock();
+      mathtextblock5.height = "150px";
+      mathtextblock5.fontSize = 100;
+      mathtextblock5.text = "¼½3";
+     // mathtextblock5.color = "green";
+     mathtextblock5.color = "#801080";
+    mathAdvancedTexture.addControl(mathtextblock5);  */
+
+         //-----------
+
+/*
+ levelBlockX[4][3][0] = 6;
+      levelBlockY[4][3][0] = 0;
+      levelBlockZ[4][3][0] = 5;
+      levelBlockRT[4][3][0] = 3;
+      levelBlockLED2x2[4][3][0] = 0;
+      levelBlockLED2x4[4][3][0] = 0;
+      levelBlockX[4][3][1] = 6;
+      levelBlockY[4][3][1] = 1;
+      levelBlockZ[4][3][1] = 4;
+      levelBlockRT[4][3][1] = 3;
+      levelBlockLED2x2[4][3][1] = 0;
+      levelBlockLED2x4[4][3][1] = 0;
+      levelBlockX[4][3][2] = 4;
+      levelBlockY[4][3][2] = 2;
+      levelBlockZ[4][3][2] = 4;
+      levelBlockRT[4][3][2] = 4;
+      levelBlockLED2x2[4][3][2] = 0;
+      levelBlockLED2x4[4][3][2] = 0;
+      levelBlockX[4][3][3] = 7;
+      levelBlockY[4][3][3] = 2;
+      levelBlockZ[4][3][3] = 5;
+      levelBlockRT[4][3][3] = 6;
+      levelBlockLED2x2[4][3][3] = 0;
+      levelBlockLED2x4[4][3][3] = 0;
+      levelBlockCount[4][3] = 4;
+
+let j1 = 4;
+let j2 = 3;
+for(let j3 = 0; j3 < levelBlockCount[j1][j2]; j3++ ){
+            blocksX[j3] = levelBlockX[j1][j2][j3];
+      blocksY[j3] = levelBlockY[j1][j2][j3];
+      blocksZ[j3] = levelBlockZ[j1][j2][j3];
+      blocksRT[j3] = levelBlockRT[j1][j2][j3];
+      blockLED2x2[j3] = levelBlockLED2x2[j1][j2][j3];
+      blockLED2x4[j3] = levelBlockLED2x4[j1][j2][j3];
+  
+
+}
+
+blocksCount = levelBlockCount[j1][j2];*/
+//------------------------------
 
 
 var advancedTextureBattery = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
@@ -271,7 +500,7 @@ var advancedTextureBattery = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreen
 
 
 
-            console.log('EAEA sendCommand() ');
+            //console.log('EAEA sendCommand() ');
  //let cmd = new Uint8Array([0x80, 0x11, 0x11, 0x81]);
 
  //--
@@ -283,7 +512,7 @@ cmd_tmp[0] = 0x80;
 cmd_tmp[1] = baseLED[0];
 cmd_tmp[2] = baseLED[1];
 
-console.log('EAEA sendCommand() 1 ');
+//console.log('EAEA sendCommand() 1 ');
 
 
 let cmd_pos = 3;
@@ -307,20 +536,22 @@ let cmd_pos = 3;
             cmd_tmp[cmd_pos] = 0x81;
             cmd_pos++;
             //console.log('EAEA sendCommand() 4 ');
-            
+/*     DEBUG       
 let outData = [];
 
-for(var z = 0; z < cmd_pos; z++){
+for(let z = 0; z < cmd_pos; z++){
    // console.log('EAEA sendCommand() 5 ');
    // console.log('EAEA cmd_tmp[z].toString(16) ' + cmd_tmp[z].toString(16));
-
+    //console.log("z: " + z);
     outData[z] =   cmd_tmp[z].toString(16);
+    console.log("outData[z]: " + z + ":" + outData[z]);
+    
 
-}
+}*/
 
 //console.log('EAEA sendCommand() 6 ');
 
-console.log('EAEA outData = ' + outData);
+//console.log('EAEA outData = ' + outData);
 
 /*if(blocksCount == 1){
 
@@ -338,9 +569,9 @@ for(let i = 0; i < cmd_pos; i++ ){
 
               //busy signaling can't keep up, remove
             busy = true;
-            console.log('EAEA send outData ');
+           // console.log('EAEA send outData ');
             return gattCharacteristic.writeValue(cmd).then(() => {
-                console.log('EAEA busy = false ');
+              //  console.log('EAEA busy = false ');
                      busy = false;
             });
     }
@@ -419,14 +650,17 @@ for(let i = 0; i < cmd_pos; i++ ){
                 //console.log('EAEA characteristicvaluechanged = ' + event.target.value + ' [' + event.target.value.byteLength +']');
 
                 //need to keep old in data
-                let inData = [];
+               
+               //DEBUG??
+              /*let inData = [];
                 for(let z = 0; z <event.target.value.byteLength; z++ ){
                     inData[z] = event.target.value.getUint8(z).toString(16);
+                    console.log('inData[z] ' + inData[z] );
                     //inData += ' ';
 
-                }
-                console.log('EAEA inData = ' + inData);
-                //console.log('EAEA 1 = ' + event.target.value.getUint8(1).toString(16) );
+                }*/
+               // console.log('EAEA inData = ' + inData);
+               // console.log('EAEA 1 = ' + event.target.value.getUint8(1).toString(16) );
                 //console.log('EAEA 2 = ' + event.target.value.getUint8(2).toString(16) );
                 //console.log('EAEA 3 = ' + event.target.value.getUint8(3).toString(16) );
 
@@ -616,7 +850,7 @@ for(let i = 0; i < cmd_pos; i++ ){
                 
 
                 blocksCount = blocksOngoingCount;
-                console.log('EAEA blocksCount: ' + blocksCount);
+                //console.log('EAEA blocksCount: ' + blocksCount);
                 let tmp = blocksOffset;
                 blocksOffset = blocksOngoingOffset;
                 blocksOngoingOffset = tmp;
@@ -710,21 +944,31 @@ console.log(tmpString);
     buttonPrintBlockConfig.background = "green";
     buttonPrintBlockConfig.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
     buttonPrintBlockConfig.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;   
+
+    let astage = 0;
+    let alevel = 4;
+
     buttonPrintBlockConfig.onPointerUpObservable.add(function() {
 
         
-       let tmpString = "let gameX = [";
-       consolePrintBlocks(tmpString, blocksX);
-       tmpString = "let gameY = [";
-       consolePrintBlocks(tmpString, blocksY);
-       tmpString = "let gameZ = [";
-       consolePrintBlocks(tmpString, blocksZ);
-       tmpString = "let gameRT = [";
-       consolePrintBlocks(tmpString, blocksRT);
-       tmpString = "let gameLEDs2x2 = [";
-       consolePrintBlocks(tmpString, blockLED2x2);
-       tmpString = "let gameLEDs2x4 = [";
-       consolePrintBlocks(tmpString, blockLED2x4);
+
+
+
+    for(let a = blocksOffset; a < blocksOffset +blocksCount; a++){
+        console.log("levelBlockX[" + alevel +"][" + astage +"]["  + (a - blocksOffset) + "] = " + blocksX[a] + ";");
+        console.log("levelBlockY[" + alevel +"][" + astage +"][" + (a - blocksOffset) + "] = " + blocksY[a] + ";");
+        console.log("levelBlockZ[" + alevel +"][" + astage +"][" + (a - blocksOffset) + "] = " + blocksZ[a] + ";");
+        console.log("levelBlockRT[" + alevel +"][" + astage +"][" + (a - blocksOffset) + "] = " + blocksRT[a] + ";");
+
+        console.log("levelBlockLED2x2[" + alevel +"][" + astage +"][" + (a - blocksOffset) + "] = " + blockLED2x2[a] + ";");
+        console.log("levelBlockLED2x4[" + alevel +"][" + astage +"][" + (a - blocksOffset) + "] = " + blockLED2x4[a] + ";");
+
+    }
+
+    console.log("levelBlockCount[" + alevel +"][" + astage +"] = " + blocksCount + ";");
+
+
+    astage++;
 
 
 
@@ -756,17 +1000,21 @@ console.log(tmpString);
    // let snapCameraLastAlpha = 0;
     scene.onPointerDown = function (evt, pickResult) {
        // guiPointerDownd(pickResult);
+
+       if(biloGame != 7){
        guiColorWheelPointerDownd(pickResult);
         pointerIsDown = true;
+    }
     };
 
                 //When pointer down event is raised
                 scene.onPointerUp = function (evt, pickResult) {
-                
+                    if(biloGame != 7){
                 guiPointerUp(pickResult);
                 guiColorWheelPointerUp(pickResult);
                 guiLevelPointerUp();
                 pointerIsDown = false;
+                    }
                 
                     };
 
@@ -781,9 +1029,21 @@ console.log(tmpString);
                 if(biloGame == 1){
                     initGuidedBuild();
                 }else if(biloGame == 2){
+                    
                     initTangram(scene, pitchY);
+                   
+                }else if(biloGame == 3){
+                    memoInit();
+                
+                }else if(biloGame == 4){
+                    renderClear();
+                    findShapeInit();
+
+                }else if(biloGame == 7){
+                    mathInit();
 
                 }
+
 
                 lastBiloGame = biloGame;
             }
@@ -791,7 +1051,7 @@ console.log(tmpString);
 
 
             if(lastBiloLevel != biloLevel){
-                console.log("biloLevel" + biloLevel)
+                //console.log("biloLevel" + biloLevel)
                 if(biloGame == 1 && biloLevel !=0){
                     guiAnimateStopWinningAndNext();
                     //guiStopWinningAndNext();
@@ -805,6 +1065,26 @@ console.log(tmpString);
                     biloAwaitNextLevel = true;
                     biloWinning = false;
                     tangramCreateGame(biloLevel);
+                }else if(biloGame == 3 && biloLevel !=0){
+                    guiAnimateStopWinningAndNext();
+                    //guiStopWinningAndNext();
+                    biloAwaitNextLevel = true;
+                    biloWinning = false;
+                    memoCreateGame(biloLevel);
+                                                      
+                }else if(biloGame == 4 && biloLevel !=0){
+                    guiAnimateStopWinningAndNext();
+                    //guiStopWinningAndNext();
+                    biloAwaitNextLevel = true;
+                    biloWinning = false;
+                    findShapeCreateGame(biloLevel);
+                   
+                }else if(biloGame == 7 && biloLevel !=0){
+                    guiAnimateStopWinningAndNext();
+                    //guiStopWinningAndNext();
+                    biloAwaitNextLevel = true;
+                    biloWinning = false;
+                    mathCreateGame(biloLevel);
                    
                 }else if(biloLevel == 0){
                     guiAnimateStopWinningAndNext();
@@ -817,8 +1097,40 @@ console.log(tmpString);
 
             if(biloWinning && biloAwaitNextLevel){
               //console.log("biloWinning!!!!!!!!");
-              console.log("biloWinning!!!!!!!!");
-                if(biloGame == 2){
+             // console.log("biloWinning!!!!!!!!");
+                if(biloGame == 1){
+                   // console.log("xx");
+                    guiWinningAndNext(biloNumberWin[biloLevel-1]);
+                    biloNumberWin[biloLevel-1]++;
+                    biloWinning = 0;
+
+                }else if(biloGame == 2){
+                    
+                    //animate and show button
+                    //guiWinningAndNext(biloGame, biloLevel);
+                    guiWinningAndNext(biloNumberWin[biloLevel-1]);
+                    biloNumberWin[biloLevel-1]++;
+                    biloWinning = 0;
+
+                }else if(biloGame == 3){
+                    
+                    //animate and show button
+                    //guiWinningAndNext(biloGame, biloLevel);
+                    //console.log("bilowinning!!!!!!!!");
+                    guiWinningAndNext(biloNumberWin[biloLevel-1]);
+                    biloNumberWin[biloLevel-1]++;
+                    biloWinning = 0;
+                  
+                  
+                }else if(biloGame == 4){
+                    
+                    //animate and show button
+                    //guiWinningAndNext(biloGame, biloLevel);
+                    guiWinningAndNext(biloNumberWin[biloLevel-1]);
+                    biloNumberWin[biloLevel-1]++;
+                    biloWinning = 0;
+                  
+                }else if(biloGame == 7){
                     
                     //animate and show button
                     //guiWinningAndNext(biloGame, biloLevel);
@@ -834,12 +1146,32 @@ console.log(tmpString);
 
             if(biloNext){
                 console.log("biloNext!!!!!!!!");
-                if(biloGame == 2){
+                if(biloGame == 1){
+                    biloAwaitNextLevel = true;
+                    guidedBuildCreateGame(biloLevel);
+
+                }else if(biloGame == 2){
                     
                     biloAwaitNextLevel = true;
                     tangramCreateGame(biloLevel);
+
+                }else if(biloGame == 3){
+                    
+                    biloAwaitNextLevel = true;
+                    memoCreateGame(biloLevel);
                    
-                }      
+                   
+                }else if(biloGame == 4){
+                    
+                    biloAwaitNextLevel = true;
+                    findShapeCreateGame(biloLevel);
+                   
+                }else if(biloGame == 7){
+                    
+                    biloAwaitNextLevel = true;
+                    mathCreateGame(biloLevel);
+                   
+                }        
 
                 biloNext = false;
 
@@ -880,15 +1212,16 @@ console.log(tmpString);
     
                 
             
-
+           // blocksRender = 1;
 
             if(blocksRender){
-              console.log("----------------");
+            
+                //console.log("BB");
                blocksRender = 0;
 
 
                //FIX TRANSPARENT COLOR PROBLEM render??
-               blocksCount = 2;
+       /*        blocksCount = 2;
 
       blocksX[0] = 0;
         blocksY[0] = 0;
@@ -900,7 +1233,7 @@ console.log(tmpString);
         blocksY[1] = 1;
         blocksZ[1] = 2;
         blocksRT[1] = 0x00;
-        blocksUseAlpha[1] = 0; 
+        blocksUseAlpha[1] = 0; */
 
       /*  blocksX[1] = 0;
         blocksY[1] = 0;
@@ -932,13 +1265,27 @@ console.log(tmpString);
                // console.log("blocksCount A : " +blocksCount);
                 if(biloGame == 1 && biloLevel != 0){
                 //renderGuidedBuild(blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blockLED2x4, blocksUseAlpha, blocksOffset );
-                guidedBuildRender(blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blockLED2x4, blocksUseAlpha, blocksOffset );
+                    guidedBuildRender(blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blockLED2x4, blocksUseAlpha, blocksOffset );
+                }else if(biloGame == 3 && biloLevel != 0){
+                  
+                    memoRender(blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blockLED2x4, blocksUseAlpha, blocksOffset);
+                }else if(biloGame == 4 && biloLevel != 0){
+                  
+                    findShapeRender(blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blockLED2x4, blocksOffset);
+                }else if(biloGame == 7 && biloLevel != 0){
+
+                    mathRender(blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blockLED2x4, blocksOffset);
+
                 }
                // console.log("A0:" + blocksCount);
               // console.log("blocksCount B : " +blocksCount);
-                shapesAllocateBlocks(blocksCount);
+                
                // console.log("A:" + blocksCount);
-                render(blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blockLED2x4, blocksUseAlpha, blocksOffset, blocksCount, blocksCountFromWorld);
+
+               if(biloGame == 0 || biloGame == 1  || biloGame == 2 || biloGame == 3 || biloGame == 7){
+                shapesAllocateBlocks(blocksCount);
+                render(blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blockLED2x4, blocksUseAlpha, blocksOffset, blocksCount);
+               }
                 //console.log("A1:" + blocksCount);
 
                 if(biloGame == 2 && biloLevel != 0){

@@ -10,6 +10,8 @@ let guiColorWheelSectionGB;
 let guiColorWheelSectionRGB;
 
 
+let colorWheelActive = false;
+
 
 let guiColorWheelFull;
 let guiColorWheelFullR;
@@ -445,8 +447,10 @@ function guiColorWheelPointerUp(pickResult){
                                                    advancedTextureColorSelect.dispose();
                                                
                                   
-                                               
+                                                   
                                                scene.activeCamera.attachControl(canvas);
+
+                                               colorWheelActive = false;
                                             
                                            }
                    
@@ -455,11 +459,28 @@ function guiColorWheelPointerUp(pickResult){
     
     }
 
+
+
     function guiColorWheelPointerDownd(pickResult){
+
+        if(colorWheelActive){
+                                               
+                                   
+                                               
+            advancedTextureColorSelect.dispose();
+        
+
+        
+        scene.activeCamera.attachControl(canvas);
+
+        colorWheelActive = false;
+     
+    }
+
         
                 if (pickResult.hit) {
         
-                    colorWheelActive = 1;
+                    colorWheelActive = true;
                   //  console.log('Pointer down x:' + pickResult.pickedPoint.x);
         
                                         

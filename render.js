@@ -1,4 +1,41 @@
-function render(blocksX, blocksY, blocksZ, blocksRT, blocksLEDs2x2, blocksLEDs2x4, blocksUseAlpha, blocksOffset, blocksCount, blocksCountFromWorld){
+
+function renderClear(){
+
+    for(var i = 0; i <100; i++){
+        if(renderBlocksPart1[i] != null){
+          
+            renderBlocksPart1[i].setEnabled(0); 
+       
+            renderBlocksPart2[i].setEnabled(0); 
+        
+       
+            renderBlocksPart3[i].setEnabled(0); 
+        
+       
+            renderBlocksPart4[i].setEnabled(0); 
+        
+
+        renderBlocksLine1A[i].setEnabled(0); 
+renderBlocksLine2A[i].setEnabled(0); 
+renderBlocksLine3A[i].setEnabled(0); 
+renderBlocksLine4A[i].setEnabled(0); 
+
+renderBlocksLine1B[i].setEnabled(0); 
+renderBlocksLine2B[i].setEnabled(0); 
+renderBlocksLine3B[i].setEnabled(0); 
+renderBlocksLine4B[i].setEnabled(0); 
+
+renderBlocksBigLine[i].setEnabled(0); 
+renderBlocksSmallLine[i].setEnabled(0); 
+    }
+
+    }
+
+}
+function render(blocksX, blocksY, blocksZ, blocksRT, blocksLEDs2x2, blocksLEDs2x4, blocksUseAlpha, blocksOffset, blocksCount){
+
+   // console.log("render");
+ //   console.log(blocksLEDs2x2[0]);
 
     for(var i = 0; i <100; i++){
         if(renderBlocksPart1[i] != null){
@@ -149,13 +186,15 @@ renderBlocksSmallLine[i].setEnabled(0);
                              //   console.log('(blocksLEDs2x2[i+blocksOffset] & 0x38) >> 3: ' +((blocksLEDs2x2[i+blocksOffset] & 0x38) >> 3));
                              //   console.log('i+blocksOffset: ' + (i+blocksOffset));
                                 
-                                    
+                            // console.log('i+blocksOffset = ' + (i+blocksOffset));
+                            // console.log('blocksLEDs2x2[i+blocksOffset] = ' + (blocksLEDs2x2[i+blocksOffset]));
+                            // console.log('8*blocksUseAlpha[i+blocksOffset] = ' + (8*blocksUseAlpha[i+blocksOffset]));
 
                                     renderBlocksPart2[i].material = materials[(blocksLEDs2x2[i+blocksOffset] & 0x07) + 8*blocksUseAlpha[i+blocksOffset]];
                                     renderBlocksPart1[i].material = materials[((blocksLEDs2x2[i+blocksOffset] & 0x38) >> 3) + 8*blocksUseAlpha[i+blocksOffset]];
                                     
-                                   // console.log('renderBlocksPart1[i].material = ' +renderBlocksPart1[i].material);
-                               // console.log('renderBlocksPart2[i].material = ' +renderBlocksPart2[i].material);
+                                  //  console.log('renderBlocksPart1[i].material = ' +renderBlocksPart1[i].material);
+                              //  console.log('renderBlocksPart2[i].material = ' +renderBlocksPart2[i].material);
         
                               //!!  }
                             

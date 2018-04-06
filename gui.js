@@ -31,6 +31,9 @@ let guiGameSelectFreeImage;
 let guiGameSelectProgram;
 let guiGameSelectProgramImage;
 
+let guiGameSelectMath;
+let guiGameSelectMathImage;
+
 //MATH
 
 //--
@@ -1022,7 +1025,7 @@ function guiInitSettingsMenu(){
 
 
 
-    var guiSettingsSizeImage = new BABYLON.GUI.Image("Start", "http://rawgit.com/AlexanderssonErik/web/master/scale icon updated main.png");
+    var guiSettingsSizeImage = new BABYLON.GUI.Image("guiSettingsSizeImage", "./icon/size.svg");
     //guiSettingsStartImage.width = 0.2;
     //guiSettingsStartImage.height = "40px";
     guiSettingsSizeChange(guiSettingsSizeImage, guiSettingsSizeM, guiSettingsPaddingBottom, guiSettingsPaddingBottom);
@@ -1138,6 +1141,9 @@ function guiInitSettingsMenu(){
         guiSettingsSizeChange(guiGameSelectProgram, guiSettingsSizeM, guiSettingsSizeM, guiSettingsSizeM);
         guiSettingsSizeChange(guiGameSelectProgramImage, guiSettingsSizeM, guiSettingsSizeM, guiSettingsSizeM);
 
+        guiSettingsSizeChange(guiGameSelectMath, guiSettingsSizeM, guiSettingsSizeM*2, guiSettingsSizeM);
+        guiSettingsSizeChange(guiGameSelectMathImage, guiSettingsSizeM, guiSettingsSizeM*2, guiSettingsSizeM);
+
         //--
 
         guiLevelButtonSize(guiSettingsSizeM);
@@ -1152,7 +1158,7 @@ function guiInitSettingsMenu(){
 
     
 
-    var guiSettingsStartImage = new BABYLON.GUI.Image("Start", "http://rawgit.com/AlexanderssonErik/web/master/settings largex.png");
+    var guiSettingsStartImage = new BABYLON.GUI.Image("Start", "./icon/settings.svg");
     guiSettingsStart = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsStart, guiSettingsStartImage, 0, 0);
 
@@ -1203,7 +1209,7 @@ function guiInitSettingsMenu(){
 
 
 
-    guiSettingsHideImage = new BABYLON.GUI.Image("guiSettingsSnapImage", "http://rawgit.com/AlexanderssonErik/web/master/hide block updated.png");
+    guiSettingsHideImage = new BABYLON.GUI.Image("guiSettingsHideImage", "./icon/hide_blocks.svg");
     guiSettingsHide = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsHide, guiSettingsHideImage, 1, 0);
   
@@ -1224,7 +1230,7 @@ function guiInitSettingsMenu(){
        // }
     });
 
-    guiSettingsZoomImage = new BABYLON.GUI.Image("guiSettingsSnapImage", "http://rawgit.com/AlexanderssonErik/web/master/ic_zoom_out_white_48px.svg");
+    guiSettingsZoomImage = new BABYLON.GUI.Image("guiSettingsSnapImage", "./icon/zoom_out.svg");
     guiSettingsZoom = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsZoom, guiSettingsZoomImage, 2, 0);
   
@@ -1259,7 +1265,7 @@ function guiInitSettingsMenu(){
     
 
 
-    guiSettingsSnapImage = new BABYLON.GUI.Image("guiSettingsSnapImage", "http://rawgit.com/AlexanderssonErik/web/master/ic_3d_rotation_white_48px.svg");
+    guiSettingsSnapImage = new BABYLON.GUI.Image("guiSettingsSnapImage", "./icon/settings_snap.svg");
     guiSettingsSnap = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsSnap, guiSettingsSnapImage, 0, 1);
   
@@ -1291,7 +1297,7 @@ function guiInitSettingsMenu(){
     });
 
 
-    guiSettingsSnapOffImage = new BABYLON.GUI.Image("guiSettingsSnapOffImage", "http://rawgit.com/AlexanderssonErik/web/master/rotate no arrows.png");
+    guiSettingsSnapOffImage = new BABYLON.GUI.Image("guiSettingsSnapOffImage", "./icon/settings_snap_off.svg");
     guiSettingsSnapOff = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsSnapOff, guiSettingsSnapOffImage, 1, 1);
 
@@ -1319,7 +1325,7 @@ function guiInitSettingsMenu(){
        // }
     });
 
-    guiSettingsSnap4DiagonalImage = new BABYLON.GUI.Image("guiSettingsSnap4DiagonalImage", "http://rawgit.com/AlexanderssonErik/web/master/rotate icon twisited.png");
+    guiSettingsSnap4DiagonalImage = new BABYLON.GUI.Image("guiSettingsSnap4DiagonalImage", "./icon/settings_snap_4_diagonal.svg");
     guiSettingsSnap4Diagonal = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsSnap4Diagonal, guiSettingsSnap4DiagonalImage, 2, 1);
   
@@ -1348,7 +1354,7 @@ function guiInitSettingsMenu(){
     });
 
 
-    guiSettingsSnap4HorizontalImage = new BABYLON.GUI.Image("guiSettingsSnap4HorizontalImage", "http://rawgit.com/AlexanderssonErik/web/master/rotate  arrows.png");
+    guiSettingsSnap4HorizontalImage = new BABYLON.GUI.Image("guiSettingsSnap4HorizontalImage", "./icon/settings_snap_4_horizontal.svg");
     guiSettingsSnap4Horizontal = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsSnap4Horizontal, guiSettingsSnap4HorizontalImage, 3, 1);
   
@@ -1378,7 +1384,7 @@ function guiInitSettingsMenu(){
     });
 
 
-    guiSettingsSnap8Image = new BABYLON.GUI.Image("guiSettingsSnap8Image", "http://rawgit.com/AlexanderssonErik/web/master/ic_rotate_90_degrees_ccw_white_48px.svg");
+    guiSettingsSnap8Image = new BABYLON.GUI.Image("guiSettingsSnap8Image", "./icon/settings_snap_8.svg");
     guiSettingsSnap8 = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsSnap8, guiSettingsSnap8Image, 4, 1);
    
@@ -1407,7 +1413,7 @@ function guiInitSettingsMenu(){
     });
     
 
-    guiSettingsRenderImage = new BABYLON.GUI.Image("guiSettingsRenderImage", "http://rawgit.com/AlexanderssonErik/web/master/ic_settings_system_daydream_white_48px.svg");
+    guiSettingsRenderImage = new BABYLON.GUI.Image("guiSettingsRenderImage", "./icon/settings_render.svg");
     guiSettingsRender = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsRender, guiSettingsRenderImage, 0, 2);
    
@@ -1436,7 +1442,7 @@ function guiInitSettingsMenu(){
     });
 
 
-    guiSettingsRenderLowImage = new BABYLON.GUI.Image("guiSettingsRenderLowImage", "http://rawgit.com/AlexanderssonErik/web/master/ic_high_quality_white_48px.svg");
+    guiSettingsRenderLowImage = new BABYLON.GUI.Image("guiSettingsRenderLowImage", "./icon/settings_render_low.svg");
     guiSettingsRenderLow = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsRenderLow, guiSettingsRenderLowImage, 1, 2);
 
@@ -1457,7 +1463,7 @@ function guiInitSettingsMenu(){
     });
 
 
-    guiSettingsRenderMidImage = new BABYLON.GUI.Image("guiSettingsRenderMidImage", "http://rawgit.com/AlexanderssonErik/web/master/ic_high_quality_white_48px.svg");
+    guiSettingsRenderMidImage = new BABYLON.GUI.Image("guiSettingsRenderMidImage", "./icon/settings_render_mid.svg");
     guiSettingsRenderMid = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsRenderMid, guiSettingsRenderMidImage, 2, 2);
     //guiSettingsStartImage.width = 0.2;
@@ -1480,7 +1486,7 @@ function guiInitSettingsMenu(){
     });
 
 
-    guiSettingsRenderHighImage = new BABYLON.GUI.Image("guiSettingsRenderHighImage", "http://rawgit.com/AlexanderssonErik/web/master/compass.svg");
+    guiSettingsRenderHighImage = new BABYLON.GUI.Image("guiSettingsRenderHighImage", "./icon/settings_render_high.svg");
     guiSettingsRenderHigh = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsRenderHigh, guiSettingsRenderHighImage, 3, 2);
    
@@ -1500,7 +1506,7 @@ function guiInitSettingsMenu(){
         guiSettingsRenderHigh.alpha = guiSettingsClickTransparancy;
     });
 
-    guiSettingsCompassImage = new BABYLON.GUI.Image("guiSettingsCompassImage", "http://rawgit.com/AlexanderssonErik/web/master/compass.svg");
+    guiSettingsCompassImage = new BABYLON.GUI.Image("guiSettingsCompassImage", "./icon/settings_compass.svg");
     guiSettingsCompass = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsCompass, guiSettingsCompassImage, 0, 3);
    
@@ -1523,7 +1529,7 @@ function guiInitSettingsMenu(){
         guiSettingsCompass.alpha = guiSettingsClickTransparancy;
     });
 
-    guiSettingsCompassOffImage = new BABYLON.GUI.Image("guiSettingsCompassImage", "http://rawgit.com/AlexanderssonErik/web/master/compass 2 thicker.png");
+    guiSettingsCompassOffImage = new BABYLON.GUI.Image("guiSettingsCompassOffImage", "./icon/settings_compass_off.svg");
     guiSettingsCompassOff = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsCompassOff, guiSettingsCompassOffImage, 1, 3);
    
@@ -1541,7 +1547,7 @@ function guiInitSettingsMenu(){
     });
 
     
-    guiSettingsCompassOnImage = new BABYLON.GUI.Image("guiSettingsCompassOnImage", "http://rawgit.com/AlexanderssonErik/web/master/ic_explore_white_48px.svg");
+    guiSettingsCompassOnImage = new BABYLON.GUI.Image("guiSettingsCompassOnImage", "./icon/settings_compass_on.svg");
     guiSettingsCompassOn = new BABYLON.GUI.Ellipse();
     guiInitButtonEllipseImage(guiSettingsCompassOn, guiSettingsCompassOnImage, 2, 3);
     
@@ -1788,7 +1794,7 @@ function guiInitGameSelectMenu(){
     guiAdvancedTextureGameSelect = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("GameSelect");
 
    
-    guiGameSelectBuilderImage = new BABYLON.GUI.Image("Builder", "http://rawgit.com/AlexanderssonErik/web/master/ic_aspect_ratio_white_48px.svg");
+    guiGameSelectBuilderImage = new BABYLON.GUI.Image("Builder", "./icon/game_builder.svg");
     //guiSettingsStartImage.width = 0.2;
     //guiSettingsStartImage.height = "40px";
     guiSettingsSizeChange(guiGameSelectBuilderImage, guiSettingsSizeM, -guiSettingsSizeM, 0);
@@ -1840,7 +1846,11 @@ function guiInitGameSelectMenu(){
     guiGameSelectProgram.isVisible = false;
     guiGameSelectProgramImage.isVisible = false;
 
-    guiLevelInit(0, 2);
+      
+    guiGameSelectMath.isVisible = false;
+    guiGameSelectMathImage.isVisible = false;
+
+    guiLevelInit(0, 3);
 
     });
 
@@ -1848,7 +1858,7 @@ function guiInitGameSelectMenu(){
 
 
 
-guiGameSelectTangramImage = new BABYLON.GUI.Image("Tangram", "http://rawgit.com/AlexanderssonErik/web/master/ic_aspect_ratio_white_48px.svg");
+guiGameSelectTangramImage = new BABYLON.GUI.Image("Tangram", "./icon/game_tangram.svg");
 //guiSettingsStartImage.width = 0.2;
 //guiSettingsStartImage.height = "40px";
 guiSettingsSizeChange(guiGameSelectTangramImage, guiSettingsSizeM, 0, 0);
@@ -1897,6 +1907,9 @@ guiGameSelectTangramImage.onPointerDownObservable.add(function() {
      guiGameSelectProgram.isVisible = false;
      guiGameSelectProgramImage.isVisible = false;
 
+     guiGameSelectMath.isVisible = false;
+     guiGameSelectMathImage.isVisible = false;
+
      guiLevelInit(5, 4);
      //guiInitTangramLevelMenu();
 
@@ -1908,7 +1921,7 @@ guiGameSelectTangramImage.onPointerDownObservable.add(function() {
 
 //--
 
-guiGameSelectMemoImage = new BABYLON.GUI.Image("Tangram", "http://rawgit.com/AlexanderssonErik/web/master/ic_aspect_ratio_white_48px.svg");
+guiGameSelectMemoImage = new BABYLON.GUI.Image("Memo", "./icon/game_memo.svg");
 guiSettingsSizeChange(guiGameSelectMemoImage, guiSettingsSizeM, guiSettingsSizeM, 0);
 
 guiGameSelectMemoImage.paddingTop = guiSettingsPaddingTop;              
@@ -1930,12 +1943,40 @@ guiGameSelectMemo.alpha = guiSettingsNoClickTransparancy;
 
 guiGameSelectMemoImage.onPointerDownObservable.add(function() {
 
+    biloGame = 3;
+    biloLevel = 0;
+
+     guiGameSelectBuilder.isVisible = false;
+     guiGameSelectBuilderImage.isVisible = false;
+    
+     guiGameSelectTangram.isVisible = false;
+     guiGameSelectTangramImage.isVisible = false;
+    
+     guiGameSelectMemo.isVisible = false;
+     guiGameSelectMemoImage.isVisible = false;
+    
+     guiGameSelectFindShape.isVisible = false;
+     guiGameSelectFindShapeImage.isVisible = false;
+    
+     guiGameSelectFree.isVisible = false;
+     guiGameSelectFreeImage.isVisible = false;
+    
+     guiGameSelectProgram.isVisible = false;
+     guiGameSelectProgramImage.isVisible = false;
+
+     guiGameSelectMath.isVisible = false;
+     guiGameSelectMathImage.isVisible = false;
+
+     guiLevelInit(3, 2);
+
+
+
 });
 
 //--
 
 
-guiGameSelectFindShapeImage = new BABYLON.GUI.Image("Tangram", "http://rawgit.com/AlexanderssonErik/web/master/ic_aspect_ratio_white_48px.svg");
+guiGameSelectFindShapeImage = new BABYLON.GUI.Image("FindShape", "./icon/game_find_shape.svg");
 guiSettingsSizeChange(guiGameSelectFindShapeImage, guiSettingsSizeM, -guiSettingsSizeM, guiSettingsSizeM);
 
 guiGameSelectFindShapeImage.paddingTop = guiSettingsPaddingTop;              
@@ -1957,13 +1998,40 @@ guiGameSelectFindShape.alpha = guiSettingsNoClickTransparancy;
 
 guiGameSelectFindShapeImage.onPointerDownObservable.add(function() {
 
+    biloGame = 4;
+    biloLevel = 0;
+
+     guiGameSelectBuilder.isVisible = false;
+     guiGameSelectBuilderImage.isVisible = false;
+    
+     guiGameSelectTangram.isVisible = false;
+     guiGameSelectTangramImage.isVisible = false;
+    
+     guiGameSelectMemo.isVisible = false;
+     guiGameSelectMemoImage.isVisible = false;
+    
+     guiGameSelectFindShape.isVisible = false;
+     guiGameSelectFindShapeImage.isVisible = false;
+    
+     guiGameSelectFree.isVisible = false;
+     guiGameSelectFreeImage.isVisible = false;
+    
+     guiGameSelectProgram.isVisible = false;
+     guiGameSelectProgramImage.isVisible = false;
+
+     guiGameSelectMath.isVisible = false;
+     guiGameSelectMathImage.isVisible = false;
+
+     guiLevelInit(4, 4);
+
+
 });
 //--
 
 
 
 
-guiGameSelectFreeImage = new BABYLON.GUI.Image("Tangram", "http://rawgit.com/AlexanderssonErik/web/master/ic_aspect_ratio_white_48px.svg");
+guiGameSelectFreeImage = new BABYLON.GUI.Image("FreeBuild", "./icon/game_free_build.svg");
 guiSettingsSizeChange(guiGameSelectFreeImage, guiSettingsSizeM, 0, guiSettingsSizeM);
 
 guiGameSelectFreeImage.paddingTop = guiSettingsPaddingTop;              
@@ -1990,7 +2058,7 @@ guiGameSelectFreeImage.onPointerDownObservable.add(function() {
 
 //--
 
-guiGameSelectProgramImage = new BABYLON.GUI.Image("Tangram", "http://rawgit.com/AlexanderssonErik/web/master/ic_aspect_ratio_white_48px.svg");
+guiGameSelectProgramImage = new BABYLON.GUI.Image("Programming", "./icon/game_programming.svg");
 guiSettingsSizeChange(guiGameSelectProgramImage, guiSettingsSizeM, guiSettingsSizeM, guiSettingsSizeM);
 
 guiGameSelectProgramImage.paddingTop = guiSettingsPaddingTop;              
@@ -2013,6 +2081,58 @@ guiGameSelectProgram.alpha = guiSettingsNoClickTransparancy;
 guiGameSelectProgramImage.onPointerDownObservable.add(function() {
 
 });
+
+guiGameSelectMathImage = new BABYLON.GUI.Image("Math", "./icon/game_math.svg");
+guiSettingsSizeChange(guiGameSelectMathImage, guiSettingsSizeM, guiSettingsSizeM*2, guiSettingsSizeM);
+
+guiGameSelectMathImage.paddingTop = guiSettingsPaddingTop;              
+guiGameSelectMathImage.paddingRight = guiSettingsPaddingTop;
+
+guiGameSelectMathImage.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+guiGameSelectMathImage.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+guiGameSelectMath = new BABYLON.GUI.Ellipse();
+guiGameSelectMath.color = guiSettingsColor;
+guiGameSelectMath.thickness = guiSettingsLineThickness;
+guiSettingsSizeChange(guiGameSelectMath, guiSettingsSizeM, guiSettingsSizeM*2, guiSettingsSizeM);
+
+guiGameSelectMath.paddingTop = guiSettingsPaddingTop;              
+guiGameSelectMath.paddingRight = guiSettingsPaddingTop;
+guiGameSelectMath.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+guiGameSelectMath.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+guiGameSelectMath.background = guiSettingsClickColor;
+guiGameSelectMath.alpha = guiSettingsNoClickTransparancy;
+
+guiGameSelectMathImage.onPointerDownObservable.add(function() {
+
+
+    biloGame = 7;
+    biloLevel = 0;
+    
+     guiGameSelectBuilder.isVisible = false;
+     guiGameSelectBuilderImage.isVisible = false;
+    
+     guiGameSelectTangram.isVisible = false;
+     guiGameSelectTangramImage.isVisible = false;
+    
+     guiGameSelectMemo.isVisible = false;
+     guiGameSelectMemoImage.isVisible = false;
+    
+     guiGameSelectFindShape.isVisible = false;
+     guiGameSelectFindShapeImage.isVisible = false;
+    
+     guiGameSelectFree.isVisible = false;
+     guiGameSelectFreeImage.isVisible = false;
+    
+     guiGameSelectProgram.isVisible = false;
+     guiGameSelectProgramImage.isVisible = false;
+    
+     guiGameSelectMath.isVisible = false;
+     guiGameSelectMathImage.isVisible = false;
+    
+     guiLevelInit(2, 0);
+
+});
+
 
 
 
@@ -2054,6 +2174,11 @@ guiGameSelectProgramImage.onPointerDownObservable.add(function() {
 
     guiAdvancedTextureGameSelect.addControl(guiGameSelectProgram);
     guiAdvancedTextureGameSelect.addControl(guiGameSelectProgramImage);
+
+    guiAdvancedTextureGameSelect.addControl(guiGameSelectMath);
+    guiAdvancedTextureGameSelect.addControl(guiGameSelectMathImage);
+
+    
     
 }
 
@@ -2065,6 +2190,8 @@ guiGameSelectProgramImage.onPointerDownObservable.add(function() {
 
 
 function guiWinningAndNext(wins){
+
+    //console.log("XXXXXXXXX");
     guiAnimateWin(wins);
     
     guiLevelNext.isVisible = true;

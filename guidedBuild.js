@@ -7,22 +7,28 @@ let guidedBuildLevel = 0;
 let guidedBuildStage = 0;
 
 
+
 function guidedBuildCreateGame(level){
 
     console.log("guidedBuildCreateGame " +level);
    // console.log("guidedBuildLevel: " +guidedBuildLevel);
    // console.log("guidedBuildStage: " +guidedBuildStage);
+
+   guiAnimateflashColorsAtEnd = false;
     
-    guidedBuildLevel = level;
-    guidedBuildStage = Math.floor(Math.random()*levelBlockNumberStages[guidedBuildLevel -1]) ;
+    guidedBuildLevel = level - 1;
+    guidedBuildStage = Math.floor(Math.random()*levelBlockNumberStages[guidedBuildLevel]) ;
     
-    while(guidedBuildStage == guidedBuildLastStage[guidedBuildLevel-1]){
-        guidedBuildStage = Math.floor(Math.random()*levelBlockNumberStages[guidedBuildLevel -1]) ;
+    while(guidedBuildStage == guidedBuildLastStage[guidedBuildLevel]){
+        guidedBuildStage = Math.floor(Math.random()*levelBlockNumberStages[guidedBuildLevel]) ;
     }
 
-    guidedBuildLastStage[guidedBuildLevel -1] = guidedBuildStage;
+    guidedBuildLastStage[guidedBuildLevel] = guidedBuildStage;
     guidedBuildWinning = 0;
 
+
+    baseLED[0] = 0x10;
+    baseLED[1] = 0x20;
 
     //defineLevelPlanes();
 
@@ -125,66 +131,95 @@ function initGuidedBuild(){
 //3
 
             //2-0
-            levelBlockX[2][0][0] = 3;
+            levelBlockX[2][0][0] = 6;
             levelBlockY[2][0][0] = 0;
-            levelBlockZ[2][0][0] = 3;
+            levelBlockZ[2][0][0] = 7;
             levelBlockRT[2][0][0] = 2;
-            levelBlockLED2x2[2][0][0] = 0;
-            levelBlockLED2x4[2][0][0] = 0;
-      
+            levelBlockLED2x2[2][0][0] = 36;
+            levelBlockLED2x4[2][0][0] = 36;
             levelBlockX[2][0][1] = 3;
-            levelBlockY[2][0][1] = 1;
-            levelBlockZ[2][0][1] = 3;
-            levelBlockRT[2][0][1] = 2;
-            levelBlockLED2x2[2][0][1] = 0;
+            levelBlockY[2][0][1] = 0;
+            levelBlockZ[2][0][1] = 2;
+            levelBlockRT[2][0][1] = 7;
+            levelBlockLED2x2[2][0][1] = 9;
             levelBlockLED2x4[2][0][1] = 0;
-
-            levelBlockX[2][0][2] = 3;
+            levelBlockX[2][0][2] = 7;
             levelBlockY[2][0][2] = 0;
-            levelBlockZ[2][0][2] = 6;
-            levelBlockRT[2][0][2] = 4;
-            levelBlockLED2x2[2][0][2] = 0;
+            levelBlockZ[2][0][2] = 2;
+            levelBlockRT[2][0][2] = 7;
+            levelBlockLED2x2[2][0][2] = 9;
             levelBlockLED2x4[2][0][2] = 0;
+            levelBlockX[2][0][3] = 4;
+            levelBlockY[2][0][3] = 1;
+            levelBlockZ[2][0][3] = 8;
+            levelBlockRT[2][0][3] = 1;
+            levelBlockLED2x2[2][0][3] = 18;
+            levelBlockLED2x4[2][0][3] = 18;
+            levelBlockX[2][0][4] = 6;
+            levelBlockY[2][0][4] = 1;
+            levelBlockZ[2][0][4] = 4;
+            levelBlockRT[2][0][4] = 2;
+            levelBlockLED2x2[2][0][4] = 18;
+            levelBlockLED2x4[2][0][4] = 18;
+            levelBlockX[2][0][5] = 5;
+            levelBlockY[2][0][5] = 2;
+            levelBlockZ[2][0][5] = 3;
+            levelBlockRT[2][0][5] = 6;
+            levelBlockLED2x2[2][0][5] = 9;
+            levelBlockLED2x4[2][0][5] = 0;
+            levelBlockCount[2][0] = 6;
+            levelBlockX[2][1][0] = 6;
+            levelBlockY[2][1][0] = 0;
+            levelBlockZ[2][1][0] = 6;
+            levelBlockRT[2][1][0] = 7;
+            levelBlockLED2x2[2][1][0] = 18;
+            levelBlockLED2x4[2][1][0] = 0;
+            levelBlockX[2][1][1] = 3;
+            levelBlockY[2][1][1] = 0;
+            levelBlockZ[2][1][1] = 3;
+            levelBlockRT[2][1][1] = 3;
+            levelBlockLED2x2[2][1][1] = 0;
+            levelBlockLED2x4[2][1][1] = 0;
+            levelBlockX[2][1][2] = 6;
+            levelBlockY[2][1][2] = 0;
+            levelBlockZ[2][1][2] = 2;
+            levelBlockRT[2][1][2] = 7;
+            levelBlockLED2x2[2][1][2] = 18;
+            levelBlockLED2x4[2][1][2] = 0;
+            levelBlockX[2][1][3] = 5;
+            levelBlockY[2][1][3] = 1;
+            levelBlockZ[2][1][3] = 6;
+            levelBlockRT[2][1][3] = 2;
+            levelBlockLED2x2[2][1][3] = 36;
+            levelBlockLED2x4[2][1][3] = 36;
+            levelBlockX[2][1][4] = 5;
+            levelBlockY[2][1][4] = 1;
+            levelBlockZ[2][1][4] = 4;
+            levelBlockRT[2][1][4] = 2;
+            levelBlockLED2x2[2][1][4] = 36;
+            levelBlockLED2x4[2][1][4] = 36;
+            levelBlockX[2][1][5] = 3;
+            levelBlockY[2][1][5] = 2;
+            levelBlockZ[2][1][5] = 5;
+            levelBlockRT[2][1][5] = 6;
+            levelBlockLED2x2[2][1][5] = 0;
+            levelBlockLED2x4[2][1][5] = 0;
+            levelBlockX[2][1][6] = 4;
+            levelBlockY[2][1][6] = 3;
+            levelBlockZ[2][1][6] = 3;
+            levelBlockRT[2][1][6] = 7;
+            levelBlockLED2x2[2][1][6] = 9;
+            levelBlockLED2x4[2][1][6] = 0;
+            levelBlockX[2][1][7] = 3;
+            levelBlockY[2][1][7] = 3;
+            levelBlockZ[2][1][7] = 5;
+            levelBlockRT[2][1][7] = 4;
+            levelBlockLED2x2[2][1][7] = 9;
+            levelBlockLED2x4[2][1][7] = 0;
+            levelBlockCount[2][1] = 8;
       
-            levelBlockCount[2][0] = 3;
       
-             //2-1
-             levelBlockX[2][1][0] = 5;
-             levelBlockY[2][1][0] = 0;
-             levelBlockZ[2][1][0] = 3;
-             levelBlockRT[2][1][0] = 4;
-             levelBlockLED2x2[2][1][0] = 0;
-             levelBlockLED2x4[2][1][0] = 0;
-           
-
-             levelBlockX[2][1][1] = 6;
-             levelBlockY[2][1][1] = 0;
-             levelBlockZ[2][1][1] = 6;
-             levelBlockRT[2][1][1] = 4;
-             levelBlockLED2x2[2][1][1] = 0;
-             levelBlockLED2x4[2][1][1] = 0;
-
-             levelBlockCount[2][1] = 2;
-      
-            //2-2
-            levelBlockX[2][2][0] = 5;
-            levelBlockY[2][2][0] = 0;
-            levelBlockZ[2][2][0] = 6;
-            levelBlockRT[2][2][0] = 4;
-            levelBlockLED2x2[2][2][0] = 0;
-            levelBlockLED2x4[2][2][0] = 0;
-
-            levelBlockX[2][2][1] = 5;
-            levelBlockY[2][2][1] = 0;
-            levelBlockZ[2][2][1] = 9;
-            levelBlockRT[2][2][1] = 4;
-            levelBlockLED2x2[2][2][1] = 0;
-            levelBlockLED2x4[2][2][1] = 0;
-
-            levelBlockCount[2][2] = 2;
-      
-      
-            levelBlockNumberStages[2] = 3;
+            levelBlockNumberStages[2] = 2;
 
               //------------
 
@@ -194,13 +229,17 @@ function initGuidedBuild(){
 }
 
 
-function guidedBuildRender(blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blockLEDsx4, blocksUseAlpha, blocksOffset){
+function guidedBuildRender(blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blockLED2x4, blocksUseAlpha, blocksOffset){
     let initialblocksCount = blocksCount + blocksOffset;
     let i;
     let iGB;
     let noOfBlocksFound = 0;
     let gBNoOfBlocksShown = 1;
     let blocksFound = [];
+
+    if( guidedBuildWinning >= 4){
+        return;
+  }
 
    // console.log("blocksCount 1 : " +blocksCount);
   //  console.log("guidedBuildLevel: " +guidedBuildLevel);
@@ -252,7 +291,7 @@ function guidedBuildRender(blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blo
                             blocksFound[i] = 1;
                             break;
                     }else if((blocksRT[i] & 0x03) == 2 && 
-                        (levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) == 4 &&
+                        (levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) == 0 &&
                         blocksX[i] -3 == levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] &&
                         blocksZ[i] -1 == levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB] ){
                             blocksFound[i] = 1;
@@ -273,6 +312,109 @@ function guidedBuildRender(blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blo
                 //2x2    
                 }else if((blocksRT[i] & 0x04) == 0x04 && (levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x04) == 0x04 )
                 {
+                /*    console.log("(blocksRT[i] & 0x03): " + (blocksRT[i] & 0x03));
+                    console.log("(levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03): " + (levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03));
+                    console.log("blocksX[i]: " + blocksX[i]);
+                    console.log("levelBlockX[guidedBuildLevel][guidedBuildStage][iGB]: " + levelBlockX[guidedBuildLevel][guidedBuildStage][iGB]);
+                    console.log("blocksZ[i]: " + blocksZ[i]);
+                    console.log("levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB]: " + levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB]);
+*/
+                  if((blocksRT[i] & 0x03) == 0){
+                    if((levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) - (blocksRT[i] & 0x03) ==  1 &&
+                        levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] == blocksX[i] &&
+                        levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB] - 1 == blocksZ[i] ){
+                            blocksFound[i] = 1;
+                            break;
+
+                    }else if((levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) - (blocksRT[i] & 0x03) ==  2 &&
+                        levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] - 1 == blocksX[i] &&
+                        levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB] - 1 == blocksZ[i] ){
+                        blocksFound[i] = 1;
+                        break;
+                    
+                    }else if((levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) - (blocksRT[i] & 0x03) ==  3 &&
+                        levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] - 1 == blocksX[i] &&
+                        levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB] == blocksZ[i] ){
+                        blocksFound[i] = 1;
+                        break;
+                    
+                    }
+                    
+                  }else if((blocksRT[i] & 0x03) == 1){
+
+                    if((levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) - (blocksRT[i] & 0x03) ==  1 &&
+                        levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] -1 == blocksX[i] &&
+                        levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB]  == blocksZ[i] ){
+                            blocksFound[i] = 1;
+                            break;
+
+                    }else if((levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) - (blocksRT[i] & 0x03) ==  2 &&
+                        levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] - 1 == blocksX[i] &&
+                        levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB] + 1 == blocksZ[i] ){
+                        blocksFound[i] = 1;
+                        break;
+                    
+                    }else if((levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) - (blocksRT[i] & 0x03) ==  -1 &&
+                        levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] == blocksX[i] &&
+                        levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB] +1 == blocksZ[i] ){
+                        blocksFound[i] = 1;
+                        break;
+                    
+                    }
+                    
+                    
+                }else if((blocksRT[i] & 0x03) == 2){
+
+                    if((levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) - (blocksRT[i] & 0x03) ==  1 &&
+                        levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] == blocksX[i] &&
+                        levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB] + 1 == blocksZ[i] ){
+                            blocksFound[i] = 1;
+                            break;
+
+                    }else if((levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) - (blocksRT[i] & 0x03) ==  -2 &&
+                        levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] + 1 == blocksX[i] &&
+                        levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB] + 1 == blocksZ[i] ){
+                        blocksFound[i] = 1;
+                        break;
+                    
+                    }else if((levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) - (blocksRT[i] & 0x03) ==  -1 &&
+                        levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] + 1 == blocksX[i] &&
+                        levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB] == blocksZ[i] ){
+                        blocksFound[i] = 1;
+                        break;
+                    
+                    }        
+
+                }else if((blocksRT[i] & 0x03) == 3){
+
+                    if((levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) - (blocksRT[i] & 0x03) ==  -3 &&
+                        levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] +1 == blocksX[i] &&
+                        levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB]  == blocksZ[i] ){
+                            blocksFound[i] = 1;
+                            break;
+
+                    }else if((levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) - (blocksRT[i] & 0x03) ==  -2 &&
+                        levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] + 1 == blocksX[i] &&
+                        levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB] - 1 == blocksZ[i] ){
+                        blocksFound[i] = 1;
+                        break;
+                    
+                    }else if((levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) - (blocksRT[i] & 0x03) ==  -1 &&
+                        levelBlockX[guidedBuildLevel][guidedBuildStage][iGB]  == blocksX[i] &&
+                        levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB] -1 == blocksZ[i] ){
+                        blocksFound[i] = 1;
+                        break;
+                    
+                    }
+
+                }
+
+                    //---
+
+           
+
+                    /*
+
                     if((blocksRT[i] & 0x03) == 0 && 
                         (levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) == 2 &&
                         blocksX[i] +3 == levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] &&
@@ -287,7 +429,7 @@ function guidedBuildRender(blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blo
                             blocksFound[i] = 1;
                             break;
                     }else if((blocksRT[i] & 0x03) == 2 && 
-                        (levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) == 4 &&
+                        (levelBlockRT[guidedBuildLevel][guidedBuildStage][iGB] & 0x03) == 0 &&
                         blocksX[i] -3 == levelBlockX[guidedBuildLevel][guidedBuildStage][iGB] &&
                         blocksZ[i] -1 == levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB] ){
                             blocksFound[i] = 1;
@@ -298,7 +440,7 @@ function guidedBuildRender(blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blo
                         blocksZ[i] +3 == levelBlockZ[guidedBuildLevel][guidedBuildStage][iGB] ){
                             blocksFound[i] = 1;
                             break;
-                    }
+                    }*/
                 }
             }
             /*
@@ -343,6 +485,18 @@ function guidedBuildRender(blocksX, blocksY, blocksZ, blocksRT, blockLED2x2, blo
             break;
         }
 
+    }
+
+    if(i == initialblocksCount && noOfBlocksFound == 0 && guidedBuildWinning <4){
+
+       
+        //console.log("tangram win!");
+        if(guidedBuildWinning > 2){
+            
+            biloWinning = true;
+            
+        }
+        guidedBuildWinning++;
     }
 
          

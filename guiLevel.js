@@ -100,7 +100,9 @@ function guiLevelPointerUp(){
                 guiLevelNext.isVisible = false;
                 guiLevelNextImage.isVisible = false;
         
-                particleSystem.stop();
+                guiAnimateStopWinningAndNext();
+
+               /* particleSystem.stop();
         
                 scene.stopAnimation(shapesStar);
                 scene.stopAnimation(shapesStar2);
@@ -113,7 +115,7 @@ function guiLevelPointerUp(){
                 }
                 shapesStar.setEnabled(0); 
                 shapesStar2.setEnabled(0); 
-                shapesStar3.setEnabled(0); 
+                shapesStar3.setEnabled(0); */
         
         
                 biloNext = true;

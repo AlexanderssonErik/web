@@ -12,6 +12,17 @@ let starAnimatableScale;
 let starAnimatableScale2;
 let starAnimatableScale3;
 
+
+let blockAnimateY = -1; 
+let blockAnimateYdirection = 1; 
+
+let blockLastColor = 0;
+
+let animateTimeOut;
+let animateTiemOutRunning = false;
+
+let guiAnimateflashColorsAtEnd = true;
+
 function guiAnimateInit(){
     
         shapesStar2 =  shapesStar.createInstance("shapesStar2");
@@ -91,6 +102,11 @@ function guiAnimateInit(){
     }
     
 function guiAnimateStopWinningAndNext(){
+
+    clearTimeout(animateTimeOut); 
+    //console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    animateTimeOutRunning = false;
+
     guiLevelNext.isVisible = false;
     guiLevelNextImage.isVisible = false;
 
@@ -119,6 +135,7 @@ function guiAnimateStopWinningAndNext(){
 }
 
 
+
 function guiAnimateWin(wins){
     
         var starAnimateFrameRate = 10;
@@ -139,8 +156,47 @@ function guiAnimateWin(wins){
     
         //let shapesStar2;
         //let shapesStar3;
-        let nextColor
         
+        let nextColor;
+        
+        //block animate
+        //console.log("AAAAAAAAAAAAA");
+
+    if(guiAnimateflashColorsAtEnd){
+        blockLastColor = 0;
+        blockAnimateY = -1;
+        blockAnimateYdirection = -1;
+        clearTimeout(animateTimeOut);       
+        animateTimeOut = setTimeout(animateTimeOutFunction, 1000);
+        animateTimeOutRunning = true;
+    }
+    
+
+
+        //----
+
+        let maxY = 0;
+        let y = blocksOffset;
+
+
+
+
+    while( y < blocksCount + blocksOffset ){
+
+        if(blocksY[y] > maxY){
+            maxY = blocksY[y];
+        }
+        y++;
+
+    }
+    maxY +=4;
+
+
+        shapesStar.position.y =maxY * pitchY; 
+        shapesStar2.position.y =maxY* pitchY; 
+        shapesStar3.position.y =maxY * pitchY; 
+
+       // console.log ("shapesStar.position.y: " + shapesStar.position.y);
         shapesStar.setEnabled(1); 
      //!!
      /*   
@@ -261,3 +317,126 @@ function guiAnimateWin(wins){
         
     
     }
+
+    function guiAnimateBlock(){
+
+        let maxY = -1;
+        let y = blocksOffset;
+
+
+blockLastColor++;
+       
+
+blockLastColor %= 8;   
+if(blockLastColor == 0){
+    blockLastColor =1;
+}
+
+while( y < blocksCount + blocksOffset ){
+
+    if(blocksY[y] > maxY){
+        maxY = blocksY[y];
+    }
+    y++;
+
+}
+
+if(maxY < blockAnimateY){
+    
+    blockAnimateY = -1;
+    blockAnimateYdirection = -1;
+
+}
+
+//console.log("blockAnimateY: " + blockAnimateY);
+  //      console.log("blockLastColor: " + blockLastColor);
+
+        if(blockAnimateY == -1){
+            baseLED[0] = (blockLastColor <<3) + blockLastColor; // 0x12;
+            baseLED[1] = (blockLastColor <<3) + blockLastColor;// 0x12;
+        }else{
+            baseLED[0] = 0x00;
+            baseLED[1] = 0x00;
+        }
+
+y = blocksOffset;
+
+        while( y < blocksCount + blocksOffset ){
+
+            if(blocksY[y] == blockAnimateY){
+                blockLED2x2[y] = (blockLastColor <<3) + blockLastColor; //0x12;
+                blockLED2x4[y] = (blockLastColor <<3) + blockLastColor;//0x12;
+            }else{
+                blockLED2x2[y] = 0x00;
+                blockLED2x4[y] = 0x00;
+            }
+
+            y++;
+        }
+
+
+        if(maxY == blockAnimateY || blockAnimateY == -1){
+
+            blockAnimateYdirection = -blockAnimateYdirection;
+        }
+             
+        
+        blockAnimateY += blockAnimateYdirection;
+
+
+        animateTimeOut = setTimeout(animateTimeOutFunction, 600);
+        animateTimeOutRunning = true;
+        blocksRender = 1;
+
+     //   console.log(((Date.now() / 1000) - 1521943566));
+        
+        
+        
+
+    }
+    
+
+
+    function animateTimeOutFunction() {
+        //console.log("BBBBBBBBBBBBBBB");
+        clearTimeout(animateTimeOut);
+        animateTimeOutRunning = false;
+        guiAnimateBlock();
+        //guiAnimateFlahBlock();
+    }
+
+    function guiAnimateFlahBlock(){
+
+        let y = blocksOffset;
+
+        blockLastColor++;
+       
+
+        blockLastColor %= 8;     
+
+
+
+        baseLED[0] = (blockLastColor <<3) + blockLastColor;
+        baseLED[1] = (blockLastColor <<3) + blockLastColor;
+
+        while( y < blocksCount + blocksOffset ){
+
+            
+            blockLED2x2[y] = (blockLastColor <<3) + blockLastColor;
+            blockLED2x4[y] = (blockLastColor <<3) + blockLastColor;
+
+
+            y++;
+        }
+
+
+        animateTimeOut = setTimeout(animateTimeOutFunction, 1000);
+        animateTimeOutRunning = true;
+        blocksRender = 1;
+
+
+    }
+
+    
+
+    
